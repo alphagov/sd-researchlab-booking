@@ -23,6 +23,7 @@ mongoose
 
 const app = express();
 
+// logging for dev only
 app.use(morgan('dev'));
 
 app.use(helmet());
