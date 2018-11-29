@@ -1,4 +1,4 @@
-FROM node:11.3.0
+FROM node:latest
 LABEL maintainer="adrian.durran@digital.cabinet-office.gov.uk"
 RUN npm install -g nodemon
 RUN mkdir -p /usr/src/app

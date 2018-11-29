@@ -3,12 +3,10 @@ server/package-lock.json
 server/.gitignore
 server/server.env
 
-client/node_modules
-client/.gitignore
-client/package-lock.json
+# client/node_modules
+# client/.gitignore
+# client/package-lock.json
 
-docker
-.gitignore
 
 
 Dockerfile
