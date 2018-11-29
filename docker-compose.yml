@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  booking_server:
+    build:
+      context: ./server
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules/
+
+    env_file:
+      - ./server/server.env
+    ports:
+      - 4050:4050
+    depends_on:
+      - booking_db
+    container_name: booking_server
+    command: ['nodemon', 'index.js']
+
+  booking_db:
+    image: mongo:latest
+    volumes:
+      - ./docker/data/db:/data/db
+
+    container_name: booking_db
