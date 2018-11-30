@@ -26,4 +26,10 @@ describe('Database Tests', () => {
         console.error('unable to connect to Test Database', error)
       );
   });
+  //After all tests are finished drop database and close connection
+  after((done) => {
+    mongoose.connection.db.dropDatabase(() => {
+      mongoose.connection.close(done);
+    });
+  });
 });
