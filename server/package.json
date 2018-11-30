@@ -32,6 +32,8 @@
     "passport-custom": "^1.0.5"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.7"
   }
