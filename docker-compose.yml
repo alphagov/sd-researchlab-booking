@@ -15,7 +15,7 @@ services:
     depends_on:
       - booking_db
     container_name: booking_server
-    command: ['nodemon', 'index.js']
+    command: ['npm', 'start']
 
   booking_db:
     image: mongo:latest

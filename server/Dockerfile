@@ -6,4 +6,4 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app
 RUN npm install
 EXPOSE 4050
-CMD ["nodemon", "index.js"]
+CMD ["npm", "start"]
