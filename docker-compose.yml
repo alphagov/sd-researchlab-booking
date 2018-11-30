@@ -17,20 +17,6 @@ services:
     container_name: booking_server
     command: ['nodemon', 'index.js']
 
-  booking_server_test:
-    build:
-      context: ./server/test
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules/
-
-    ports:
-      - 4060:4060
-    depends_on:
-      - booking_db
-    container_name: booking_server_test
-    command: ['mocha', 'test/test.js']
-
   booking_db:
     image: mongo:latest
     volumes:
