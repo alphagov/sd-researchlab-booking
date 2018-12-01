@@ -1,37 +1,33 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const helmet = require('helmet');
-const passport = require('passport');
-
-const morgan = require('morgan');
-
-const keys = require('./config/keys');
+import Express from 'express';
+import { connect } from 'mongoose';
+import Helmet from 'helmet';
+import Passport from 'passport';
+import Morgan from 'morgan';
 
 // connect to the database
-mongoose
-  .connect(
-    process.env.MONGODB_URI,
-    {
-      useNewUrlParser: true,
-      poolSize: 10,
-      useFindAndModify: false,
-      useCreateIndex: true
-    }
-  )
+connect(
+  process.env.MONGODB_URI,
+  {
+    useNewUrlParser: true,
+    poolSize: 10,
+    useFindAndModify: false,
+    useCreateIndex: true
+  }
+)
   .then(() => console.log('Database connected'))
   .catch((error) => console.error('Unable to connect to database', error));
 
-const app = express();
+const App = Express();
 
 // logging for dev only
-app.use(morgan('dev'));
+App.use(Morgan('dev'));
 
-app.use(helmet());
+App.use(Helmet());
 
 const PORT = process.env.PORT || 4050;
 
-app.listen(PORT, () => {
+App.listen(PORT, () => {
   console.log(`Server started on PORT: ${PORT}`);
 });
 
-module.exports = app;
+export default App;

@@ -4,7 +4,7 @@
   "description": "Research Lab Booking Server",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:@babel/register",
+    "test": "mocha --require @babel/register",
     "start": "nodemon --exec babel-node index.js"
   },
   "repository": {

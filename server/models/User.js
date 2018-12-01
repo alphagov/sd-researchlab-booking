@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+import { Schema, model } from 'mongoose';
+import { genSalt, hash } from 'bcrypt';
 
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   firstName: {
@@ -39,15 +39,15 @@ const UserSchema = new Schema({
   }
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', (next) => {
   if (!this.isModified('password')) {
     return next();
   }
 
   try {
     // encrypt password
-    bcrypt.genSalt(12, (err, salt) => {
-      bcrypt.hash(this.password, salt, (err, hash) => {
+    genSalt(12, (err, salt) => {
+      hash(this.password, salt, (err, hash) => {
         this.password = hash;
       });
     });
@@ -58,4 +58,4 @@ UserSchema.pre('save', function(next) {
   }
 });
 
-module.exports = mongoose.model('User', UserSchema);
+export default model('User', UserSchema);
