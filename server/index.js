@@ -1,5 +1,5 @@
 import Express from 'express';
-import { connect } from 'mongoose';
+import { connect, Types } from 'mongoose';
 import Helmet from 'helmet';
 import Passport from 'passport';
 import Morgan from 'morgan';
