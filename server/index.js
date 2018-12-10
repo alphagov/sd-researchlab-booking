@@ -5,6 +5,13 @@ import Helmet from 'helmet';
 import Passport from 'passport';
 import Morgan from 'morgan';
 
+import typeDefs from './schema';
+
+const { ObjectId } = Types;
+ObjectId.prototype.valueOf = function() {
+  return this.toString();
+};
+
 // connect to the database
 connect(
   process.env.MONGODB_URI,
