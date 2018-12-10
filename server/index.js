@@ -1,5 +1,6 @@
 import Express from 'express';
 import { connect, Types } from 'mongoose';
+import { ApolloServer } from 'apollo-server-express';
 import Helmet from 'helmet';
 import Passport from 'passport';
 import Morgan from 'morgan';
