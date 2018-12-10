@@ -13,6 +13,10 @@ const typeDefs = gql`
     isVerified: Boolean
   }
 
+  type Token {
+    token: String!
+  }
+
   type Query {
     getCurrentUser: User
   }
@@ -24,7 +28,7 @@ const typeDefs = gql`
       email: String!
       phone: String!
       password: String!
-    ): User
+    ): Token
   }
 `;
 
