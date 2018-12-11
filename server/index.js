@@ -34,33 +34,33 @@ connect(
   .then(() => console.log('Database connected'))
   .catch((error) => console.error('Unable to connect to database', error));
 
-const App = Express();
+const app = Express();
 
 // logging for dev only
-App.use(Morgan('dev'));
+app.use(Morgan('dev'));
 // security
-App.use(Helmet());
-// App.use(async (req, res, next) => {
-//   const token = req.headers.authorization;
-//   if (token !== null || token !== undefined) {
-//     try {
-//       const currentUser = await verify(token, process.env.SECRET);
-//       req.currentUser = currentUser;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-//   next();
-// });
-// apollo.applyMiddleware({ App });
+app.use(Helmet());
+app.use(async (req, res, next) => {
+  const token = req.headers.authorization;
+  if (token !== null || token !== undefined) {
+    try {
+      const currentUser = await verify(token, process.env.SECRET);
+      req.currentUser = currentUser;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  next();
+});
+apollo.applyMiddleware({ app });
 
 const PORT = process.env.PORT || 4050;
 
-App.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(
     `Server started on PORT: ${PORT}`,
     `GraphQL on ${apollo.graphqlPath}`
   );
 });
 
-export default App;
+export default app;
