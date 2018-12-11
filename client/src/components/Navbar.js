@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
@@ -16,9 +16,8 @@ const NavbarUnAuth = () => (
         Home
       </NavLink>
     </li>
-    <li />
-    <li />
-    <li />
+    <li>Sign in</li>
+    <li>Register</li>
   </ul>
 );
 

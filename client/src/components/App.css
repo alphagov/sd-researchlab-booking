@@ -24,3 +24,21 @@ li {
 ul {
   list-style: none;
 }
+
+input,
+select,
+textarea {
+  padding: 0.4em 0.2em;
+  font-size: 1.2rem;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

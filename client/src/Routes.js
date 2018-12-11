@@ -14,6 +14,7 @@ const Routes = () => (
       <Navbar />
       <Switch>
         <Route path="/" exact component={App} />
+        <Redirect to="/" />
       </Switch>
     </Fragment>
   </Router>
