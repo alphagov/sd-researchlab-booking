@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import App from './components/App';
 import Navbar from './components/Navbar';
+import Register from './components/auth/Register';
 
 const Routes = () => (
   <Router>
@@ -14,6 +15,7 @@ const Routes = () => (
       <Navbar />
       <Switch>
         <Route path="/" exact component={App} />
+        <Route path="/register" component={Register} />
         <Redirect to="/" />
       </Switch>
     </Fragment>

@@ -17,7 +17,11 @@ const NavbarUnAuth = () => (
       </NavLink>
     </li>
     <li>Sign in</li>
-    <li>Register</li>
+    <li>
+      <NavLink to="/register" exact>
+        Register
+      </NavLink>
+    </li>
   </ul>
 );
 
