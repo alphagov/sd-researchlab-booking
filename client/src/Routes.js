@@ -5,21 +5,25 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
+
+import withSession from './components/withSession';
 import App from './components/App';
 import Navbar from './components/Navbar';
 import Register from './components/auth/Register';
 
-const Routes = () => (
+const Root = ({ refetch, session }) => (
   <Router>
     <Fragment>
-      <Navbar />
+      <Navbar session={session} />
       <Switch>
         <Route path="/" exact component={App} />
-        <Route path="/register" component={Register} />
+        <Route path="/register" render={() => <Register refetch={refetch} />} />
         <Redirect to="/" />
       </Switch>
     </Fragment>
   </Router>
 );
+
+const Routes = withSession(Root);
 
 export default Routes;

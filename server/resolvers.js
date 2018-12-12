@@ -7,6 +7,16 @@ const createToken = (user, secret, expiresIn) => {
 };
 
 const resolvers = {
+  Query: {
+    getCurrentUser: async (root, args, { currentUser, User }) => {
+      if (!currentUser) {
+        return null;
+      }
+      const user = await User.findOne({ email: currentUser.email });
+
+      return user;
+    }
+  },
   Mutation: {
     registerUser: async (
       root,
