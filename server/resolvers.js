@@ -1,8 +1,7 @@
 import { sign } from 'jsonwebtoken';
+import RegToken from './models/RegToken';
 
-const urllink = 'http://localhost:4050/api/register/verify';
-// process.env.REGISTER_LINK
-import LinkCreator from './utils/generateVeriLink';
+import HashCreator from './utils/generateHashes';
 import { sendRegMail } from './services/NotifyMail';
 
 const createToken = (user, secret, expiresIn) => {
@@ -19,10 +18,6 @@ const resolvers = {
       const user = await User.findOne({ email: currentUser.email });
 
       return user;
-    },
-    getRegToken: async (root, { regToken }, { RegToken }) => {
-      const newRegToken = await RegToken.findOne({ regToken });
-      return newRegToken;
     }
   },
   Mutation: {
@@ -48,22 +43,37 @@ const resolvers = {
         password
       }).save();
       // generate a link
-      const hashlink = await LinkCreator(newUser.email);
+      console.log('user', newUser);
+
+      const hashLink = await HashCreator(newUser.email);
       // save hashlink
-      const newRegLink = await new Token({
-        _userId: newUser.id,
-        token: hashlink
-      }).save();
+      console.log('hashlink', hashLink);
+      try {
+        const newRegLink = await new RegToken({
+          email,
+          regToken: hashLink
+        }).save();
+
+        console.log('reglink', newRegLink);
+      } catch (error) {
+        console.log('error reglink', error);
+      }
 
       // send email to that address.....
       const mailSend = await sendRegMail(
         firstName,
         lastName,
         email,
-        `${urllink}?token=${hashlink}`
+        `${process.env.REGISTER_LINK}?token=${hashLink}`
       );
 
+      console.log('mailsend', mailSend);
+
       return { token: createToken(newUser, process.env.SECRET, '1hr') };
+    },
+    getRegToken: async (root, { regToken }, { RegToken }) => {
+      const newRegToken = await RegToken.findOne({ regToken });
+      return newRegToken;
     }
   }
 };

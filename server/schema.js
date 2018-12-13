@@ -14,6 +14,7 @@ const typeDefs = gql`
   }
 
   type RegToken {
+    _id: ID
     regToken: String!
     email: String!
     createdAt: String
@@ -36,6 +37,8 @@ const typeDefs = gql`
       phone: String!
       password: String!
     ): Token
+
+    getRegToken(regToken: String!): RegToken
   }
 `;
 

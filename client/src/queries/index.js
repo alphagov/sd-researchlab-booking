@@ -29,3 +29,13 @@ export const REGISTER_USER = gql`
     }
   }
 `;
+
+export const GET_REG_TOKEN = gql`
+  mutation($regToken: String!) {
+    getRegToken(regToken: $regToken) {
+      email
+      regToken
+      createdAt
+    }
+  }
+`;

@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { genSalt, hash } from 'bcrypt';
+import HashCreator from '../utils/generateHashes';
 
 // const Schema = mongoose.Schema;
 
@@ -39,18 +40,15 @@ const UserSchema = new Schema({
   }
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
     return next();
   }
 
   try {
     // encrypt password
-    genSalt(12, (err, salt) => {
-      hash(this.password, salt, (err, hash) => {
-        this.password = hash;
-      });
-    });
+    const passwordHash = await HashCreator(this.password);
+    this.password = passwordHash;
 
     next();
   } catch (error) {
