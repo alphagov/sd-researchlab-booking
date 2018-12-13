@@ -29,12 +29,12 @@ class Register extends Component {
     const { firstName, lastName, email, phone, password } = this.state;
 
     const isInvalid = !firstName || !lastName || !email || !phone || !password;
-
     return isInvalid;
   };
 
   handleSubmit = (event, registerUser) => {
     event.preventDefault();
+
     registerUser().then(async ({ data }) => {
       localStorage.setItem('rlbtoken', data.registerUser.token);
       await this.props.refetch();
