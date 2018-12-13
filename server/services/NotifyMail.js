@@ -19,7 +19,7 @@ export const sendRegMail = async (firstName, lastName, email, hashLink) => {
         reference: 'test mails'
       }
     );
-    return regMail;
+    return regMail.body;
   } catch (error) {
     console.log(error);
     return error;
