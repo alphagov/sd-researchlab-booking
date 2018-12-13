@@ -1,12 +1,7 @@
 import { Schema, model } from 'mongoose';
 
-const TokenSchema = new Schema({
-  _userId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'User'
-  },
-  token: {
+const RegTokenSchema = new Schema({
+  regToken: {
     type: String,
     required: true
   },
@@ -17,10 +12,9 @@ const TokenSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    required: true,
     default: Date.now,
     expires: '2h'
   }
 });
 
-export default model('Token', TokenSchema);
+export default model('RegToken', RegTokenSchema);

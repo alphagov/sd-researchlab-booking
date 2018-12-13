@@ -1,5 +1,4 @@
 import { sign } from 'jsonwebtoken';
-import Token from './models/Token';
 
 const urllink = 'http://localhost:4050/api/register/verify';
 // process.env.REGISTER_LINK
@@ -20,6 +19,10 @@ const resolvers = {
       const user = await User.findOne({ email: currentUser.email });
 
       return user;
+    },
+    getRegToken: async (root, { regToken }, { RegToken }) => {
+      const newRegToken = await RegToken.findOne({ regToken });
+      return newRegToken;
     }
   },
   Mutation: {

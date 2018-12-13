@@ -13,12 +13,19 @@ const typeDefs = gql`
     isVerified: Boolean
   }
 
+  type RegToken {
+    regToken: String!
+    email: String!
+    createdAt: String
+  }
+
   type Token {
     token: String!
   }
 
   type Query {
     getCurrentUser: User
+    getRegToken: RegToken
   }
 
   type Mutation {

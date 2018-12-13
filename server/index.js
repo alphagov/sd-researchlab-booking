@@ -20,7 +20,7 @@ ObjectId.prototype.valueOf = function() {
 const apollo = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => ({ User, currentUser: req.currentUser })
+  context: ({ req, res }) => ({ User, RegToken, currentUser: req.currentUser })
 });
 
 // connect to the database
