@@ -10,6 +10,8 @@ import User from './models/User';
 import typeDefs from './schema';
 import resolvers from './resolvers';
 
+import regRoutes from './routes/registrationRoutes';
+
 const { ObjectId } = Types;
 ObjectId.prototype.valueOf = function() {
   return this.toString();
@@ -52,6 +54,7 @@ app.use(async (req, res, next) => {
   }
   next();
 });
+app.use('/api/registration', regRoutes);
 apollo.applyMiddleware({ app });
 
 const PORT = process.env.PORT || 4050;

@@ -1,7 +1,7 @@
 import { sign } from 'jsonwebtoken';
 import Token from './models/Token';
 
-const urllink = '/api/register/verify';
+const urllink = 'http://localhost:4050/api/register/verify';
 // process.env.REGISTER_LINK
 import LinkCreator from './utils/generateVeriLink';
 import { sendRegMail } from './services/NotifyMail';
@@ -53,8 +53,12 @@ const resolvers = {
       }).save();
 
       // send email to that address.....
-      const mailSend = await sendRegMail(firstName, lastName, email, hashlink);
-      console.log('result', mailSend);
+      const mailSend = await sendRegMail(
+        firstName,
+        lastName,
+        email,
+        `${urllink}?token=${hashlink}`
+      );
 
       return { token: createToken(newUser, process.env.SECRET, '1hr') };
     }

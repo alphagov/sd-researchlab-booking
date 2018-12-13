@@ -10,11 +10,16 @@ const TokenSchema = new Schema({
     type: String,
     required: true
   },
+  email: {
+    type: String,
+    required: true,
+    trim: true
+  },
   createdAt: {
     type: Date,
     required: true,
     default: Date.now,
-    expires: 43200
+    expires: '2h'
   }
 });
 
