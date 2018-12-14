@@ -43,9 +43,12 @@ const authResolvers = {
 
       if (newUserReg.error) {
         console.log(newUserReg.error._message);
-        throw new Error(
-          `Unable to create the user: ${newUserReg.error._message}`
-        );
+        return {
+          regresult: { ok: false, error: newUserReg.error._message }
+        };
+        // throw new Error(
+        //   `Unable to create the user: ${newUserReg.error._message}`
+        // );
       }
 
       // generate a link

@@ -25,7 +25,7 @@ export const REGISTER_USER = gql`
       phone: $phone
       password: $password
     ) {
-      token
+      regresult
     }
   }
 `;

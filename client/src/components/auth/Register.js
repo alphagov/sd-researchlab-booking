@@ -36,10 +36,11 @@ class Register extends Component {
     event.preventDefault();
 
     registerUser().then(async ({ data }) => {
-      localStorage.setItem('rlbtoken', data.registerUser.token);
-      await this.props.refetch();
-      this.clearState();
-      this.props.history.push('/');
+      console.log(data.registerUser);
+      // localStorage.setItem('rlbtoken', data.registerUser.token);
+      // await this.props.refetch();
+      // this.clearState();
+      // this.props.history.push('/two-factor');
     });
   };
 

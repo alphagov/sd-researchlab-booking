@@ -24,6 +24,11 @@ const userDefs = gql`
     token: String!
   }
 
+  type RegResult {
+    ok: Boolean!
+    error: String
+  }
+
   type Query {
     getCurrentUser: User
     getRegToken: RegToken
@@ -36,7 +41,7 @@ const userDefs = gql`
       email: String!
       phone: String!
       password: String!
-    ): Token
+    ): RegResult
 
     getRegToken(regToken: String!): RegToken
   }
