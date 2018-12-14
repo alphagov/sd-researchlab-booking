@@ -1,15 +1,15 @@
 import { sign } from 'jsonwebtoken';
-import RegToken from './models/RegToken';
+import RegToken from '../models/RegToken';
 
-import HashCreator from './utils/generateHashes';
-import { sendRegMail } from './services/NotifyMail';
+import HashCreator from '../utils/generateHashes';
+import { sendRegMail } from '../services/NotifyMail';
 
 const createToken = (user, secret, expiresIn) => {
   const { firstName, lastName, email } = user;
   return sign({ firstName, lastName, email }, secret, { expiresIn });
 };
 
-const resolvers = {
+const authResolvers = {
   Query: {
     getCurrentUser: async (root, args, { currentUser, User }) => {
       if (!currentUser) {
@@ -78,4 +78,4 @@ const resolvers = {
   }
 };
 
-export default resolvers;
+export default authResolvers;
