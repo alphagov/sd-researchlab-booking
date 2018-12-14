@@ -31,7 +31,6 @@ const userDefs = gql`
 
   type Query {
     getCurrentUser: User
-    getRegToken: RegToken
   }
 
   type Mutation {

@@ -32,6 +32,8 @@ const authResolvers = {
         throw new Error('User already exists');
       }
 
+      console.log('here');
+
       // add the user to the db
       const newUserReg = await addNewUser({
         firstName,
@@ -43,12 +45,12 @@ const authResolvers = {
 
       if (newUserReg.error) {
         console.log(newUserReg.error._message);
-        return {
-          regresult: { ok: false, error: newUserReg.error._message }
-        };
-        // throw new Error(
-        //   `Unable to create the user: ${newUserReg.error._message}`
-        // );
+        // return {
+        //   regresult: { ok: false, error: newUserReg.error._message }
+        // };
+        throw new Error(
+          `Unable to create the user: ${newUserReg.error._message}`
+        );
       }
 
       // generate a link
@@ -85,6 +87,10 @@ const authResolvers = {
       if (mailSend.error) {
         throw new Error(`Unable to send registration email ${mailSend.error}`);
       }
+
+      return {
+        regresult: { ok: true }
+      };
 
       // return { token: createToken(newUser, '1hr') };
     },
