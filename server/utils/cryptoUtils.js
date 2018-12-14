@@ -6,7 +6,7 @@ export const hashCreator = async (term) => {
     const hashTerm = await hash(term, 12);
     return hashTerm;
   } catch (error) {
-    return error;
+    return { error };
   }
 };
 

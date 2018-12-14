@@ -11,7 +11,7 @@ const addNewUser = async ({ firstName, lastName, email, phone, password }) => {
     }).save();
     return newUser;
   } catch (error) {
-    console.log(error);
+    // console.log('errorr', error);
     return { error };
   }
 };

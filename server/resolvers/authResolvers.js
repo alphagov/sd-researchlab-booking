@@ -3,6 +3,7 @@ import RegToken from '../models/RegToken';
 import { hashCreator, createToken } from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
 import addNewUser from './helpers/addNewUser';
+import addNewRegLink from './helpers/addNewRegLink';
 
 const authResolvers = {
   Query: {
@@ -31,6 +32,7 @@ const authResolvers = {
         throw new Error('User already exists');
       }
 
+      // add the user to the db
       const newUserReg = await addNewUser({
         firstName,
         lastName,
@@ -40,33 +42,48 @@ const authResolvers = {
       });
 
       if (newUserReg.error) {
-        throw new Error('Unable to create the user', newUserReg.error);
-      }
-
-      try {
-        // add the user to the db
-
-        // generate a link
-        const hashLink = await hashCreator(newUser.email);
-
-        // save hashlink to the regtoken collection
-        const newRegLink = await new RegToken({
-          email,
-          regToken: hashLink
-        }).save();
-
-        // send email to that address.....
-        const mailSend = await sendRegMail(
-          firstName,
-          lastName,
-          email,
-          `${process.env.REGISTER_LINK}?token=${hashLink}`
+        console.log(newUserReg.error._message);
+        throw new Error(
+          `Unable to create the user: ${newUserReg.error._message}`
         );
-      } catch (error) {
-        throw new Error('Unable to create the user', error);
       }
 
-      return { token: createToken(newUser, '1hr') };
+      // generate a link
+      const hashLink = await hashCreator(newUser.email);
+
+      if (hashLink.error) {
+        console.log(hashLink.error);
+        throw new Error(
+          `Unable to create the registration link: ${hashLink.error}`
+        );
+      }
+
+      // save hashlink to the regtoken collection
+      const newRegLink = await addNewRegLink({
+        email,
+        regToken: hashLink
+      }).save();
+
+      if (newRegLink.error) {
+        console.log(newRegLink.error._message);
+        throw new Error(
+          `Unable to save the registration link: ${newRegLink.error._message}`
+        );
+      }
+
+      // send email to that address.....
+      const mailSend = await sendRegMail(
+        firstName,
+        lastName,
+        email,
+        `${process.env.REGISTER_LINK}?token=${hashLink}`
+      );
+
+      if (mailSend.error) {
+        throw new Error(`Unable to send registration email ${mailSend.error}`);
+      }
+
+      // return { token: createToken(newUser, '1hr') };
     },
     getRegToken: async (root, { regToken }, { RegToken }) => {
       const newRegToken = await RegToken.findOne({ regToken });

@@ -22,6 +22,6 @@ export const sendRegMail = async (firstName, lastName, email, hashLink) => {
     return regMail.body;
   } catch (error) {
     console.log(error);
-    return error;
+    return { error };
   }
 };
