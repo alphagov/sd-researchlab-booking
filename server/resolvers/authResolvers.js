@@ -1,13 +1,8 @@
-import { sign } from 'jsonwebtoken';
 import RegToken from '../models/RegToken';
 
-import HashCreator from '../utils/generateHashes';
+import { hashCreator, createToken } from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
-
-const createToken = (user, secret, expiresIn) => {
-  const { firstName, lastName, email } = user;
-  return sign({ firstName, lastName, email }, secret, { expiresIn });
-};
+import addNewUser from './helpers/addNewUser';
 
 const authResolvers = {
   Query: {
@@ -30,46 +25,48 @@ const authResolvers = {
       if (!email.endsWith('gov.uk')) {
         throw new Error('Must use a Government email address');
       }
+      //  if the user already exists
       const user = await User.findOne({ email });
       if (user) {
         throw new Error('User already exists');
       }
 
-      const newUser = await new User({
+      const newUserReg = await addNewUser({
         firstName,
         lastName,
         email,
         phone,
         password
-      }).save();
-      // generate a link
-      console.log('user', newUser);
+      });
 
-      const hashLink = await HashCreator(newUser.email);
-      // save hashlink
-      console.log('hashlink', hashLink);
+      if (newUserReg.error) {
+        throw new Error('Unable to create the user', newUserReg.error);
+      }
+
       try {
+        // add the user to the db
+
+        // generate a link
+        const hashLink = await hashCreator(newUser.email);
+
+        // save hashlink to the regtoken collection
         const newRegLink = await new RegToken({
           email,
           regToken: hashLink
         }).save();
 
-        console.log('reglink', newRegLink);
+        // send email to that address.....
+        const mailSend = await sendRegMail(
+          firstName,
+          lastName,
+          email,
+          `${process.env.REGISTER_LINK}?token=${hashLink}`
+        );
       } catch (error) {
-        console.log('error reglink', error);
+        throw new Error('Unable to create the user', error);
       }
 
-      // send email to that address.....
-      const mailSend = await sendRegMail(
-        firstName,
-        lastName,
-        email,
-        `${process.env.REGISTER_LINK}?token=${hashLink}`
-      );
-
-      console.log('mailsend', mailSend);
-
-      return { token: createToken(newUser, process.env.SECRET, '1hr') };
+      return { token: createToken(newUser, '1hr') };
     },
     getRegToken: async (root, { regToken }, { RegToken }) => {
       const newRegToken = await RegToken.findOne({ regToken });
