@@ -31,6 +31,7 @@ const userDefs = gql`
 
   type Query {
     getCurrentUser: User
+    getRegToken(regToken: String!): RegToken
   }
 
   type Mutation {
@@ -41,8 +42,6 @@ const userDefs = gql`
       phone: String!
       password: String!
     ): RegResult
-
-    getRegToken(regToken: String!): RegToken
   }
 `;
 

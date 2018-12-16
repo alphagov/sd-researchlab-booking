@@ -14,6 +14,10 @@ const authResolvers = {
       const user = await User.findOne({ email: currentUser.email });
 
       return user;
+    },
+    getRegToken: async (root, { regToken }, { RegToken }) => {
+      const newRegToken = await RegToken.findOne({ regToken });
+      return newRegToken;
     }
   },
   Mutation: {
@@ -93,10 +97,6 @@ const authResolvers = {
       };
 
       // return { token: createToken(newUser, '1hr') };
-    },
-    getRegToken: async (root, { regToken }, { RegToken }) => {
-      const newRegToken = await RegToken.findOne({ regToken });
-      return newRegToken;
     }
   }
 };
