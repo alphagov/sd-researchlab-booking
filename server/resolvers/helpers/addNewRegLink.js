@@ -1,4 +1,4 @@
-import RegLink from '../../models/RegToken';
+import RegToken from '../../models/RegToken';
 
 const addNewRegLink = async ({ email, regToken }) => {
   try {
@@ -9,6 +9,7 @@ const addNewRegLink = async ({ email, regToken }) => {
 
     return newRegLink;
   } catch (error) {
+    console.log(error);
     return { error };
   }
 };

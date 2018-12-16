@@ -25,14 +25,16 @@ export const REGISTER_USER = gql`
       phone: $phone
       password: $password
     ) {
-      regresult
+      ok
+      error
     }
   }
 `;
 
 export const GET_REG_TOKEN = gql`
-  mutation($regToken: String!) {
+  query($regToken: String!) {
     getRegToken(regToken: $regToken) {
+      _id
       email
       regToken
       createdAt

@@ -36,8 +36,6 @@ const authResolvers = {
         throw new Error('User already exists');
       }
 
-      console.log('here');
-
       // add the user to the db
       const newUserReg = await addNewUser({
         firstName,
@@ -49,38 +47,38 @@ const authResolvers = {
 
       if (newUserReg.error) {
         console.log(newUserReg.error._message);
-        // return {
-        //   regresult: { ok: false, error: newUserReg.error._message }
-        // };
-        throw new Error(
-          `Unable to create the user: ${newUserReg.error._message}`
-        );
+        return {
+          ok: false,
+          error: newUserReg.error._message
+        };
+        // throw new Error(
+        //   `Unable to create the user: ${newUserReg.error._message}`
+        // );
       }
 
       // generate a link
-      const hashLink = await hashCreator(newUser.email);
+      const hashLink = await hashCreator(newUserReg.email);
 
       if (hashLink.error) {
         console.log(hashLink.error);
-        throw new Error(
-          `Unable to create the registration link: ${hashLink.error}`
-        );
+        return {
+          ok: false,
+          error: `Unable to create the registration link: ${hashLink.error}`
+        };
       }
 
-      // save hashlink to the regtoken collection
+      // // save hashlink to the regtoken collection
       const newRegLink = await addNewRegLink({
         email,
         regToken: hashLink
-      }).save();
+      });
 
       if (newRegLink.error) {
-        console.log(newRegLink.error._message);
-        throw new Error(
-          `Unable to save the registration link: ${newRegLink.error._message}`
-        );
+        console.log(newRegLink.error._messsage);
+        return { ok: false, error: newRegLink.error._message };
       }
 
-      // send email to that address.....
+      // // send email to that address.....
       const mailSend = await sendRegMail(
         firstName,
         lastName,
@@ -89,13 +87,15 @@ const authResolvers = {
       );
 
       if (mailSend.error) {
-        throw new Error(`Unable to send registration email ${mailSend.error}`);
+        return {
+          ok: false,
+          error: `Unable to send registration email ${mailSend.error}`
+        };
       }
 
       return {
-        regresult: { ok: true }
+        ok: true
       };
-
       // return { token: createToken(newUser, '1hr') };
     }
   }

@@ -35,13 +35,16 @@ class Register extends Component {
   handleSubmit = (event, registerUser) => {
     event.preventDefault();
 
-    registerUser().then(async ({ data }) => {
-      console.log(data.registerUser);
-      // localStorage.setItem('rlbtoken', data.registerUser.token);
-      // await this.props.refetch();
-      // this.clearState();
-      // this.props.history.push('/two-factor');
-    });
+    registerUser()
+      .then(async ({ data }) => {
+        console.log(data.registerUser);
+        // await this.props.refetch();
+        this.clearState();
+        if (data.registerUser.ok) {
+          this.props.history.push('/register-confirm');
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   render() {

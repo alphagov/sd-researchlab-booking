@@ -25,7 +25,7 @@ const userDefs = gql`
   }
 
   type RegResult {
-    ok: Boolean!
+    ok: Boolean
     error: String
   }
 
