@@ -51,9 +51,6 @@ const authResolvers = {
           ok: false,
           error: newUserReg.error._message
         };
-        // throw new Error(
-        //   `Unable to create the user: ${newUserReg.error._message}`
-        // );
       }
 
       // generate a link
@@ -94,6 +91,7 @@ const authResolvers = {
       }
 
       return {
+        _id: newRegLink._id,
         ok: true
       };
       // return { token: createToken(newUser, '1hr') };

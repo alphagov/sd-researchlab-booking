@@ -38,11 +38,12 @@ class Register extends Component {
     registerUser()
       .then(async ({ data }) => {
         console.log(data.registerUser);
-        // await this.props.refetch();
+        const { ok, _id } = data.registerUser;
         this.clearState();
-        if (data.registerUser.ok) {
-          // set a reg jwt?
-          this.props.history.push('/register-confirm');
+        if (ok) {
+          // set a reg jwt?push with id of regtoken?
+          // just
+          this.props.history.push(`/register/confirm/${_id}`);
         }
       })
       .catch((error) => console.log(error));

@@ -25,6 +25,7 @@ export const REGISTER_USER = gql`
       phone: $phone
       password: $password
     ) {
+      _id
       ok
       error
     }
