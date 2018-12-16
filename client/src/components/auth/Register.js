@@ -41,6 +41,7 @@ class Register extends Component {
         // await this.props.refetch();
         this.clearState();
         if (data.registerUser.ok) {
+          // set a reg jwt?
           this.props.history.push('/register-confirm');
         }
       })
