@@ -11,6 +11,7 @@ const RegisterConfirm = ({ match }) => {
         this link to complete your registration
       </p>
       <p>Didn't receive the email?</p>
+      {/* add this as a separate component  - the button */}
       <button className="button-primary">Send again</button>
     </div>
   );
