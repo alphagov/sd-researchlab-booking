@@ -1,30 +1,38 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import queryString from 'query-string';
 
+import { checkExpire } from '../../utils/dateUtils';
 import { GET_REG_TOKEN } from '../../queries';
+import RegLinkResend from './RegLinkResend';
 
-class RegisterLink extends Component {
-  // get query string
-  componentDidMount() {
-    const token = queryString.parse(this.props.location.search);
-    console.log(token);
-    // check the link has not expired
-    // if not expired get user account
-    // update verified flag on user
-    // add jwt at this stage?
+const RegisterLink = ({ location, history }) => {
+  const qs = queryString.parse(location.search);
+  const regToken = qs.token;
 
-    // redirect to 2fa page
-
-    // if expired display button for new link
-    // we have email address
-  }
-
-  //
-  render() {
-    return <div>Register Link</div>;
-  }
-}
+  return (
+    <div className="App">
+      <h2>Register Link</h2>
+      <Query query={GET_REG_TOKEN} variables={{ regToken }}>
+        {({ loading, data, error }) => {
+          if (loading) return <div>Loading information...........</div>;
+          if (error) return <div>Ooops! {error}</div>;
+          const { _id, createdAt } = data.getRegToken;
+          if (checkExpire(createdAt)) {
+            return (
+              <Fragment>
+                <p>Your registration link has expired</p>
+                <RegLinkResend regLinkId={_id} />
+              </Fragment>
+            );
+          } else {
+            this.props.history.push('/login/2fa');
+          }
+        }}
+      </Query>
+    </div>
+  );
+};
 
 export default withRouter(RegisterLink);

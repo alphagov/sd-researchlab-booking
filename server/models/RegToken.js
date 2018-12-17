@@ -12,8 +12,7 @@ const RegTokenSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-    expires: '2h'
+    default: Date.now
   }
 });
 
