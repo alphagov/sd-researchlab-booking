@@ -1,15 +1,15 @@
 import { Schema, model } from 'mongoose';
 
 const RegTokenSchema = new Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   regToken: {
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true,
-    trim: true
-  },
+
   createdAt: {
     type: Date,
     default: Date.now
@@ -17,3 +17,6 @@ const RegTokenSchema = new Schema({
 });
 
 export default model('RegToken', RegTokenSchema);
+
+// put userId in here? then populate or use GraphQl to resolve it?
+// we don't need email in here then

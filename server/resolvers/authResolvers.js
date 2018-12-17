@@ -66,7 +66,7 @@ const authResolvers = {
 
       // // save hashlink to the regtoken collection
       const newRegLink = await addNewRegLink({
-        email,
+        userId: newUserReg._id,
         regToken: hashLink
       });
 

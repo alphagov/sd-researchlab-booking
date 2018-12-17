@@ -32,11 +32,15 @@ export const REGISTER_USER = gql`
   }
 `;
 
+// export const CONFIRM_REGISTRATION = gql`
+// mutation
+// `
+
 export const GET_REG_TOKEN = gql`
   query($regToken: String!) {
     getRegToken(regToken: $regToken) {
       _id
-      email
+      userId
       regToken
       createdAt
     }

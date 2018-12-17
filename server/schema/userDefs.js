@@ -15,8 +15,8 @@ const userDefs = gql`
 
   type RegToken {
     _id: ID
+    userId: ID
     regToken: String!
-    email: String!
     createdAt: String
   }
 

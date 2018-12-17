@@ -18,7 +18,7 @@ const RegisterLink = ({ location, history }) => {
         {({ loading, data, error }) => {
           if (loading) return <div>Loading information...........</div>;
           if (error) return <div>Ooops! {error}</div>;
-          const { _id, createdAt } = data.getRegToken;
+          const { _id, createdAt, userId } = data.getRegToken;
           if (checkExpire(createdAt)) {
             return (
               <Fragment>
@@ -27,7 +27,10 @@ const RegisterLink = ({ location, history }) => {
               </Fragment>
             );
           } else {
-            this.props.history.push('/login/2fa');
+            // update the user as verified
+            // mutation
+            // get user id then push to their userId
+            history.push(`/login/2fa/${userId}`);
           }
         }}
       </Query>
