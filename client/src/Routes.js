@@ -11,6 +11,7 @@ import App from './components/App';
 import Navbar from './components/Navbar';
 import Register from './components/auth/Register';
 import RegisterConfirm from './components/auth/RegisterConfirm';
+import RegisterLink from './components/auth/RegisterLink';
 
 const Root = ({ refetch, session }) => (
   <Router>
@@ -24,6 +25,7 @@ const Root = ({ refetch, session }) => (
           render={() => <Register refetch={refetch} />}
         />
         <Route path="/register/confirm/:_id" component={RegisterConfirm} />
+        <Route path="/register/verify" component={RegisterLink} />
         <Redirect to="/" />
       </Switch>
     </Fragment>
