@@ -93,8 +93,8 @@ const authResolvers = {
       return {
         _id: newRegLink._id,
         ok: true
+        // token: createToken(newUser, '1hr')
       };
-      // return { token: createToken(newUser, '1hr') };
     }
   }
 };

@@ -40,6 +40,7 @@ class Register extends Component {
         console.log(data.registerUser);
         const { ok, _id } = data.registerUser;
         this.clearState();
+
         if (ok) {
           // set a reg jwt?push with id of regtoken?
           // just
