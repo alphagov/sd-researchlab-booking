@@ -18,26 +18,26 @@ const RegisterLink = ({ location, history }) => {
         {({ loading, data, error }) => {
           if (loading) return <div>Loading information...........</div>;
           if (error) return <div>Ooops! {error}</div>;
-          const { _id, createdAt, userId } = data.getRegToken;
+          const { _id, createdAt, userId } = data.checkRegToken;
           console.log(data.getRegToken);
-          if (checkExpire(createdAt)) {
-            return (
-              <Fragment>
-                <h4>Your registration link has expired</h4>
-                <RegLinkResend regLinkId={_id} />
-              </Fragment>
-            );
-          } else {
-            // update the user as verified
-            // mutation
-            console.log(userId);
-            return (
-              <Fragment>
-                <h4>Link verified</h4>
-                <ConfirmRegistration userId={userId} />
-              </Fragment>
-            );
-          }
+          // if (checkExpire(createdAt)) {
+          //   return (
+          //     <Fragment>
+          //       <h4>Your registration link has expired</h4>
+          //       <RegLinkResend regLinkId={_id} />
+          //     </Fragment>
+          //   );
+          // } else {
+          //   // update the user as verified
+          //   // mutation
+          //   console.log(userId);
+          //   return (
+          //     <Fragment>
+          //       <h4>Link verified</h4>
+          //       <ConfirmRegistration userId={userId} />
+          //     </Fragment>
+          //   );
+          // }
         }}
       </Query>
     </div>

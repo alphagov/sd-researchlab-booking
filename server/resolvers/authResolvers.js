@@ -17,11 +17,25 @@ const authResolvers = {
       // get the reg token from the token link
       const regTokenFull = await getRegLink(regToken);
       // if there are no erorrs
+      if (regTokenFull.error) {
+        return {
+          ok: false,
+          _id: null,
+          error: regToken.error._message
+        };
+      }
       // check the link has not expired
       const checkLink = await checkRegLink(regTokenFull._id);
       if (!checkLink) {
         // update the user to verified
+        const upUser = updateVerification(regTokenFull.userId, true);
         // need to return ok
+        if (!upUser.error) {
+          return {
+            ok: true,
+            _id: upUser._id
+          };
+        }
       }
       return {
         ok: false,
