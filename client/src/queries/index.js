@@ -32,9 +32,15 @@ export const REGISTER_USER = gql`
   }
 `;
 
-// export const CONFIRM_REGISTRATION = gql`
-// mutation
-// `
+export const CONFIRM_REGISTRATION = gql`
+  mutation($_id: ID) {
+    confirmRegistration(_id: $_id) {
+      _id
+      ok
+      error
+    }
+  }
+`;
 
 export const GET_REG_TOKEN = gql`
   query($regToken: String!) {

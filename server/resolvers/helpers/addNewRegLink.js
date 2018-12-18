@@ -1,9 +1,9 @@
 import RegToken from '../../models/RegToken';
 
-const addNewRegLink = async ({ email, regToken }) => {
+const addNewRegLink = async ({ userId, regToken }) => {
   try {
     const newRegLink = await new RegToken({
-      email,
+      userId,
       regToken
     }).save();
 

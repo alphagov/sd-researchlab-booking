@@ -64,6 +64,8 @@ const authResolvers = {
         };
       }
 
+      // console.log(newUserReg);
+
       // // save hashlink to the regtoken collection
       const newRegLink = await addNewRegLink({
         userId: newUserReg._id,
@@ -74,6 +76,8 @@ const authResolvers = {
         console.log(newRegLink.error._messsage);
         return { ok: false, error: newRegLink.error._message };
       }
+
+      // console.log(newRegLink);
 
       // // send email to that address.....
       const mailSend = await sendRegMail(
