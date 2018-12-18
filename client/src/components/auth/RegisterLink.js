@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import queryString from 'query-string';
 
 import { checkExpire } from '../../utils/dateUtils';
 import { GET_REG_TOKEN } from '../../queries';
 import RegLinkResend from './RegLinkResend';
+import ConfirmRegistration from './ConfirmRegistration';
 
 const RegisterLink = ({ location, history }) => {
   const qs = queryString.parse(location.search);
@@ -29,18 +30,13 @@ const RegisterLink = ({ location, history }) => {
           } else {
             // update the user as verified
             // mutation
+            console.log(userId);
             return (
               <Fragment>
                 <h4>Link verified</h4>
-                <button
-                  className="button-primary"
-                  onClick={() => history.push(`/login/2fa/${userId}`)}
-                >
-                  Complete login
-                </button>
+                <ConfirmRegistration userId={userId} />
               </Fragment>
             );
-            // get user id then push to their userId
           }
         }}
       </Query>

@@ -33,7 +33,7 @@ export const REGISTER_USER = gql`
 `;
 
 export const CONFIRM_REGISTRATION = gql`
-  mutation($_id: ID) {
+  mutation($_id: ID!) {
     confirmRegistration(_id: $_id) {
       _id
       ok
@@ -44,7 +44,7 @@ export const CONFIRM_REGISTRATION = gql`
 
 export const GET_REG_TOKEN = gql`
   query($regToken: String!) {
-    getRegToken(regToken: $regToken) {
+    checkRegToken(regToken: $regToken) {
       _id
       userId
       regToken

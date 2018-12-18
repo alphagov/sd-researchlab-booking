@@ -1,9 +1,7 @@
-import RegToken from '../models/RegToken';
-
 import { hashCreator, createToken } from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
-import addNewUser from './helpers/addNewUser';
-import addNewRegLink from './helpers/addNewRegLink';
+import { addNewUser, updateVerification } from './helpers/userControllers';
+import { addNewRegLink, getRegLink, checkRegLink } from './helpers/regLinks';
 
 const authResolvers = {
   Query: {
@@ -15,12 +13,35 @@ const authResolvers = {
 
       return user;
     },
-    getRegToken: async (root, { regToken }, { RegToken }) => {
-      const newRegToken = await RegToken.findOne({ regToken });
-      return newRegToken;
+    checkRegToken: async (root, { regToken }, { RegToken }) => {
+      // get the reg token from the token link
+      const regTokenFull = await getRegLink(regToken);
+      // if there are no erorrs
+      // check the link has not expired
+      const checkLink = await checkRegLink(regTokenFull._id);
+      if (!checkLink) {
+        // update the user to verified
+        // need to return ok
+      }
+      return {
+        ok: false,
+        _id: regTokenFull.userId,
+        error: 'Token has expired'
+      };
     }
   },
   Mutation: {
+    confirmRegistration: async (root, { _id }, { User }) => {
+      const verifyUser = await updateVerification(_id, true);
+      if (verifyUser.error) {
+        console.log(verifyUser.error._message);
+        return { ok: false, error: verifyUser.error._message };
+      }
+      return {
+        _id,
+        ok: true
+      };
+    },
     registerUser: async (
       root,
       { firstName, lastName, email, phone, password },
