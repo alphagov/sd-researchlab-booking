@@ -3,8 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import queryString from 'query-string';
 
-import { checkExpire } from '../../utils/dateUtils';
-import { GET_REG_TOKEN } from '../../queries';
+import { CHECK_REG_TOKEN } from '../../queries';
 import RegLinkResend from './RegLinkResend';
 import ConfirmRegistration from './ConfirmRegistration';
 
@@ -14,30 +13,27 @@ const RegisterLink = ({ location, history }) => {
 
   return (
     <div className="App">
-      <Query query={GET_REG_TOKEN} variables={{ regToken }}>
+      <Query query={CHECK_REG_TOKEN} variables={{ regToken }}>
         {({ loading, data, error }) => {
           if (loading) return <div>Loading information...........</div>;
           if (error) return <div>Ooops! {error}</div>;
-          const { _id, createdAt, userId } = data.checkRegToken;
-          console.log(data.getRegToken);
-          // if (checkExpire(createdAt)) {
-          //   return (
-          //     <Fragment>
-          //       <h4>Your registration link has expired</h4>
-          //       <RegLinkResend regLinkId={_id} />
-          //     </Fragment>
-          //   );
-          // } else {
-          //   // update the user as verified
-          //   // mutation
-          //   console.log(userId);
-          //   return (
-          //     <Fragment>
-          //       <h4>Link verified</h4>
-          //       <ConfirmRegistration userId={userId} />
-          //     </Fragment>
-          //   );
-          // }
+          const { _id, ok } = data.checkRegToken;
+
+          return (
+            <div>
+              {ok ? (
+                <Fragment>
+                  <h4>Link verified</h4>
+                  <ConfirmRegistration userId={_id} />
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <h4>{data.checkRegToken.error}</h4>
+                  <RegLinkResend regLinkId={_id} />
+                </Fragment>
+              )}
+            </div>
+          );
         }}
       </Query>
     </div>

@@ -15,12 +15,13 @@ const authResolvers = {
     },
     checkRegToken: async (root, { regToken }, { RegToken }) => {
       // get the reg token from the token link
-      const regTokenFull = await getRegLink(regToken);
+      const regTokenFull = await getRegLink({ regToken });
       // if there are no erorrs
       if (regTokenFull.error) {
+        console.log(error);
         return {
           ok: false,
-          _id: null,
+
           error: regToken.error._message
         };
       }
@@ -28,7 +29,7 @@ const authResolvers = {
       const checkLink = await checkRegLink(regTokenFull._id);
       if (!checkLink) {
         // update the user to verified
-        const upUser = updateVerification(regTokenFull.userId, true);
+        const upUser = await updateVerification(regTokenFull.userId, true);
         // need to return ok
         if (!upUser.error) {
           return {
@@ -40,22 +41,11 @@ const authResolvers = {
       return {
         ok: false,
         _id: regTokenFull.userId,
-        error: 'Token has expired'
+        error: 'Your Registration Link has expired'
       };
     }
   },
   Mutation: {
-    confirmRegistration: async (root, { _id }, { User }) => {
-      const verifyUser = await updateVerification(_id, true);
-      if (verifyUser.error) {
-        console.log(verifyUser.error._message);
-        return { ok: false, error: verifyUser.error._message };
-      }
-      return {
-        _id,
-        ok: true
-      };
-    },
     registerUser: async (
       root,
       { firstName, lastName, email, phone, password },

@@ -10,6 +10,16 @@ export const GET_CURRENT_USER = gql`
   }
 `;
 
+export const CHECK_REG_TOKEN = gql`
+  query($regToken: String!) {
+    checkRegToken(regToken: $regToken) {
+      _id
+      ok
+      error
+    }
+  }
+`;
+
 export const REGISTER_USER = gql`
   mutation(
     $firstName: String!
@@ -28,27 +38,6 @@ export const REGISTER_USER = gql`
       _id
       ok
       error
-    }
-  }
-`;
-
-export const CONFIRM_REGISTRATION = gql`
-  mutation($_id: ID!) {
-    confirmRegistration(_id: $_id) {
-      _id
-      ok
-      error
-    }
-  }
-`;
-
-export const GET_REG_TOKEN = gql`
-  query($regToken: String!) {
-    checkRegToken(regToken: $regToken) {
-      _id
-      userId
-      regToken
-      createdAt
     }
   }
 `;
