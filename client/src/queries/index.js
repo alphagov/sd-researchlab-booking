@@ -20,6 +20,16 @@ export const CHECK_REG_TOKEN = gql`
   }
 `;
 
+export const RESEND_REG_LINK = gql`
+  mutation($_id: ID!) {
+    resendRegLink(_id: $_id) {
+      _id
+      ok
+      error
+    }
+  }
+`;
+
 export const REGISTER_USER = gql`
   mutation(
     $firstName: String!

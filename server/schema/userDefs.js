@@ -43,6 +43,8 @@ const userDefs = gql`
       phone: String!
       password: String!
     ): RegResult
+
+    resendRegLink(_id: ID!): RegResult
   }
 `;
 

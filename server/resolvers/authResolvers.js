@@ -1,6 +1,10 @@
 import { hashCreator, createToken } from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
-import { addNewUser, updateVerification } from './helpers/userControllers';
+import {
+  addNewUser,
+  updateVerification,
+  getUserById
+} from './helpers/userControllers';
 import { addNewRegLink, getRegLink, checkRegLink } from './helpers/regLinks';
 
 const authResolvers = {
@@ -17,13 +21,16 @@ const authResolvers = {
       // get the reg token from the token link
       const regTokenFull = await getRegLink({ regToken });
       // if there are no erorrs
-      if (regTokenFull.error) {
-        console.log(error);
+      // console.log(regTokenFull);
+      if (!regTokenFull) {
         return {
           ok: false,
-
-          error: regToken.error._message
+          error: 'Unable to find registration link'
         };
+      }
+      if (regTokenFull.error) {
+        console.log('i am here');
+        return { ok: false, error: regTokenFull.error_message };
       }
       // check the link has not expired
       const checkLink = await checkRegLink(regTokenFull._id);
@@ -46,6 +53,33 @@ const authResolvers = {
     }
   },
   Mutation: {
+    resendRegLink: async (root, { _id }, { User }) => {
+      const userReg = await getUserById(_id);
+
+      console.log(userReg);
+      const { firstName, lastName, email } = userReg;
+      // generate a link
+      const hashLink = await hashCreator(userReg.email);
+
+      // save hashlink to the regtoken collection
+      const newRegLink = await addNewRegLink({
+        userId: _id,
+        regToken: hashLink
+      });
+
+      // send email to that address.....
+      const mailSend = await sendRegMail(
+        firstName,
+        lastName,
+        email,
+        `${process.env.REGISTER_LINK}?token=${hashLink}`
+      );
+
+      return {
+        _id: newRegLink._id,
+        ok: true
+      };
+    },
     registerUser: async (
       root,
       { firstName, lastName, email, phone, password },
@@ -91,7 +125,7 @@ const authResolvers = {
 
       // console.log(newUserReg);
 
-      // // save hashlink to the regtoken collection
+      // save hashlink to the regtoken collection
       const newRegLink = await addNewRegLink({
         userId: newUserReg._id,
         regToken: hashLink
@@ -104,7 +138,7 @@ const authResolvers = {
 
       // console.log(newRegLink);
 
-      // // send email to that address.....
+      // send email to that address.....
       const mailSend = await sendRegMail(
         firstName,
         lastName,

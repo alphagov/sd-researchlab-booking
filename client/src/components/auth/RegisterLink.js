@@ -18,7 +18,7 @@ const RegisterLink = ({ location }) => {
           if (loading) return <div>Loading information...........</div>;
           if (error) return <div>Ooops! {error}</div>;
           const { _id, ok } = data.checkRegToken;
-
+          // console.log(data);
           return (
             <div>
               {ok ? (
@@ -29,7 +29,7 @@ const RegisterLink = ({ location }) => {
               ) : (
                 <Fragment>
                   <h4>{data.checkRegToken.error}</h4>
-                  <RegLinkResend regLinkId={_id} />
+                  <RegLinkResend userId={_id} />
                 </Fragment>
               )}
             </div>

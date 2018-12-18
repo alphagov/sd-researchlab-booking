@@ -1,5 +1,10 @@
 import User from '../../models/User';
 
+export const getUserById = async (_id) => {
+  const resUser = await User.findById(_id);
+  return resUser;
+};
+
 export const addNewUser = async ({
   firstName,
   lastName,

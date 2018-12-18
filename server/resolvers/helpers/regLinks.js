@@ -16,8 +16,10 @@ export const addNewRegLink = async ({ userId, regToken }) => {
 };
 
 export const getRegLink = async ({ regToken }) => {
+  // console.log(regToken);
   try {
     const regTokenFull = await RegToken.findOne({ regToken });
+    // console.log(regTokenFull);
     return regTokenFull;
   } catch (error) {
     return error;
