@@ -7,7 +7,7 @@ import { CHECK_REG_TOKEN } from '../../queries';
 import RegLinkResend from './RegLinkResend';
 import ConfirmRegistration from './ConfirmRegistration';
 
-const RegisterLink = ({ location, history }) => {
+const RegisterLink = ({ location }) => {
   const qs = queryString.parse(location.search);
   const regToken = qs.token;
 

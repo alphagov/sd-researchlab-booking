@@ -28,7 +28,10 @@ export const checkRegLink = async (regLinkId) => {
   const regToken = await RegToken.findById(regLinkId);
   // console.log(regToken);
   const nowT = moment();
-  const regLinkDate = moment(moment(regToken.dateCreated).format());
+  // console.log(nowT);
+  const regLinkDate = moment(moment(regToken.createdAt).format());
+  // console.log(regLinkDate);
+  // console.log(nowT.diff(regLinkDate, 'minutes'));
   if (nowT.diff(regLinkDate, 'minutes') > 60) {
     return true;
   }
