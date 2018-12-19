@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import queryString from 'query-string';
 
 import { CHECK_REG_TOKEN } from '../../queries';
-import RegLinkResend from './RegLinkResend';
 import ConfirmRegistration from './ConfirmRegistration';
 
 const RegisterLink = ({ location }) => {
@@ -29,7 +28,7 @@ const RegisterLink = ({ location }) => {
               ) : (
                 <Fragment>
                   <h4>{data.checkRegToken.error}</h4>
-                  <RegLinkResend userId={_id} />
+                  <Link to={'/register'}>Register</Link>
                 </Fragment>
               )}
             </div>
