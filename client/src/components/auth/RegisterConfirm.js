@@ -12,7 +12,7 @@ const RegisterConfirm = ({ match }) => {
         this link to complete your registration
       </p>
       <p>Didn't receive the email?</p>
-      <RegLinkResend regLinkId={linkId} />
+      <RegLinkResend userId={linkId} />
     </div>
   );
 };
