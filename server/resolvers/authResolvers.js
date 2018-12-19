@@ -5,7 +5,12 @@ import {
   updateVerification,
   getUserById
 } from './helpers/userControllers';
-import { addNewRegLink, getRegLink, checkRegLink } from './helpers/regLinks';
+import {
+  addNewRegLink,
+  getRegLink,
+  checkRegLink,
+  removeAllRegLinks
+} from './helpers/regLinks';
 
 const authResolvers = {
   Query: {
@@ -29,7 +34,6 @@ const authResolvers = {
         };
       }
       if (regTokenFull.error) {
-        console.log('i am here');
         return { ok: false, error: regTokenFull.error_message };
       }
       // check the link has not expired
@@ -56,11 +60,13 @@ const authResolvers = {
     resendRegLink: async (root, { _id }, { User }) => {
       const userReg = await getUserById(_id);
 
-      console.log(userReg);
+      // console.log(userReg);
       const { firstName, lastName, email } = userReg;
       // generate a link
       const hashLink = await hashCreator(userReg.email);
 
+      // maybe findbyanddelete first?
+      const delRegLinks = await removeAllRegLinks({ userId: _id });
       // save hashlink to the regtoken collection
       const newRegLink = await addNewRegLink({
         userId: _id,

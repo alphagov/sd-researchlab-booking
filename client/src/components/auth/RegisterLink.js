@@ -18,7 +18,7 @@ const RegisterLink = ({ location }) => {
           if (loading) return <div>Loading information...........</div>;
           if (error) return <div>Ooops! {error}</div>;
           const { _id, ok } = data.checkRegToken;
-          // console.log(data);
+          console.log(data);
           return (
             <div>
               {ok ? (

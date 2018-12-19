@@ -15,6 +15,17 @@ export const addNewRegLink = async ({ userId, regToken }) => {
   }
 };
 
+export const removeAllRegLinks = async ({ userId }) => {
+  console.log(userId);
+  try {
+    const delRegLinks = await RegToken.deleteMany({ userId });
+    console.log(delRegLinks);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getRegLink = async ({ regToken }) => {
   // console.log(regToken);
   try {
