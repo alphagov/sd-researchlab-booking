@@ -27,9 +27,23 @@ export const addNewUser = async ({
   }
 };
 
+export const checkVerification = async (_id) => {
+  try {
+    const userVeri = await User.findById(_id);
+    if (userVeri.usVerified) {
+      return true;
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
 export const updateVerification = async (_id, tf) => {
   try {
-    const upVeri = User.findByIdAndUpdate(_id, { $set: { isVerified: tf } });
+    const upVeri = await User.findByIdAndUpdate(_id, {
+      $set: { isVerified: tf }
+    });
     return upVeri;
   } catch (error) {
     return error;

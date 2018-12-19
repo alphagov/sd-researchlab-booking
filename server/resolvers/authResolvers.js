@@ -3,7 +3,8 @@ import { sendRegMail } from '../services/NotifyMail';
 import {
   addNewUser,
   updateVerification,
-  getUserById
+  getUserById,
+  checkVerification
 } from './helpers/userControllers';
 import {
   addNewRegLink,
@@ -21,6 +22,13 @@ const authResolvers = {
       const user = await User.findOne({ email: currentUser.email });
 
       return user;
+    },
+    checkUserVerified: async (root, { _id }, { User }) => {
+      const userVer = await checkVerification({ _id });
+      if (userVer) {
+        return { ok: true };
+      }
+      return { ok: false };
     },
     checkRegToken: async (root, { regToken }, { RegToken }) => {
       // get the reg token from the token link

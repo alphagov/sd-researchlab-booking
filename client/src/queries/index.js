@@ -20,6 +20,15 @@ export const CHECK_REG_TOKEN = gql`
   }
 `;
 
+export const CHECK_USER_VERIFIED = gql`
+  query($_id: ID!) {
+    checkUserVerified(_id: $_id) {
+      ok
+      error
+    }
+  }
+`;
+
 export const RESEND_REG_LINK = gql`
   mutation($_id: ID!) {
     resendRegLink(_id: $_id) {
