@@ -59,3 +59,15 @@ export const updateMFACode = async (_id, code) => {
     return error;
   }
 };
+
+export const checkMFACode = async (_id, mfaCode) => {
+  try {
+    const mfaUser = await User.findById(_id);
+    if (mfaUser.mfaCode === parseInt(mfaCode)) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+};

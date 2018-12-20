@@ -51,7 +51,7 @@ export const SEND_2FA_CODE = gql`
 `;
 
 export const ENTER_2FA_CODE = gql`
-  mutation($_id: ID!, $mfaCode: Int!) {
+  mutation($_id: ID!, $mfaCode: String!) {
     enter2FACode(_id: $_id, mfaCode: $mfaCode) {
       _id
       ok

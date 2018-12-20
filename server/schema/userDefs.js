@@ -47,7 +47,7 @@ const userDefs = gql`
 
     resendRegLink(_id: ID!): RegResult
     send2FACode(_id: ID!): RegResult
-    enter2FACode(_id: ID!, mfaCode: Int!): RegResult
+    enter2FACode(_id: ID!, mfaCode: String!): RegResult
   }
 `;
 

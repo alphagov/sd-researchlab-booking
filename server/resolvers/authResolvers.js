@@ -6,7 +6,8 @@ import {
   updateVerification,
   getUserById,
   checkVerification,
-  updateMFACode
+  updateMFACode,
+  checkMFACode
 } from './helpers/userControllers';
 import {
   addNewRegLink,
@@ -29,6 +30,12 @@ const authResolvers = {
       // console.log({ _id });
       const userVer = await checkVerification({ _id });
       if (userVer) {
+        // this is temp here
+        const mfaCode = MFACreator();
+        // save to the user
+        const userMFA = await updateMFACode(_id, mfaCode);
+        // text code doesn't work in trial mode
+        // const sendRes = await sendMFACode(userMFA.phone, userMFA.mfaCode);
         return { ok: true, _id };
       }
       return { ok: false, _id };
@@ -68,6 +75,14 @@ const authResolvers = {
     }
   },
   Mutation: {
+    enter2FACode: async (root, { _id, mfaCode }, { User }) => {
+      const mfaUse = await checkMFACode(_id, mfaCode);
+      console.log(mfaUse);
+      return {
+        ok: true,
+        _id
+      };
+    },
     send2FACode: async (root, { _id }, { User }) => {
       // make a randomn code
       const mfaCode = MFACreator();
@@ -75,8 +90,8 @@ const authResolvers = {
       const userMFA = await updateMFACode(_id, mfaCode);
       // text code
       // console.log(userMFA);
-      const sendRes = await sendMFACode(userMFA.phone, userMFA.mfaCode);
-      console.log(sendRes);
+      // const sendRes = await sendMFACode(userMFA.phone, userMFA.mfaCode);
+      // console.log(sendRes);
       // cannot text during trail mode so assuming it was successful
       // if (sendRes.errorMsg) {
       //   return {

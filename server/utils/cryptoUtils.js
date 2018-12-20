@@ -10,6 +10,7 @@ export const MFACreator = () => {
       Math.floor(Math.random() * numberRange.length)
     );
   }
+  console.log(tempMFA);
   return tempMFA;
 };
 
