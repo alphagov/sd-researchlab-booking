@@ -24,11 +24,12 @@ const authResolvers = {
       return user;
     },
     checkUserVerified: async (root, { _id }, { User }) => {
+      console.log({ _id });
       const userVer = await checkVerification({ _id });
       if (userVer) {
-        return { ok: true };
+        return { ok: true, _id };
       }
-      return { ok: false };
+      return { ok: false, _id };
     },
     checkRegToken: async (root, { regToken }, { RegToken }) => {
       // get the reg token from the token link

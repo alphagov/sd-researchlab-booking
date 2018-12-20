@@ -30,7 +30,7 @@ export const addNewUser = async ({
 export const checkVerification = async (_id) => {
   try {
     const userVeri = await User.findById(_id);
-    if (userVeri.usVerified) {
+    if (userVeri.isVerified) {
       return true;
     }
   } catch (error) {

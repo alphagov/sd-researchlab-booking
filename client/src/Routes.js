@@ -12,7 +12,7 @@ import Navbar from './components/Navbar';
 import Register from './components/auth/Register';
 import RegisterConfirm from './components/auth/RegisterConfirm';
 import RegisterLink from './components/auth/RegisterLink';
-import TwoFactor from './components/auth/TwoFactor';
+import Login2FA from './components/auth/Login2FA';
 
 const Root = ({ refetch, session }) => (
   <Router>
@@ -27,7 +27,7 @@ const Root = ({ refetch, session }) => (
         />
         <Route path="/register/confirm/:_id" component={RegisterConfirm} />
         <Route path="/register/verify" component={RegisterLink} />
-        <Route path="/login/2fa/:id" component={TwoFactor} />
+        <Route path="/login/2fa/:id" component={Login2FA} />
         <Redirect to="/" />
       </Switch>
     </Fragment>
