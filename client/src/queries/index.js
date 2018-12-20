@@ -40,6 +40,26 @@ export const RESEND_REG_LINK = gql`
   }
 `;
 
+export const SEND_2FA_CODE = gql`
+  mutation($_id: ID!) {
+    send2FACode(_id: $_id) {
+      _id
+      ok
+      error
+    }
+  }
+`;
+
+export const ENTER_2FA_CODE = gql`
+  mutation($_id: ID!, $mfaCode: Int!) {
+    enter2FACode(_id: $_id, mfaCode: $mfaCode) {
+      _id
+      ok
+      error
+    }
+  }
+`;
+
 export const REGISTER_USER = gql`
   mutation(
     $firstName: String!

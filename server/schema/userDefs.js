@@ -9,7 +9,7 @@ const userDefs = gql`
     phone: String!
     password: String!
     joinDate: String
-    textCode: Int
+    mfaCode: Int
     isVerified: Boolean
   }
 
@@ -46,6 +46,8 @@ const userDefs = gql`
     ): RegResult
 
     resendRegLink(_id: ID!): RegResult
+    send2FACode(_id: ID!): RegResult
+    enter2FACode(_id: ID!, mfaCode: Int!): RegResult
   }
 `;
 

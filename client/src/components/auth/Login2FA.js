@@ -27,6 +27,9 @@ class Login2FA extends Component {
                   <form>
                     <label htmlFor="2fa">Enter 2FA code</label>
                     <input type="number" name="2fa" />
+                    <button className="button-primary" type="submit">
+                      Enter
+                    </button>
                     <Login2FAResend userId={userId} />
                   </form>
                 </div>

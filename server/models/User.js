@@ -30,7 +30,7 @@ const UserSchema = new Schema({
     default: Date.now
   },
 
-  textCode: {
+  mfaCode: {
     type: Number
   },
   isVerified: {

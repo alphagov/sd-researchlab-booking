@@ -24,7 +24,7 @@ const authResolvers = {
       return user;
     },
     checkUserVerified: async (root, { _id }, { User }) => {
-      console.log({ _id });
+      // console.log({ _id });
       const userVer = await checkVerification({ _id });
       if (userVer) {
         return { ok: true, _id };
