@@ -79,7 +79,7 @@ const authResolvers = {
       const mfaUse = await checkMFACode(_id, mfaCode);
       console.log(mfaUse);
       return {
-        ok: true,
+        ok: mfaUse,
         _id
       };
     },
