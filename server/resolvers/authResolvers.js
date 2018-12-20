@@ -1,10 +1,12 @@
-import { hashCreator, createToken } from '../utils/cryptoUtils';
+import { hashCreator, createToken, MFACreator } from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
+import { sendMFACode } from '../services/NotifyText';
 import {
   addNewUser,
   updateVerification,
   getUserById,
-  checkVerification
+  checkVerification,
+  updateMFACode
 } from './helpers/userControllers';
 import {
   addNewRegLink,
@@ -66,6 +68,27 @@ const authResolvers = {
     }
   },
   Mutation: {
+    send2FACode: async (root, { _id }, { User }) => {
+      // make a randomn code
+      const mfaCode = MFACreator();
+      // save to the user
+      const userMFA = await updateMFACode(_id, mfaCode);
+      // text code
+      // console.log(userMFA);
+      const sendRes = await sendMFACode(userMFA.phone, userMFA.mfaCode);
+      console.log(sendRes);
+      // cannot text during trail mode so assuming it was successful
+      // if (sendRes.errorMsg) {
+      //   return {
+      //     ok: false,
+      //     error: sendRes.errorMsg.msg
+      //   }
+      // }
+      return {
+        _id,
+        ok: true
+      };
+    },
     resendRegLink: async (root, { _id }, { User }) => {
       const userReg = await getUserById(_id);
 

@@ -31,7 +31,8 @@ const UserSchema = new Schema({
   },
 
   mfaCode: {
-    type: Number
+    type: Number,
+    default: 0
   },
   isVerified: {
     type: Boolean,

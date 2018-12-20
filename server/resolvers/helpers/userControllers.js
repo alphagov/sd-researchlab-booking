@@ -49,3 +49,13 @@ export const updateVerification = async (_id, tf) => {
     return error;
   }
 };
+
+export const updateMFACode = async (_id, code) => {
+  try {
+    const mfa = await User.findByIdAndUpdate(_id, { $set: { mfaCode: code } });
+    // console.log(mfa);
+    return mfa;
+  } catch (error) {
+    return error;
+  }
+};
