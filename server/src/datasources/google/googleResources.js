@@ -6,35 +6,63 @@ import path from 'path';
 
 import * as keys from '../../keys/key-rlabs.json';
 
-class ResourceCalendarAPI extends RESTDataSource {
+class GoogleResourcesAPI extends RESTDataSource {
   constructor() {
     super();
     this.baseURL = `https://www.googleapis.com/admin/directory/v1/customer/${
       process.env.GOOGLE_CUSTOMER_ID
-    }/resources/calendars`;
+    }/resources`;
   }
 
   async getResourceCalendars() {
     const token = await this.getOauthToken();
-    const res = await axios.get(this.baseURL, {
+    const res = await axios.get(`${this.baseURL}/calendars`, {
+      headers: {
+        Authorization: 'OAuth ' + token
+      }
+    });
+    return res.data.items && res.data.items.length
+      ? res.data.items.map((item) => this.resourceCalendarReducer(item))
+      : [];
+  }
+
+  async getResourceBuildings() {
+    const token = await this.getOauthToken();
+    const res = await axios.get(`${this.baseURL}/buildings`, {
       headers: {
         Authorization: 'OAuth ' + token
       }
     });
     console.log(res.data);
-    return res.data.items && res.data.items.length
-      ? res.data.items.map((item) => this.resourceReducer(item))
+    return res.data.buildings && res.data.buildings.length
+      ? res.data.buildings.map((building) =>
+          this.resourceBuildingReducer(building)
+        )
       : [];
   }
 
-  resourceReducer(item) {
+  resourceBuildingReducer(building) {
+    const {
+      buildingId,
+      buildingName,
+      description,
+      floorNames,
+      coordinates
+    } = building;
+    return { buildingId, buildingName, description, floorNames, coordinates };
+  }
+
+  resourceCalendarReducer(item) {
     const {
       resourceId,
       resourceName,
       resourceType,
       resourceDescription,
       resourceEmail,
-      resourceCategory
+      resourceCategory,
+      capacity,
+      buildingId,
+      floorName
     } = item;
     return {
       resourceId,
@@ -42,7 +70,10 @@ class ResourceCalendarAPI extends RESTDataSource {
       resourceType,
       resourceDescription,
       resourceEmail,
-      resourceCategory
+      resourceCategory,
+      capacity,
+      buildingId,
+      floorName
     };
   }
 
@@ -70,4 +101,4 @@ class ResourceCalendarAPI extends RESTDataSource {
   }
 }
 
-export default ResourceCalendarAPI;
+export default GoogleResourcesAPI;

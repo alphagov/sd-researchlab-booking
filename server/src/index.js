@@ -7,8 +7,7 @@ import Morgan from 'morgan';
 import User from './models/User';
 import RegToken from './models/RegToken';
 
-import ResourceCalendarAPI from './datasources/google/resourceCalendars';
-import NASAEpicAPI from './datasources/nasa/epic';
+import GoogleResourcesAPI from './datasources/google/googleResources';
 
 import typeDefs from './schema';
 import resolvers from './resolvers';
@@ -22,8 +21,7 @@ const apollo = new ApolloServer({
   typeDefs,
   resolvers,
   dataSources: () => ({
-    resCalAPI: new ResourceCalendarAPI(),
-    nasaEpicAPI: new NASAEpicAPI()
+    googleResourcesAPI: new GoogleResourcesAPI()
   }),
   context: ({ req, res }) => ({ User, RegToken, currentUser: req.currentUser }),
   playground: {

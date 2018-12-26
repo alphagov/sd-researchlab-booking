@@ -8,6 +8,9 @@ const typeDefs = gql`
     resourceDescription: String
     resourceEmail: String
     resourceCategory: String
+    capacity: Int
+    buildingId: String
+    floorName: String
   }
 
   type ResourceCalendarList {
@@ -15,46 +18,31 @@ const typeDefs = gql`
     calendars: [ResourceCalendar]
   }
 
+  type ResourceBuilding {
+    buildingId: String
+    buildingName: String
+    description: String
+    floorNames: [Floor]
+    coordinates: Coords
+  }
+
+  type Floor {
+    name: String
+  }
+
+  type ResourceBuildingList {
+    success: Boolean
+    buildings: [ResourceBuilding]
+  }
+
   type Query {
     getResourceCalendarList: ResourceCalendarList
-    epicImageList(date: String): EpicImageResults
-    testRes(name: String): TestRes
-  }
-
-  type TestRes {
-    message: String
-  }
-
-  type EpicImageResults {
-    success: Boolean
-    results: [EpicImage]
-  }
-
-  type EpicImage {
-    identifier: String
-    caption: String
-    image: String
-    date: String
-    coords: Coords
-    sat_pos: Position
-    image_locations: ImageLocations
+    getResourceBuildingList: ResourceBuildingList
   }
 
   type Coords {
-    lat: Float
-    lon: Float
-  }
-
-  type Position {
-    x: Float
-    y: Float
-    z: Float
-  }
-
-  type ImageLocations {
-    thumb: String
-    jpg: String
-    png: String
+    latitude: Float
+    longitude: Float
   }
 `;
 
