@@ -12,22 +12,6 @@ import ResourceCalendarAPI from './datasources/google/resourceCalendars';
 import typeDefs from './schema';
 import resolvers from './resolvers';
 
-import { JWT } from 'google-auth-library';
-import * as keys from './keys/key-rlabs.json';
-
-async function main() {
-  const url = `https://www.googleapis.com/admin/directory/v1/customer/${
-    process.env.GOOGLE_CUSTOMER_ID
-  }/resources/calendars`;
-  const client = new JWT(keys.client_email, null, keys.private_key, [
-    'https://www.googleapis.com/auth/admin.directory.resource.calendar.readonly'
-  ]);
-  const res = await client.request({ url });
-  console.log(res.data);
-}
-
-main().catch(console.error);
-
 const { ObjectId } = Types;
 ObjectId.prototype.valueOf = function() {
   return this.toString();
@@ -37,7 +21,7 @@ const apollo = new ApolloServer({
   typeDefs,
   resolvers,
   dataSources: () => ({
-    // resourceCalendarAPI: new ResourceCalendarAPI()
+    resourceCalendarAPI: new ResourceCalendarAPI()
   }),
   context: ({ req, res }) => ({ User, RegToken, currentUser: req.currentUser })
 });
