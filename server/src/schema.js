@@ -22,12 +22,13 @@ const typeDefs = gql`
     buildingId: String
     buildingName: String
     description: String
-    floorNames: [Floor]
+    floorNames: [String]
     coordinates: Coords
   }
 
-  type Floor {
-    name: String
+  type Coords {
+    latitude: Float
+    longitude: Float
   }
 
   type ResourceBuildingList {
@@ -38,11 +39,6 @@ const typeDefs = gql`
   type Query {
     getResourceCalendarList: ResourceCalendarList
     getResourceBuildingList: ResourceBuildingList
-  }
-
-  type Coords {
-    latitude: Float
-    longitude: Float
   }
 `;
 

@@ -6,7 +6,7 @@ const resolvers = {
     },
     getResourceBuildingList: async (_, args, { dataSources }) => {
       const resBuildings = await dataSources.googleResourcesAPI.getResourceBuildings();
-      return { success: true, builings: resBuildings };
+      return { success: true, buildings: resBuildings };
     }
   }
 };

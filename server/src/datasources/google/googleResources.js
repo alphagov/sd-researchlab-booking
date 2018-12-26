@@ -33,7 +33,7 @@ class GoogleResourcesAPI extends RESTDataSource {
         Authorization: 'OAuth ' + token
       }
     });
-    console.log(res.data);
+    // console.log(res.data);
     return res.data.buildings && res.data.buildings.length
       ? res.data.buildings.map((building) =>
           this.resourceBuildingReducer(building)
@@ -42,6 +42,7 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   resourceBuildingReducer(building) {
+    // console.log(building);
     const {
       buildingId,
       buildingName,
