@@ -8,6 +8,7 @@ import User from './models/User';
 import RegToken from './models/RegToken';
 
 import ResourceCalendarAPI from './datasources/google/resourceCalendars';
+import NASAEpicAPI from './datasources/nasa/epic';
 
 import typeDefs from './schema';
 import resolvers from './resolvers';
@@ -21,9 +22,15 @@ const apollo = new ApolloServer({
   typeDefs,
   resolvers,
   dataSources: () => ({
-    resourceCalendarAPI: new ResourceCalendarAPI()
+    resCalAPI: new ResourceCalendarAPI(),
+    nasaEpicAPI: new NASAEpicAPI()
   }),
-  context: ({ req, res }) => ({ User, RegToken, currentUser: req.currentUser })
+  context: ({ req, res }) => ({ User, RegToken, currentUser: req.currentUser }),
+  playground: {
+    settings: {
+      'editor.theme': 'light'
+    }
+  }
 });
 
 // connect to the database

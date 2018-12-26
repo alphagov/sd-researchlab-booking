@@ -1,22 +1,24 @@
 import { JWT } from 'google-auth-library';
-// import { RESTDataSource } from 'apollo-datasource-rest';
+import { RESTDataSource } from 'apollo-datasource-rest';
 import * as googleAuth from 'google-oauth-jwt';
 import axios from 'axios';
+import path from 'path';
 
 import * as keys from '../../keys/key-rlabs.json';
 
-class ResourceCalendarAPI {
+class ResourceCalendarAPI extends RESTDataSource {
   constructor() {
-    this.googleURL = `https://www.googleapis.com/admin/directory/v1/customer/${
+    super();
+    this.baseURL = `https://www.googleapis.com/admin/directory/v1/customer/${
       process.env.GOOGLE_CUSTOMER_ID
     }/resources/calendars`;
   }
 
   async getResourceCalendars() {
-    const res = await axios.get(url, {
+    const token = await this.getOauthToken();
+    const res = await axios.get(this.baseURL, {
       headers: {
-        Authorization: 'OAuth ' + (await this.getOauthToken()),
-        'content-type': 'application/json'
+        Authorization: 'OAuth ' + token
       }
     });
     console.log(res.data);
@@ -49,7 +51,7 @@ class ResourceCalendarAPI {
       googleAuth.authenticate(
         {
           email: keys.client_email,
-          keyFile: '../../keys/rlabs.pem',
+          keyFile: path.join(__dirname, '../../keys/rlabs.pem'),
           delegationEmail: 'adrian@intellidroid.eu',
           scopes: [
             'https://www.googleapis.com/auth/admin.directory.resource.calendar'

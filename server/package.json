@@ -2,10 +2,10 @@
   "name": "sd-researchlab-booking-server",
   "version": "0.0.1",
   "description": "Research Lab Booking Server",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha --require @babel/register",
-    "start": "nodemon --exec babel-node index.js"
+    "start": "nodemon --exec babel-node src/index.js"
   },
   "repository": {
     "type": "git",

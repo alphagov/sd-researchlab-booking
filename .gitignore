@@ -2,6 +2,6 @@
 
 server/node_modules
 server/server.env
-server/keys
+server/src/keys
 
 docker/data/db
