@@ -1,5 +1,8 @@
-import userDefs from './userDefs';
+import { mergeSchemas } from 'graphql-tools';
 
-const typeDefs = [userDefs];
+import userDefs from './userDefs';
+import resourceCalendarDefs from './resourceCalendarDefs';
+
+const typeDefs = resourceCalendarDefs;
 
 export default typeDefs;

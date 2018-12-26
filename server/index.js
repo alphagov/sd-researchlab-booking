@@ -3,13 +3,30 @@ import { connect, Types } from 'mongoose';
 import { ApolloServer } from 'apollo-server-express';
 import Helmet from 'helmet';
 import Morgan from 'morgan';
-import { verify } from 'jsonwebtoken';
 
 import User from './models/User';
 import RegToken from './models/RegToken';
 
+import ResourceCalendarAPI from './datasources/google/resourceCalendars';
+
 import typeDefs from './schema';
 import resolvers from './resolvers';
+
+import { JWT } from 'google-auth-library';
+import * as keys from './keys/key-rlabs.json';
+
+async function main() {
+  const url = `https://www.googleapis.com/admin/directory/v1/customer/${
+    process.env.GOOGLE_CUSTOMER_ID
+  }/resources/calendars`;
+  const client = new JWT(keys.client_email, null, keys.private_key, [
+    'https://www.googleapis.com/auth/admin.directory.resource.calendar.readonly'
+  ]);
+  const res = await client.request({ url });
+  console.log(res.data);
+}
+
+main().catch(console.error);
 
 const { ObjectId } = Types;
 ObjectId.prototype.valueOf = function() {
@@ -19,6 +36,9 @@ ObjectId.prototype.valueOf = function() {
 const apollo = new ApolloServer({
   typeDefs,
   resolvers,
+  dataSources: () => ({
+    // resourceCalendarAPI: new ResourceCalendarAPI()
+  }),
   context: ({ req, res }) => ({ User, RegToken, currentUser: req.currentUser })
 });
 
@@ -41,18 +61,18 @@ const app = Express();
 app.use(Morgan('dev'));
 // security
 app.use(Helmet());
-app.use(async (req, res, next) => {
-  const token = req.headers.authorization;
-  if (token !== null || token !== undefined) {
-    try {
-      const currentUser = await verify(token, process.env.SECRET);
-      req.currentUser = currentUser;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  next();
-});
+// app.use(async (req, res, next) => {
+//   const token = req.headers.authorization;
+//   if (token !== null || token !== undefined) {
+//     try {
+//       const currentUser = await verify(token, process.env.SECRET);
+//       req.currentUser = currentUser;
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+//   next();
+// });
 apollo.applyMiddleware({ app });
 
 const PORT = process.env.PORT || 4050;

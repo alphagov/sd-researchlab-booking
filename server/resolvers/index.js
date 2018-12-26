@@ -1,5 +1,6 @@
 import authResolvers from './authResolvers';
+import googleResourceResolvers from './googleResourceResolvers';
 
-const resolvers = [authResolvers];
+const resolvers = googleResourceResolvers;
 
 export default resolvers;
