@@ -10,6 +10,7 @@ const typeDefs = gql`
     resourceCategory: String
     capacity: Int
     buildingId: String
+    building: ResourceBuilding
     floorName: String
   }
 
@@ -39,6 +40,7 @@ const typeDefs = gql`
   type Query {
     getResourceCalendarList: ResourceCalendarList
     getResourceBuildingList: ResourceBuildingList
+    getResourceBuilding(buildingId: String!): ResourceBuilding
     getResourceResearchLab: ResourceCalendarList
   }
 `;

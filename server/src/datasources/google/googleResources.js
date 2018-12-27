@@ -13,10 +13,11 @@ class GoogleResourcesAPI extends RESTDataSource {
       process.env.GOOGLE_CUSTOMER_ID
     }/resources`;
     this.calendarURL = `https://www.googleapis.com/calendar/v3/calendars/`;
+    this.gToken = this.getOauthToken();
   }
 
   async getResourceCalendars() {
-    const token = await this.getOauthToken();
+    const token = await this.gToken;
     const res = await axios.get(`${this.resourceURL}/calendars`, {
       headers: {
         Authorization: 'OAuth ' + token
@@ -28,7 +29,7 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   async getResourceCalendarByType() {
-    const token = await this.getOauthToken();
+    const token = await this.gToken;
     const res = await axios.get(`${this.resourceURL}/calendars`, {
       headers: {
         Authorization: 'OAuth ' + token
@@ -42,7 +43,7 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   async getResourceBuildings() {
-    const token = await this.getOauthToken();
+    const token = await this.gToken;
     const res = await axios.get(`${this.resourceURL}/buildings`, {
       headers: {
         Authorization: 'OAuth ' + token
@@ -54,6 +55,16 @@ class GoogleResourcesAPI extends RESTDataSource {
           this.resourceBuildingReducer(building)
         )
       : [];
+  }
+
+  async getResourceBuilding(buildingId) {
+    const token = await this.gToken;
+    const res = await axios.get(`${this.resourceURL}/buildings/${buildingId}`, {
+      headers: {
+        Authorization: 'OAuth ' + token
+      }
+    });
+    return res.data ? this.resourceBuildingReducer(res.data) : {};
   }
 
   resourceBuildingReducer(building) {
