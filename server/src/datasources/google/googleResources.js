@@ -1,8 +1,8 @@
-import { JWT } from 'google-auth-library';
 import { RESTDataSource } from 'apollo-datasource-rest';
 import * as googleAuth from 'google-oauth-jwt';
 import axios from 'axios';
 import path from 'path';
+import moment from 'moment';
 
 import * as keys from '../../keys/key-rlabs.json';
 
@@ -12,7 +12,7 @@ class GoogleResourcesAPI extends RESTDataSource {
     this.resourceURL = `https://www.googleapis.com/admin/directory/v1/customer/${
       process.env.GOOGLE_CUSTOMER_ID
     }/resources`;
-    this.calendarURL = `https://www.googleapis.com/calendar/v3/calendars/`;
+    this.calendarURL = `https://www.googleapis.com/calendar/v3`;
     this.gToken = this.getOauthToken();
   }
 
@@ -65,6 +65,38 @@ class GoogleResourcesAPI extends RESTDataSource {
       }
     });
     return res.data ? this.resourceBuildingReducer(res.data) : {};
+  }
+
+  async getCalendarFreeBusyList(start, end, items) {
+    const pBody = {
+      timeMin: start,
+      timeMax: end,
+      items: items.map((l) => {
+        return { id: l };
+      })
+    };
+    const token = await this.gToken;
+    const resFreeBusy = await axios({
+      method: 'post',
+      data: pBody,
+      url: `${this.calendarURL}/freeBusy`,
+      headers: {
+        Authorization: 'OAuth ' + token,
+        'content-type': 'application/json'
+      }
+    });
+
+    return this.calendarFreeBusyReducer(resFreeBusy.data.calendars);
+  }
+
+  calendarFreeBusyReducer(calendars) {
+    const calArray = [];
+    for (let x in calendars) {
+      let tempObj = {};
+      tempObj = { resourceId: x, busy: calendars[x].busy };
+      calArray.push(tempObj);
+    }
+    return calArray;
   }
 
   resourceBuildingReducer(building) {

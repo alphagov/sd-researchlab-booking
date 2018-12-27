@@ -19,6 +19,29 @@ const typeDefs = gql`
     calendars: [ResourceCalendar]
   }
 
+  type CalendarList {
+    items: [CalendarIds]
+  }
+
+  type CalendarIds {
+    id: String
+  }
+
+  type CalendarFreeBusy {
+    resourceId: String
+    busy: [Busy]
+  }
+
+  type CalendarFreeBusyList {
+    success: Boolean
+    calendars: [CalendarFreeBusy]
+  }
+
+  type Busy {
+    start: String
+    end: String
+  }
+
   type ResourceBuilding {
     buildingId: String
     buildingName: String
@@ -42,6 +65,11 @@ const typeDefs = gql`
     getResourceBuildingList: ResourceBuildingList
     getResourceBuilding(buildingId: String!): ResourceBuilding
     getResourceResearchLab: ResourceCalendarList
+    getCalendarFreeBusyList(
+      start: String!
+      end: String!
+      items: [String!]
+    ): CalendarFreeBusyList
   }
 `;
 

@@ -18,6 +18,22 @@ const resolvers = {
     getResourceResearchLab: async (_, args, { dataSources }) => {
       const resLabs = await dataSources.googleResourcesAPI.getResourceCalendarByType();
       return { success: true, calendars: resLabs };
+    },
+    getCalendarFreeBusyList: async (
+      _,
+      { start, end, items },
+      { dataSources }
+    ) => {
+      const resFreeBusy = await dataSources.googleResourcesAPI.getCalendarFreeBusyList(
+        start,
+        end,
+        items
+      );
+      // console.log(resFreeBusy);
+      return {
+        success: true,
+        calendars: resFreeBusy
+      };
     }
   },
   ResourceCalendar: {
