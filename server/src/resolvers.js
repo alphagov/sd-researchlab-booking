@@ -7,6 +7,10 @@ const resolvers = {
     getResourceBuildingList: async (_, args, { dataSources }) => {
       const resBuildings = await dataSources.googleResourcesAPI.getResourceBuildings();
       return { success: true, buildings: resBuildings };
+    },
+    getResourceResearchLab: async (_, args, { dataSources }) => {
+      const resLabs = await dataSources.googleResourcesAPI.getResourceCalendarByType();
+      return { success: true, calendars: resLabs };
     }
   }
 };

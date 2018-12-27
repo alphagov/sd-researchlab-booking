@@ -9,14 +9,15 @@ import * as keys from '../../keys/key-rlabs.json';
 class GoogleResourcesAPI extends RESTDataSource {
   constructor() {
     super();
-    this.baseURL = `https://www.googleapis.com/admin/directory/v1/customer/${
+    this.resourceURL = `https://www.googleapis.com/admin/directory/v1/customer/${
       process.env.GOOGLE_CUSTOMER_ID
     }/resources`;
+    this.calendarURL = `https://www.googleapis.com/calendar/v3/calendars/`;
   }
 
   async getResourceCalendars() {
     const token = await this.getOauthToken();
-    const res = await axios.get(`${this.baseURL}/calendars`, {
+    const res = await axios.get(`${this.resourceURL}/calendars`, {
       headers: {
         Authorization: 'OAuth ' + token
       }
@@ -26,9 +27,23 @@ class GoogleResourcesAPI extends RESTDataSource {
       : [];
   }
 
+  async getResourceCalendarByType() {
+    const token = await this.getOauthToken();
+    const res = await axios.get(`${this.resourceURL}/calendars`, {
+      headers: {
+        Authorization: 'OAuth ' + token
+      }
+    });
+    return res.data.items && res.data.items.length
+      ? res.data.items
+          .filter((item) => item.resourceType === process.env.RESOURCE_TYPE)
+          .map((item) => this.resourceCalendarReducer(item))
+      : [];
+  }
+
   async getResourceBuildings() {
     const token = await this.getOauthToken();
-    const res = await axios.get(`${this.baseURL}/buildings`, {
+    const res = await axios.get(`${this.resourceURL}/buildings`, {
       headers: {
         Authorization: 'OAuth ' + token
       }
@@ -42,7 +57,6 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   resourceBuildingReducer(building) {
-    // console.log(building);
     const {
       buildingId,
       buildingName,
@@ -86,7 +100,8 @@ class GoogleResourcesAPI extends RESTDataSource {
           keyFile: path.join(__dirname, '../../keys/rlabs.pem'),
           delegationEmail: 'adrian@intellidroid.eu',
           scopes: [
-            'https://www.googleapis.com/auth/admin.directory.resource.calendar'
+            'https://www.googleapis.com/auth/admin.directory.resource.calendar',
+            'https://www.googleapis.com/auth/calendar'
           ]
         },
         (err, token) => {

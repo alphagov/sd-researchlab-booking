@@ -39,6 +39,7 @@ const typeDefs = gql`
   type Query {
     getResourceCalendarList: ResourceCalendarList
     getResourceBuildingList: ResourceBuildingList
+    getResourceResearchLab: ResourceCalendarList
   }
 `;
 
