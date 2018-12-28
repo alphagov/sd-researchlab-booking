@@ -14,6 +14,8 @@ import RegisterConfirm from './components/auth/RegisterConfirm';
 import RegisterLink from './components/auth/RegisterLink';
 import Login2FA from './components/auth/Login2FA';
 
+import Researchlabs from './components/ResearchLabs';
+
 const Root = ({ refetch, session }) => (
   <Router>
     <Fragment>
@@ -28,6 +30,7 @@ const Root = ({ refetch, session }) => (
         <Route path="/register/confirm/:_id" component={RegisterConfirm} />
         <Route path="/register/verify" component={RegisterLink} />
         <Route path="/login/2fa/:id" component={Login2FA} />
+        <Route path="/research-labs" component={Researchlabs} />
         <Redirect to="/" />
       </Switch>
     </Fragment>

@@ -93,7 +93,12 @@ class GoogleResourcesAPI extends RESTDataSource {
     const calArray = [];
     for (let x in calendars) {
       let tempObj = {};
-      tempObj = { resourceId: x, busy: calendars[x].busy };
+      tempObj = {
+        resourceId: x,
+        busy: calendars[x].busy.map((b) => {
+          return { title: 'busy', start: b.start, end: b.end };
+        })
+      };
       calArray.push(tempObj);
     }
     return calArray;

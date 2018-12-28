@@ -38,6 +38,7 @@ const typeDefs = gql`
   }
 
   type Busy {
+    title: String
     start: String
     end: String
   }

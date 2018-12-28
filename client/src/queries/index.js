@@ -1,5 +1,25 @@
 import { gql } from 'apollo-boost';
 
+export const GET_RESEARCH_LABS = gql`
+  query {
+    getResourceResearchLab {
+      success
+      calendars {
+        resourceId
+        resourceName
+        resourceEmail
+        capacity
+        floorName
+        building {
+          buildingId
+          buildingName
+          description
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   query {
     getCurrentUser {
