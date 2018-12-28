@@ -40,7 +40,6 @@ class ResearchLabCalendar extends Component {
   updateFreeBusy(busy, end) {
     const { freeBusy } = this.state;
     this.setState({ maxDate: end });
-    console.log(busy);
     const newFreeBusy = [...freeBusy, ...busy];
     this.setState({ freeBusy: newFreeBusy });
   }
