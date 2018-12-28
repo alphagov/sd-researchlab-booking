@@ -4,7 +4,7 @@ export const GET_RESEARCH_LABS = gql`
   query {
     getResourceResearchLab {
       success
-      calendars {
+      labs {
         resourceId
         resourceName
         resourceEmail
@@ -14,6 +14,11 @@ export const GET_RESEARCH_LABS = gql`
           buildingId
           buildingName
           description
+        }
+        freeBusy {
+          title
+          start
+          end
         }
       }
     }

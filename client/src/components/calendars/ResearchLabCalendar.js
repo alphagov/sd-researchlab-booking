@@ -6,8 +6,7 @@ import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css'
 const localizer = BigCalendar.momentLocalizer(moment);
 
 const ResearchLabCalendar = ({ calendar }) => {
-  const calEvents = [];
-  const { resourceName, floorName, building } = calendar;
+  const { resourceName, floorName, building, freeBusy } = calendar;
   return (
     <div>
       <h5>
@@ -20,7 +19,7 @@ const ResearchLabCalendar = ({ calendar }) => {
           day: true
         }}
         localizer={localizer}
-        events={calEvents}
+        events={freeBusy}
         style={{ height: '400px' }}
       />
     </div>

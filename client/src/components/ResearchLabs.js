@@ -4,10 +4,14 @@ import ResearchLabCalendar from './calendars/ResearchLabCalendar';
 import { GET_RESEARCH_LABS } from '../queries';
 
 class ResearchLabs extends Component {
-  renderLabCalendars(calendars) {
-    return calendars.map((calendar) => (
-      <div className="row" style={{ marginBottom: '50px' }}>
-        <div className="two-thirds column App" key={calendar.resourceId}>
+  renderLabCalendars(labs) {
+    return labs.map((calendar) => (
+      <div
+        className="row"
+        style={{ marginBottom: '50px' }}
+        key={calendar.resourceId}
+      >
+        <div className="two-thirds column App">
           <ResearchLabCalendar calendar={calendar} />
         </div>
       </div>
@@ -23,11 +27,11 @@ class ResearchLabs extends Component {
             {({ loading, error, data }) => {
               if (loading) return <div className="App">Loading...........</div>;
               if (error) return <div>{error}</div>;
-              const { success, calendars } = data.getResourceResearchLab;
+              const { success, labs } = data.getResourceResearchLab;
               return (
                 <Fragment>
                   {success ? (
-                    this.renderLabCalendars(calendars)
+                    this.renderLabCalendars(labs)
                   ) : (
                     <div className="App">No Research Labs found</div>
                   )}
