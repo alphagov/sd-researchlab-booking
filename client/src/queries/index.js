@@ -25,6 +25,22 @@ export const GET_RESEARCH_LABS = gql`
   }
 `;
 
+export const GET_CALENDAR_FREE_BUSY = gql`
+  query($start: String!, $end: String!, $items: [String!]) {
+    getCalendarFreeBusyList(start: $start, end: $end, items: $items) {
+      success
+      calendars {
+        resourceId
+        busy {
+          title
+          start
+          end
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   query {
     getCurrentUser {
