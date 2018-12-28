@@ -7,6 +7,13 @@ const localizer = BigCalendar.momentLocalizer(moment);
 
 const ResearchLabCalendar = ({ calendar }) => {
   const { resourceName, floorName, building, freeBusy } = calendar;
+  const calEvents = freeBusy.map((f) => {
+    return {
+      title: f.title,
+      start: moment(f.start).toDate(),
+      end: moment(f.end).toDate()
+    };
+  });
   return (
     <div>
       <h5>
@@ -19,7 +26,7 @@ const ResearchLabCalendar = ({ calendar }) => {
           day: true
         }}
         localizer={localizer}
-        events={freeBusy}
+        events={calEvents}
         style={{ height: '400px' }}
       />
     </div>

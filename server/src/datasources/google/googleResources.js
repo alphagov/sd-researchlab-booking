@@ -96,7 +96,11 @@ class GoogleResourcesAPI extends RESTDataSource {
       tempObj = {
         resourceId: x,
         busy: calendars[x].busy.map((b) => {
-          return { title: 'busy', start: b.start, end: b.end };
+          return {
+            title: 'busy',
+            start: b.start,
+            end: b.end
+          };
         })
       };
       calArray.push(tempObj);
