@@ -2,18 +2,13 @@ import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import ResearchLabCalendar from './calendars/ResearchLabCalendar';
 import { GET_RESEARCH_LABS } from '../queries';
+import styles from './ResearchLabs.module.css';
 
 class ResearchLabs extends Component {
   renderLabCalendars(labs) {
     return labs.map((calendar) => (
-      <div
-        className="row"
-        style={{ marginBottom: '50px' }}
-        key={calendar.resourceId}
-      >
-        <div className="two-thirds column App">
-          <ResearchLabCalendar calendar={calendar} />
-        </div>
+      <div key={calendar.resourceId}>
+        <ResearchLabCalendar calendar={calendar} />
       </div>
     ));
   }
@@ -21,21 +16,21 @@ class ResearchLabs extends Component {
   render() {
     return (
       <Fragment>
-        <h2 className="App">Research Labs</h2>
-        <div className="container">
+        <h2>Research Labs</h2>
+        <div>
           <Query query={GET_RESEARCH_LABS}>
             {({ loading, error, data }) => {
-              if (loading) return <div className="App">Loading...........</div>;
+              if (loading) return <div>Loading...........</div>;
               if (error) return <div>{error}</div>;
               const { success, labs } = data.getResourceResearchLab;
               return (
-                <Fragment>
+                <div className={styles.calwrapper}>
                   {success ? (
                     this.renderLabCalendars(labs)
                   ) : (
-                    <div className="App">No Research Labs found</div>
+                    <div>No Research Labs found</div>
                   )}
-                </Fragment>
+                </div>
               );
             }}
           </Query>

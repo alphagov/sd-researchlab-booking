@@ -1,4 +1,4 @@
 import Typography from 'typography';
 import noriegaTheme from 'typography-theme-noriega';
 
-export const typography = new Typography(noriegaTheme);
+export const noriega = new Typography(noriegaTheme);
