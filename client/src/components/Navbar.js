@@ -1,33 +1,25 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import styles from './Navbar.module.css';
 
 const Navbar = () => {
-  return (
-    <nav>
-      <NavbarUnAuth />
-    </nav>
-  );
+  return <NavbarUnAuth />;
 };
 
 const NavbarUnAuth = () => (
-  <ul>
-    <li>
-      <NavLink to="/" exact>
-        Home
-      </NavLink>
-    </li>
-    <li>Sign in</li>
-    <li>
-      <NavLink to="/register" exact>
-        Register
-      </NavLink>
-    </li>
-    <li>
-      <NavLink to="/research-labs" exact>
-        Research Labs
-      </NavLink>
-    </li>
-  </ul>
+  <nav>
+    <NavLink to="/" exact className={styles.navLinks}>
+      Home
+    </NavLink>
+
+    <NavLink to="/register" exact className={styles.navLinks}>
+      Register
+    </NavLink>
+
+    <NavLink to="/research-labs" exact className={styles.navLinks}>
+      Research Labs
+    </NavLink>
+  </nav>
 );
 
 export default Navbar;

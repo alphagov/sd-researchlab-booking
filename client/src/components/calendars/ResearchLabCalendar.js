@@ -5,6 +5,7 @@ import { ApolloConsumer } from 'react-apollo';
 import { GET_CALENDAR_FREE_BUSY } from '../../queries';
 
 import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
+import styles from './ResearchLabCalendar.module.css';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -63,7 +64,7 @@ class ResearchLabCalendar extends Component {
     return (
       <ApolloConsumer>
         {(client) => (
-          <div>
+          <div className={styles.container}>
             <h5>
               {resourceName} - floor {floorName} {building.buildingName}
             </h5>

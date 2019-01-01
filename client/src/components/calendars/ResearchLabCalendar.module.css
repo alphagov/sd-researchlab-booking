@@ -1,0 +1,13 @@
+h5 {
+  text-align: center;
+}
+
+.container {
+  padding: 0.5em;
+}
+
+@media screen and (max-width: 900px) {
+  .container {
+    padding: 1.5em 1em;
+  }
+}

@@ -15,9 +15,9 @@ class ResearchLabs extends Component {
 
   render() {
     return (
-      <Fragment>
+      <div className={styles.container}>
         <h2>Research Labs</h2>
-        <div>
+        <Fragment>
           <Query query={GET_RESEARCH_LABS}>
             {({ loading, error, data }) => {
               if (loading) return <div>Loading...........</div>;
@@ -34,8 +34,8 @@ class ResearchLabs extends Component {
               );
             }}
           </Query>
-        </div>
-      </Fragment>
+        </Fragment>
+      </div>
     );
   }
 }
