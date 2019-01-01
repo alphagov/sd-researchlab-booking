@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+.wrapper {
+  display: grid;
+  grid-gap: 0.5em;
+}
+
 nav {
   text-align: center;
   margin-bottom: 1em;

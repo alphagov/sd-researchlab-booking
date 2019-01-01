@@ -3,7 +3,6 @@ import { Mutation } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import { REGISTER_USER } from '../../queries';
 import Error from '../Error';
-import '../App.css';
 
 const initialState = {
   firstName: '',

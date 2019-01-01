@@ -3,9 +3,13 @@ import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
+import { typography } from './utils/typography';
+
 import * as serviceWorker from './serviceWorker';
 
 import Routes from './Routes';
+
+typography.injectStyles();
 
 const client = new ApolloClient({
   uri: 'http://localhost:4050/graphql',
