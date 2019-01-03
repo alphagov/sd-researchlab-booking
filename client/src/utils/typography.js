@@ -1,4 +1,4 @@
 import Typography from 'typography';
-import noriegaTheme from 'typography-theme-noriega';
+import githubTheme from 'typography-theme-github';
 
-export const noriega = new Typography(noriegaTheme);
+export const gitHubTheme = new Typography(githubTheme);

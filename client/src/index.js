@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
-import { noriega } from './utils/typography';
+import { gitHubTheme } from './utils/typography';
 
 import * as serviceWorker from './serviceWorker';
 
 import Routes from './Routes';
 
-noriega.injectStyles();
+gitHubTheme.injectStyles();
 
 const client = new ApolloClient({
   uri: 'http://localhost:4050/graphql',
