@@ -32,7 +32,6 @@
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "google-auth-library": "^2.0.2",
     "google-oauth-jwt": "^0.2.0",
     "graphql": "^14.0.2",
     "graphql-tools": "^4.0.3",
@@ -40,9 +39,7 @@
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.23.0",
     "mongoose": "^5.3.14",
-    "notifications-node-client": "^4.5.2",
-    "passport": "^0.4.0",
-    "passport-custom": "^1.0.5"
+    "notifications-node-client": "^4.5.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
