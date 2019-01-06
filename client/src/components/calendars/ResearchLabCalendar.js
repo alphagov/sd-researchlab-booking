@@ -31,8 +31,6 @@ class ResearchLabCalendar extends Component {
 
   checkDates(e) {
     const { maxDate } = this.state;
-    console.log(maxDate);
-    console.log(e);
     if (
       moment(e)
         .endOf('month')
@@ -84,7 +82,9 @@ class ResearchLabCalendar extends Component {
               style={{ height: '400px' }}
               onNavigate={async (e) => {
                 if (this.checkDates(e)) {
-                  const start = moment(maxDate).startOf('day');
+                  const start = moment(maxDate)
+                    .add(1, 'day')
+                    .startOf('day');
                   const end = moment(e).endOf('month');
                   const { data } = await client.query({
                     query: GET_CALENDAR_FREE_BUSY,
