@@ -28,74 +28,72 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   async getResourceCalendars() {
-    let token = '';
     try {
-      token = await this.getOauthToken(options);
+      const token = await this.getOauthToken(options);
+      const res = await axios.get(`${this.resourceURL}/calendars`, {
+        headers: {
+          Authorization: 'OAuth ' + token
+        }
+      });
+      return res.data.items && res.data.items.length
+        ? res.data.items.map((item) => this.resourceCalendarReducer(item))
+        : [];
     } catch (error) {
       console.log('Error:', error);
     }
-    const res = await axios.get(`${this.resourceURL}/calendars`, {
-      headers: {
-        Authorization: 'OAuth ' + token
-      }
-    });
-    return res.data.items && res.data.items.length
-      ? res.data.items.map((item) => this.resourceCalendarReducer(item))
-      : [];
   }
 
   async getResourceCalendarByType() {
-    let token = '';
     try {
-      token = await this.getOauthToken(options);
+      const token = await this.getOauthToken(options);
+      const res = await axios.get(`${this.resourceURL}/calendars`, {
+        headers: {
+          Authorization: 'OAuth ' + token
+        }
+      });
+      return res.data.items && res.data.items.length
+        ? res.data.items
+            .filter((item) => item.resourceType === process.env.RESOURCE_TYPE)
+            .map((item) => this.resourceCalendarReducer(item))
+        : [];
     } catch (error) {
       console.log('Error:', error);
     }
-    const res = await axios.get(`${this.resourceURL}/calendars`, {
-      headers: {
-        Authorization: 'OAuth ' + token
-      }
-    });
-    return res.data.items && res.data.items.length
-      ? res.data.items
-          .filter((item) => item.resourceType === process.env.RESOURCE_TYPE)
-          .map((item) => this.resourceCalendarReducer(item))
-      : [];
   }
 
   async getResourceBuildings() {
-    let token = '';
     try {
-      token = await this.getOauthToken(options);
+      const token = await this.getOauthToken(options);
+      const res = await axios.get(`${this.resourceURL}/buildings`, {
+        headers: {
+          Authorization: 'OAuth ' + token
+        }
+      });
+      return res.data.buildings && res.data.buildings.length
+        ? res.data.buildings.map((building) =>
+            this.resourceBuildingReducer(building)
+          )
+        : [];
     } catch (error) {
       console.log('Error:', error);
     }
-    const res = await axios.get(`${this.resourceURL}/buildings`, {
-      headers: {
-        Authorization: 'OAuth ' + token
-      }
-    });
-    // console.log(res.data);
-    return res.data.buildings && res.data.buildings.length
-      ? res.data.buildings.map((building) =>
-          this.resourceBuildingReducer(building)
-        )
-      : [];
   }
 
   async getResourceBuilding(buildingId) {
-    let token = '';
     try {
-      token = await this.getOauthToken(options);
+      const token = await this.getOauthToken(options);
+      const res = await axios.get(
+        `${this.resourceURL}/buildings/${buildingId}`,
+        {
+          headers: {
+            Authorization: 'OAuth ' + token
+          }
+        }
+      );
+      return res.data ? this.resourceBuildingReducer(res.data) : {};
     } catch (error) {
       console.log('Error:', error);
     }
-    const res = await axios.get(`${this.resourceURL}/buildings/${buildingId}`, {
-      headers: {
-        Authorization: 'OAuth ' + token
-      }
-    });
-    return res.data ? this.resourceBuildingReducer(res.data) : {};
   }
 
   async getCalendarFreeBusyList(start, end, items) {
@@ -106,24 +104,22 @@ class GoogleResourcesAPI extends RESTDataSource {
         return { id: l };
       })
     };
-    let token = '';
     try {
-      token = await this.getOauthToken(options);
+      const token = await this.getOauthToken(options);
+      const resFreeBusy = await axios({
+        method: 'post',
+        data: pBody,
+        url: `${this.calendarURL}/freeBusy`,
+        headers: {
+          Authorization: 'OAuth ' + token,
+          'content-type': 'application/json'
+        }
+      });
+
+      return this.calendarFreeBusyReducer(resFreeBusy.data.calendars);
     } catch (error) {
       console.log('Error:', error);
     }
-
-    const resFreeBusy = await axios({
-      method: 'post',
-      data: pBody,
-      url: `${this.calendarURL}/freeBusy`,
-      headers: {
-        Authorization: 'OAuth ' + token,
-        'content-type': 'application/json'
-      }
-    });
-
-    return this.calendarFreeBusyReducer(resFreeBusy.data.calendars);
   }
 
   calendarFreeBusyReducer(calendars) {
