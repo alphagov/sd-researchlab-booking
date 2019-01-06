@@ -21,7 +21,9 @@ class ResearchLabCalendar extends Component {
         .endOf('day')
         .subtract(5, 'hours')
         .toDate(),
-      maxDate: moment().add(2, 'months'),
+      maxDate: moment()
+        .add(1, 'months')
+        .endOf('month'),
       calendar: calendar,
       freeBusy: calendar.freeBusy
     };
@@ -29,8 +31,13 @@ class ResearchLabCalendar extends Component {
 
   checkDates(e) {
     const { maxDate } = this.state;
-
-    if (moment(e).isAfter(maxDate, 'day')) {
+    console.log(maxDate);
+    console.log(e);
+    if (
+      moment(e)
+        .endOf('month')
+        .isAfter(maxDate)
+    ) {
       return true;
       // start: maxdate +1 (startofday) end: e (endofday)
       // get the new freebusy array and concenate state free busy array and set state
@@ -77,10 +84,8 @@ class ResearchLabCalendar extends Component {
               style={{ height: '400px' }}
               onNavigate={async (e) => {
                 if (this.checkDates(e)) {
-                  const start = moment(maxDate)
-                    .add(1, 'days')
-                    .startOf('day');
-                  const end = moment(e).endOf('day');
+                  const start = moment(maxDate).startOf('day');
+                  const end = moment(e).endOf('month');
                   const { data } = await client.query({
                     query: GET_CALENDAR_FREE_BUSY,
                     variables: {

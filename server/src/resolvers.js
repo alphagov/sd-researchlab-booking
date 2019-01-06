@@ -63,9 +63,18 @@ const resolvers = {
       // return default 2 months (max you can do with google calendar api)
       const calId = parent.resourceEmail;
       if (calId) {
+        // get the current day, time
+        const startDate = moment(Date.now()).startOf('day');
+        // just get until the end of the next month...this way we can alsways display one
+        // months worth of data.
+        // reason we do this is because Google Cal API will only pull 2 months worth of data
+        const endDate = moment(Date.now())
+          .add(1, 'months')
+          .endOf('month');
+        console.log(endDate);
         const resFreeBusy = await dataSources.googleResourcesAPI.getCalendarFreeBusyList(
-          moment(Date.now()),
-          moment(Date.now()).add(2, 'months'),
+          startDate,
+          endDate,
           [calId]
         );
         return resFreeBusy[0].busy;
