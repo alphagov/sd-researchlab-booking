@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import ResearchLabCalendar from './calendars/ResearchLabCalendar';
+import DateTime from './booking/DateTime';
+
 import { GET_RESEARCH_LABS } from '../queries';
 import styles from './ResearchLabs.module.css';
 
@@ -24,7 +26,7 @@ class ResearchLabs extends Component {
               if (error) return <div>{error}</div>;
               const { success, labs } = data.getResourceResearchLab;
               return (
-                <div className={styles.calwrapper}>
+                <div className={styles.calWrapper}>
                   {success ? (
                     this.renderLabCalendars(labs)
                   ) : (
@@ -35,6 +37,7 @@ class ResearchLabs extends Component {
             }}
           </Query>
         </Fragment>
+        <DateTime />
       </div>
     );
   }
