@@ -71,7 +71,6 @@ const resolvers = {
         const endDate = moment(Date.now())
           .add(1, 'months')
           .endOf('month');
-        console.log(endDate);
         const resFreeBusy = await dataSources.googleResourcesAPI.getCalendarFreeBusyList(
           startDate,
           endDate,

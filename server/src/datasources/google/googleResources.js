@@ -6,6 +6,18 @@ import moment from 'moment';
 
 import * as keys from '../../keys/key-rlabs.json';
 
+const tokens = new googleAuth.TokenCache();
+
+const options = {
+  email: keys.client_email,
+  keyFile: path.join(__dirname, '../../keys/rlabs.pem'),
+  delegationEmail: 'adrian@intellidroid.eu',
+  scopes: [
+    'https://www.googleapis.com/auth/admin.directory.resource.calendar',
+    'https://www.googleapis.com/auth/calendar'
+  ]
+};
+
 class GoogleResourcesAPI extends RESTDataSource {
   constructor() {
     super();
@@ -13,11 +25,15 @@ class GoogleResourcesAPI extends RESTDataSource {
       process.env.GOOGLE_CUSTOMER_ID
     }/resources`;
     this.calendarURL = `https://www.googleapis.com/calendar/v3`;
-    this.gToken = this.getOauthToken();
   }
 
   async getResourceCalendars() {
-    const token = await this.gToken;
+    let token = '';
+    try {
+      token = await this.getOauthToken(options);
+    } catch (error) {
+      console.log('Error:', error);
+    }
     const res = await axios.get(`${this.resourceURL}/calendars`, {
       headers: {
         Authorization: 'OAuth ' + token
@@ -29,7 +45,12 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   async getResourceCalendarByType() {
-    const token = await this.gToken;
+    let token = '';
+    try {
+      token = await this.getOauthToken(options);
+    } catch (error) {
+      console.log('Error:', error);
+    }
     const res = await axios.get(`${this.resourceURL}/calendars`, {
       headers: {
         Authorization: 'OAuth ' + token
@@ -43,7 +64,12 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   async getResourceBuildings() {
-    const token = await this.gToken;
+    let token = '';
+    try {
+      token = await this.getOauthToken(options);
+    } catch (error) {
+      console.log('Error:', error);
+    }
     const res = await axios.get(`${this.resourceURL}/buildings`, {
       headers: {
         Authorization: 'OAuth ' + token
@@ -58,7 +84,12 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   async getResourceBuilding(buildingId) {
-    const token = await this.gToken;
+    let token = '';
+    try {
+      token = await this.getOauthToken(options);
+    } catch (error) {
+      console.log('Error:', error);
+    }
     const res = await axios.get(`${this.resourceURL}/buildings/${buildingId}`, {
       headers: {
         Authorization: 'OAuth ' + token
@@ -75,7 +106,13 @@ class GoogleResourcesAPI extends RESTDataSource {
         return { id: l };
       })
     };
-    const token = await this.gToken;
+    let token = '';
+    try {
+      token = await this.getOauthToken(options);
+    } catch (error) {
+      console.log('Error:', error);
+    }
+
     const resFreeBusy = await axios({
       method: 'post',
       data: pBody,
@@ -86,6 +123,7 @@ class GoogleResourcesAPI extends RESTDataSource {
       }
     });
 
+    console.log(resFreeBusy);
     return this.calendarFreeBusyReducer(resFreeBusy.data.calendars);
   }
 
@@ -144,27 +182,16 @@ class GoogleResourcesAPI extends RESTDataSource {
     };
   }
 
-  async getOauthToken() {
+  async getOauthToken(options = {}) {
     return new Promise((resolve, reject) => {
-      googleAuth.authenticate(
-        {
-          email: keys.client_email,
-          keyFile: path.join(__dirname, '../../keys/rlabs.pem'),
-          delegationEmail: 'adrian@intellidroid.eu',
-          scopes: [
-            'https://www.googleapis.com/auth/admin.directory.resource.calendar',
-            'https://www.googleapis.com/auth/calendar'
-          ]
-        },
-        (err, token) => {
-          if (err) {
-            console.log(err);
-            reject(err);
-          } else {
-            resolve(token);
-          }
+      tokens.get(options, (err, token) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          resolve(token);
         }
-      );
+      });
     });
   }
 }
