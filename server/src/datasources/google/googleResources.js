@@ -123,7 +123,6 @@ class GoogleResourcesAPI extends RESTDataSource {
       }
     });
 
-    console.log(resFreeBusy);
     return this.calendarFreeBusyReducer(resFreeBusy.data.calendars);
   }
 
