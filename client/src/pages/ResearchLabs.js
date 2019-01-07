@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
-import ResearchLabCalendar from './calendars/ResearchLabCalendar';
-import DateTime from './booking/DateTime';
+import ResearchLabCalendar from '../components/calendars/ResearchLabCalendar';
+import DateTime from '../components/booking/DateTime';
 
 import { GET_RESEARCH_LABS } from '../queries';
 import styles from './ResearchLabs.module.css';

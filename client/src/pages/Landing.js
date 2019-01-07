@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import styles from './App.module.css';
+import styles from './Landing.module.css';
 
-class App extends Component {
+class Landing extends Component {
   render() {
     return (
       <div className={styles.wrapper}>
@@ -11,4 +11,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Landing;
