@@ -29,9 +29,9 @@
 
 .navLinks:hover,
 .navLinks:active,
-.navLinks a:hover,
-.navLinks a:active,
-.navLinks a.active {
+a:hover,
+a:active,
+a.active {
   color: green;
   text-decoration: none;
 }
