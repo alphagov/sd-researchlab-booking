@@ -3,7 +3,9 @@ import moment from 'moment';
 const resolvers = {
   Query: {
     addResearchLabEvent: async (_, args, { dataSources }) => {
-      const addEvent = await dataSources.addResearchlabEvent(args);
+      const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
+        args
+      );
       return { success: true, event: addEvent };
     },
     getResourceCalendarList: async (_, args, { dataSources }) => {

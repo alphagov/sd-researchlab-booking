@@ -123,7 +123,6 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   async addCalendarEvent(event) {
-    console.log(event);
     const {
       calendarId,
       start,
@@ -145,13 +144,13 @@ class GoogleResourcesAPI extends RESTDataSource {
     try {
       const token = await this.getOauthToken(options);
       const res = await axios({
-        type: 'post',
+        method: 'post',
         url: `${this.calendarURL}/calendars/${calendarId}/events`,
         headers: {
           Authorization: 'OAuth ' + token,
           'content-type': 'application/json'
         },
-        params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
+        // params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
         data: eventBody
       });
       console.log(res.data);
