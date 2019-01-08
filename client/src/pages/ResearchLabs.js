@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import ResearchLabCalendar from '../components/calendars/ResearchLabCalendar';
-import DateTime from '../components/booking/DateTime';
+import EventBooking from '../components/booking/EventBooking';
 
 import { GET_RESEARCH_LABS } from '../queries';
 import styles from './ResearchLabs.module.css';
@@ -37,7 +37,7 @@ class ResearchLabs extends Component {
             }}
           </Query>
         </Fragment>
-        <DateTime />
+        <EventBooking />
       </div>
     );
   }
