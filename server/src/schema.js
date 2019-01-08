@@ -28,6 +28,27 @@ const typeDefs = gql`
     floorName: String
   }
 
+  type BookedEvent {
+    eventId: String
+    resource: ResourceCalendar
+    eventTitle: String
+    eventDescription: String
+    eventStatus: String
+    eventStart: String
+    eventEnd: String
+    eventOwner: EventCreator
+  }
+
+  type ResearchLabEvent {
+    success: Boolean
+    event: BookedEvent
+  }
+
+  type EventCreator {
+    displayName: String
+    email: String
+  }
+
   type ResearchLabList {
     success: Boolean
     labs: [ResearchLab]
@@ -90,6 +111,16 @@ const typeDefs = gql`
       end: String!
       items: [String!]
     ): CalendarFreeBusyList
+    addResearchLabEvent(
+      calendarId: String!
+      start: String!
+      end: String!
+      attendees: Int
+      title: String!
+      description: String
+      creator: String!
+      email: String!
+    ): ResearchLabEvent
   }
 `;
 

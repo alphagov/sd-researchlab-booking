@@ -25,6 +25,7 @@ class ResearchLabs extends Component {
               if (loading) return <div>Loading...........</div>;
               if (error) return <div>{error}</div>;
               const { success, labs } = data.getResourceResearchLab;
+              console.log(labs);
               return (
                 <div className={styles.calWrapper}>
                   {success ? (

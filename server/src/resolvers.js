@@ -2,6 +2,10 @@ import moment from 'moment';
 
 const resolvers = {
   Query: {
+    addResearchLabEvent: async (_, args, { dataSources }) => {
+      const addEvent = await dataSources.addResearchlabEvent(args);
+      return { success: true, event: addEvent };
+    },
     getResourceCalendarList: async (_, args, { dataSources }) => {
       const resCals = await dataSources.googleResourcesAPI.getResourceCalendars();
       return { success: true, calendars: resCals };

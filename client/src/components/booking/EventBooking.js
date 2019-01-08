@@ -45,6 +45,12 @@ class EventBooking extends Component {
                 <input type="text" name="bookingTitle" />
               </div>
             </div>
+            <div className={styles.eventTitle}>
+              <div className={styles.bookingGrid}>
+                <label htmlFor="bookingDesc">Event Description</label>
+                <input type="text" name="bookingDesc" />
+              </div>
+            </div>
 
             <div className={styles.bookingGrid}>
               <label htmlFor="bookingDate">Select date</label>

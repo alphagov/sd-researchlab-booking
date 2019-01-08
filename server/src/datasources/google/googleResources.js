@@ -122,6 +122,48 @@ class GoogleResourcesAPI extends RESTDataSource {
     }
   }
 
+  async addCalendarEvent(event) {
+    console.log(event);
+    const {
+      calendarId,
+      start,
+      end,
+      attendees,
+      title,
+      description,
+      creator,
+      email
+    } = event;
+    const eventBody = {
+      end: { dateTime: end },
+      start: { dateTime: start },
+      attendees: [{ displayName: creator, email, additionalGuests: attendees }],
+      summary: title,
+      description,
+      status: process.env.BOOKING_DEFAULT_STATUS
+    };
+    try {
+      const token = await this.getOauthToken(options);
+      const res = await axios({
+        type: 'post',
+        url: `${this.calendarURL}/calendars/${calendarId}/events`,
+        headers: {
+          Authorization: 'OAuth ' + token,
+          'content-type': 'application/json'
+        },
+        params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
+        data: eventBody
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  }
+
+  calendarEventReducer(event) {
+    console.log(event);
+  }
+
   calendarFreeBusyReducer(calendars) {
     const calArray = [];
     for (let x in calendars) {
