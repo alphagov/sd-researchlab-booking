@@ -150,7 +150,7 @@ class GoogleResourcesAPI extends RESTDataSource {
           Authorization: 'OAuth ' + token,
           'content-type': 'application/json'
         },
-        // params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
+        params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
         data: eventBody
       });
       console.log(res.data);
