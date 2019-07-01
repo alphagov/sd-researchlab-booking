@@ -3,20 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "apollo-boost": "^0.1.22",
-    "graphql": "^14.0.2",
-    "http-proxy-middleware": "^0.19.1",
+    "apollo-boost": "^0.4.3",
+    "graphql": "^14.4.1",
     "moment": "^2.23.0",
-    "node-sass": "^4.11.0",
-    "query-string": "^6.2.0",
-    "react": "^16.6.3",
-    "react-apollo": "^2.3.2",
-    "react-big-calendar": "^0.20.2",
+    "query-string": "^6.8.1",
+    "react": "^16.8.6",
+    "react-apollo": "^2.5.8",
+    "react-big-calendar": "^0.22.0",
     "react-datetime": "^2.16.3",
-    "react-dom": "^16.6.3",
+    "react-dom": "^16.8.6",
     "react-moment": "^0.8.4",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.1",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.0.1",
     "typography": "^0.16.18",
     "typography-theme-github": "^0.16.18"
   },
@@ -34,5 +32,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "http-proxy-middleware": "^0.19.1"
+  }
 }

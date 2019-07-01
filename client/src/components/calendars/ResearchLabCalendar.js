@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BigCalendar from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { ApolloConsumer } from 'react-apollo';
 import { GET_CALENDAR_FREE_BUSY } from '../../queries';
@@ -7,7 +7,7 @@ import { GET_CALENDAR_FREE_BUSY } from '../../queries';
 import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
 import styles from './ResearchLabCalendar.module.css';
 
-const localizer = BigCalendar.momentLocalizer(moment);
+const localizer = momentLocalizer(moment);
 
 class ResearchLabCalendar extends Component {
   constructor({ calendar }) {
@@ -73,7 +73,7 @@ class ResearchLabCalendar extends Component {
             <h5>
               {resourceName} - floor {floorName} {building.buildingName}
             </h5>
-            <BigCalendar
+            <Calendar
               views={{ month: true, week: true, day: true }}
               localizer={localizer}
               min={minStart}
