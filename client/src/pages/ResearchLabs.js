@@ -1,19 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
-import ResearchLabCalendar from '../components/calendars/ResearchLabCalendar';
+// import ResearchLabCalendar from '../components/calendars/ResearchLabCalendar';
 import EventBooking from '../components/booking/EventBooking';
 
 import { GET_RESEARCH_LABS } from '../queries';
 import styles from './ResearchLabs.module.css';
 
 class ResearchLabs extends Component {
-  renderLabCalendars(labs) {
-    return labs.map((calendar) => (
-      <div key={calendar.resourceId}>
-        <ResearchLabCalendar calendar={calendar} />
-      </div>
-    ));
-  }
+  // renderLabCalendars(labs) {
+  //   return labs.map((calendar) => (
+  //     <div key={calendar.resourceId}>
+  //       <ResearchLabCalendar calendar={calendar} />
+  //     </div>
+  //   ));
+  // }
 
   render() {
     return (
@@ -29,7 +29,7 @@ class ResearchLabs extends Component {
               return (
                 <div className={styles.calWrapper}>
                   {success ? (
-                    this.renderLabCalendars(labs)
+                    <div>Lab calendars</div>
                   ) : (
                     <div>No Research Labs found</div>
                   )}

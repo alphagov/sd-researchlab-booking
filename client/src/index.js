@@ -3,13 +3,9 @@ import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
-import { gitHubTheme } from './utils/typography';
-
 import * as serviceWorker from './serviceWorker';
 
-import Routes from './Routes';
-
-gitHubTheme.injectStyles();
+import App from './App';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4050/graphql',
@@ -36,7 +32,7 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Routes />
+    <App />
   </ApolloProvider>,
 
   document.getElementById('root')
