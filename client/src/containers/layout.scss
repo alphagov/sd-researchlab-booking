@@ -4,3 +4,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+$govuk-global-styles: true;
+
+@import 'node_modules/govuk-frontend/all';
