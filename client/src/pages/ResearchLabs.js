@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import EventBooking from '../components/booking/EventBooking';
 
 import { GET_RESEARCH_LABS } from '../queries';
-import styles from './ResearchLabs.module.css';
+import styles from '../css/ResearchLabs.module.css';
 
 class ResearchLabs extends Component {
   // renderLabCalendars(labs) {
