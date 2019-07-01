@@ -30,8 +30,16 @@ const Header = () => {
                   className="govuk-header__logotype-crown-fallback-image"
                 />
               </svg>
-              <span className="govuk-header__logotype-text">GOV.UK</span>
+              <span className="govuk-header__logotype-text"> GOV.UK</span>
             </span>
+          </a>
+        </div>
+        <div class="govuk-header__content">
+          <a
+            href="/"
+            className="govuk-header__link govuk-header__link--service-name"
+          >
+            Research Lab Booking
           </a>
         </div>
       </div>

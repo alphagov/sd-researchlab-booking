@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styles from '../css/Footer.module.css';
+
 const Footer = () => {
   return (
     <footer className="govuk-footer " role="contentinfo">
@@ -27,6 +29,7 @@ const Footer = () => {
                 href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
                 rel="license"
               >
+                {' '}
                 Open Government Licence v3.0
               </a>
               , except where otherwise stated
@@ -34,10 +37,10 @@ const Footer = () => {
           </div>
           <div className="govuk-footer__meta-item">
             <a
-              className="govuk-footer__link govuk-footer__copyright-logo"
+              className={`govuk-footer__link ${styles.copyright}`}
               href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
             >
-              <image src="../assets/images/govuk-crest.png" />© Crown copyright
+              © Crown copyright
             </a>
           </div>
         </div>

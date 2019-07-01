@@ -2,6 +2,7 @@ import React from 'react';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import Alpha from '../components/banners/alpha';
 import './layout.scss';
 
 import { initAll } from 'govuk-frontend';
@@ -9,9 +10,10 @@ import { initAll } from 'govuk-frontend';
 const Layout = ({ children }) => {
   initAll();
   return (
-    <div className="govuk-template__body">
+    <div className="govuk-template__body govuk-rlab_body">
       <Header />
       <div className="govuk-width-container">
+        <Alpha />
         <main className="govuk-main-wrapper " id="main-content" role="main">
           {children}
         </main>
