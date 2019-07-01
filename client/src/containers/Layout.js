@@ -6,11 +6,10 @@ import './layout.scss';
 
 import { initAll } from 'govuk-frontend';
 
-initAll();
-
 const Layout = ({ children }) => {
+  initAll();
   return (
-    <>
+    <div className="govuk-template__body">
       <Header />
       <div className="govuk-width-container">
         <main className="govuk-main-wrapper " id="main-content" role="main">
@@ -19,7 +18,7 @@ const Layout = ({ children }) => {
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 };
 

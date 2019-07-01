@@ -4,14 +4,14 @@ const Footer = () => {
   return (
     <footer className="govuk-footer " role="contentinfo">
       <div className="govuk-width-container ">
-        <div class="govuk-footer__meta">
+        <div className="govuk-footer__meta">
           <div className="govuk-footer__meta-item govuk-footer__meta-item--grow">
             <svg
               role="presentation"
               focusable="false"
-              class="govuk-footer__licence-logo"
+              className="govuk-footer__licence-logo"
               xmlns="http://www.w3.org/2000/svg"
-              viewbox="0 0 483.2 195.7"
+              viewBox="0 0 483.2 195.7"
               height="17"
               width="41"
             >

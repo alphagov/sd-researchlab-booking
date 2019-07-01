@@ -1,14 +1,9 @@
-import React, { Component } from 'react';
-import styles from './Landing.module.css';
+import React from 'react';
 
-class Landing extends Component {
-  render() {
-    return (
-      <div className={styles.wrapper}>
-        <h1>Home Page for Research Lab Booking</h1>
-      </div>
-    );
-  }
-}
+const Landing = () => {
+  return (
+    <h1 className="govuk-heading-xl">Home Page for Research Lab Booking</h1>
+  );
+};
 
 export default Landing;
