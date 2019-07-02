@@ -1,6 +1,8 @@
 import React from 'react';
 
 import Content from '../components/landing/Content';
+import RelatedContent from '../components/landing/RelatedContent';
+import LabDetails from '../components/lab/LabDetails';
 
 import styles from '../css/Landing.module.css';
 
@@ -41,7 +43,15 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      <Content />
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          <Content />
+          <LabDetails />
+        </div>
+        <div className="govuk-grid-column-one-third">
+          <RelatedContent />
+        </div>
+      </div>
     </>
   );
 };
