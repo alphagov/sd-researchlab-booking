@@ -8,7 +8,7 @@ import {
 
 // import withSession from './components/withSession';
 import Landing from './containers/Landing';
-// import Register from './components/auth/Register';
+import Register from './containers/Register';
 import RegisterConfirm from './components/auth/RegisterConfirm';
 import RegisterLink from './components/auth/RegisterLink';
 import Login2FA from './components/auth/Login2FA';
@@ -24,6 +24,7 @@ const Root = () => (
           exact
           render={() => <Register refetch={refetch} />}
         /> */}
+      <Route path="/register-to-book-the-lab" component={Register} />
       <Route path="/register/confirm/:_id" component={RegisterConfirm} />
       <Route path="/register/verify" component={RegisterLink} />
       <Route path="/login/2fa/:id" component={Login2FA} />
