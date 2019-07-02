@@ -34,7 +34,7 @@ const Header = () => {
             </span>
           </a>
         </div>
-        <div class="govuk-header__content">
+        <div className="govuk-header__content">
           <a
             href="/"
             className="govuk-header__link govuk-header__link--service-name"
