@@ -39,7 +39,7 @@ const Header = () => {
             href="/"
             className="govuk-header__link govuk-header__link--service-name"
           >
-            Research Lab Booking
+            Book the GDS user research lab
           </a>
         </div>
       </div>

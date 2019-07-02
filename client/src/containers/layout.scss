@@ -13,6 +13,54 @@ $govuk-global-styles: true;
   min-height: 100vh;
 }
 
-main {
-  height: 70vh;
+// main {
+//   height: 70vh;
+// }
+
+.responsive-bottom-margin {
+  margin-bottom: 1rem;
+}
+
+.list-title {
+  color: #0b0c0c;
+  font-family: 'nta', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+  text-align: left;
+}
+
+.content-list-item {
+  margin-left: 25px;
+  padding-right: 25px;
+  line-height: 1.3;
+  list-style-type: none;
+  font-size: 0.8rem;
+}
+
+.content-list-item-link {
+  text-decoration: none;
+}
+
+.address {
+  border-left: 1px solid #bfc1c3;
+  padding-left: 1rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 641px) {
+  .responsive-bottom-margin {
+    margin-bottom: 3rem;
+  }
+  .list-title {
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  .content-list-item {
+    padding-top: 7.5px;
+  }
 }
