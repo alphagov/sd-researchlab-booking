@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm } from '../../hooks/useForm';
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  password: ''
+};
 
 const RegisterForm = () => {
-  const [firstname, setFirstName] = useState({});
-  const [lastname, setLastName] = useState({});
-  const [emailAddr, setEmailAddr] = useState({});
+  const [values, handleSubmit, handleChange] = useForm(initialState);
 
   return (
     <div className="govuk-grid-column-two-thirds">
@@ -11,7 +18,7 @@ const RegisterForm = () => {
         <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
           <h2 className="govuk-fieldset__heading">Enter your details</h2>
         </legend>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div className="govuk-form-group">
             <label htmlFor="firstName" className="govuk-label">
               First name
@@ -21,9 +28,8 @@ const RegisterForm = () => {
               className="govuk-input govuk-!-width-two-thirds"
               name="firstName"
               id="firstName"
-              onChange={({ target: { value } }) =>
-                setFirstName({ value, valid: value.length > 0 })
-              }
+              onChange={handleChange}
+              value={values.firstName}
             />
           </div>
           <div className="govuk-form-group">
@@ -35,9 +41,8 @@ const RegisterForm = () => {
               className="govuk-input govuk-!-width-two-thirds"
               name="lastName"
               id="lastName"
-              onChange={({ target: { value } }) =>
-                setLastName({ value, valid: value.length > 0 })
-              }
+              onChange={handleChange}
+              value={values.lastName}
             />
           </div>
           <div className="govuk-form-group">
@@ -52,20 +57,21 @@ const RegisterForm = () => {
               className="govuk-input"
               name="email"
               id="email"
-              onChange={({ target: { value } }) =>
-                setEmailAddr({ value, valid: value.length > 0 })
-              }
+              onChange={handleChange}
+              value={values.email}
             />
           </div>
           <div className="govuk-form-group">
-            <label htmlFor="mobile-phone" className="govuk-label">
+            <label htmlFor="mobilePhone" className="govuk-label">
               Mobile phone number
             </label>
             <input
               type="text"
               className="govuk-input govuk-!-width-two-thirds"
-              name="mobile-phone"
-              id="mobile-phone"
+              name="mobilePhone"
+              id="mobilePhone"
+              onChange={handleChange}
+              value={values.mobilePhone}
             />
           </div>
           <div className="govuk-form-group">
@@ -77,6 +83,8 @@ const RegisterForm = () => {
               className="govuk-input govuk-!-width-two-thirds"
               name="password"
               id="password"
+              onChange={handleChange}
+              value={values.password}
             />
           </div>
           <button type="submit" className="govuk-button">
