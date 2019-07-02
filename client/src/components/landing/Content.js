@@ -16,7 +16,7 @@ const Content = () => {
                 Lab facilities
               </a>
             </li>
-            <li className="content-list-item .content-list-item-link">
+            <li className="content-list-item">
               <a
                 href="#opening-hours"
                 className="govuk-link content-list-item-link"
