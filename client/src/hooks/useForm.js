@@ -3,20 +3,33 @@ import { useState } from 'react';
 export const useForm = (initialValues) => {
   const [values, setValues] = useState(initialValues);
 
-  const handleSubmit = (event) => {
-    if (event) event.preventDefault();
-    console.log(values);
-  };
+  // const handleSubmit = (event) => {
+  //   if (event) event.preventDefault();
+  //   console.log(values);
+  // };
 
   const handleChange = (event) => {
-    console.log(event.target);
     const { name, value } = event.target;
     event.persist();
-    setValues({
-      ...values,
-      [name]: value
-    });
+
+    if (value.length === 0) {
+      setValues({
+        ...values,
+        [name]: {
+          value,
+          valid: false
+        }
+      });
+    } else {
+      setValues({
+        ...values,
+        [name]: {
+          value,
+          valid: true
+        }
+      });
+    }
   };
 
-  return [values, handleSubmit, handleChange];
+  return [values, handleChange];
 };
