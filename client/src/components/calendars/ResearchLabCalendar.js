@@ -4,8 +4,8 @@ import moment from 'moment';
 import { ApolloConsumer } from 'react-apollo';
 import { GET_CALENDAR_FREE_BUSY } from '../../queries';
 
-import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
-import styles from './ResearchLabCalendar.module.css';
+// import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
+import styles from '../../css/ResearchLabCalendar.module.css';
 
 const localizer = momentLocalizer(moment);
 
