@@ -110,13 +110,14 @@ const RegisterForm = () => {
               </span>
             )}
             <input
-              type="text"
+              type="tel"
               className={`govuk-input govuk-!-width-two-thirds ${!values
                 .mobilePhone.valid && `govuk-input--error`}`}
               name="mobilePhone"
               id="mobilePhone"
               onChange={handleChange}
               value={values.mobilePhone.value}
+              autoComplete="tel"
             />
           </div>
           <div
