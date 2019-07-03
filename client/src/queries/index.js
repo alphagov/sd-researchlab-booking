@@ -106,14 +106,14 @@ export const REGISTER_USER = gql`
     $firstName: String!
     $lastName: String!
     $email: String!
-    $phone: String!
+    $mobilePhone: String!
     $password: String!
   ) {
     registerUser(
       firstName: $firstName
       lastName: $lastName
       email: $email
-      phone: $phone
+      phone: $mobilePhone
       password: $password
     ) {
       _id

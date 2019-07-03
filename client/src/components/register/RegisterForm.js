@@ -2,15 +2,15 @@ import React from 'react';
 import { useForm } from '../../hooks/useForm';
 
 const initialState = {
-  firstName: { value: '', valid: true },
-  lastName: { value: '', valid: true },
-  email: { value: '', valid: true },
-  mobilePhone: { value: '', valid: true },
-  password: { value: '', valid: true }
+  firstName: { value: '', valid: true, reason: '' },
+  lastName: { value: '', valid: true, reason: '' },
+  email: { value: '', valid: true, reason: '' },
+  mobilePhone: { value: '', valid: true, reason: '' },
+  password: { value: '', valid: true, reason: '' }
 };
 
 const RegisterForm = () => {
-  const [values, handleChange] = useForm(initialState);
+  const [values, validateInputs, handleChange] = useForm(initialState);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -126,10 +126,16 @@ const RegisterForm = () => {
             <label htmlFor="password" className="govuk-label">
               Password
             </label>
+            <span id="password-hint" className="govuk-hint">
+              Your password must be a least 10 characters in length
+            </span>
             {!values.password.valid && (
               <span id="event-name-error" className="govuk-error-message">
-                <span className="govuk-visually-hidden">Error:</span> Enter a
-                password
+                <span className="govuk-visually-hidden">Error:</span>
+                {values.password.reason
+                  ? values.password.reason
+                  : `Enter a
+                password`}
               </span>
             )}
             <input
@@ -139,6 +145,7 @@ const RegisterForm = () => {
               name="password"
               id="password"
               onChange={handleChange}
+              onBlur={validateInputs}
               value={values.password.value}
             />
           </div>
