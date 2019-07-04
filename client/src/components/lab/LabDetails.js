@@ -1,12 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const LabDetails = ({ lab }) => {
   const {
     resourceName,
     building: { buildingName },
     capacity,
-    resourceId,
     floorName
   } = lab;
   return (
@@ -29,15 +27,13 @@ const LabDetails = ({ lab }) => {
               {buildingName} on floor {floorName}
             </dd>
           </div>
+          <div className="govuk-summary-list__row">
+            <dt className="govuk-summary-list__key">Details</dt>
+            <dd className="govuk-summary-list__value">
+              Typically booked for 80% of the week.
+            </dd>
+          </div>
         </dl>
-        <Link
-          to={`/book-a-research-lab/${resourceId}`}
-          role="button"
-          draggable="false"
-          className="govuk-button govuk-button--start"
-        >
-          Book this lab
-        </Link>
       </div>
     </div>
   );

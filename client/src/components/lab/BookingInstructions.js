@@ -22,13 +22,22 @@ const BookingInstructions = () => {
       </p>
 
       <p className="govuk-body">
-        In order to use this service your will need to{' '}
+        In order to use this service (if you haven't already done so) you will
+        need to{' '}
         <Link to="/register-to-book-the-lab" className="govuk-link">
           register
         </Link>
-        . During the registration you will need access to a mobile phone to
-        complete two factor authentication.
+        . During the registration you will need to confirm your email address
+        and have access to a mobile phone to complete two factor authentication.
       </p>
+      <Link
+        to="/book-a-research-lab"
+        role="button"
+        draggable="false"
+        className="govuk-button govuk-button--start"
+      >
+        Book a lab
+      </Link>
     </div>
   );
 };

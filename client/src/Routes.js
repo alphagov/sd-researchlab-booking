@@ -30,7 +30,7 @@ const Root = () => (
       <Route path="/register/verify" component={RegisterLink} />
       <Route path="/login/2fa/:id" component={Login2FA} />
       <Route path="/gds-research-labs" component={Labs} />
-      <Route path="/book-a-research-lab/:id" component={LabBooking} />
+      <Route path="/book-a-research-lab" component={LabBooking} />
       <Redirect to="/" />
     </Switch>
   </Router>

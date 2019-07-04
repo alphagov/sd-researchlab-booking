@@ -10,7 +10,7 @@ const resolvers = {
     },
     getResourceCalendarList: async (_, args, { dataSources }) => {
       const resCals = await dataSources.googleResourcesAPI.getResourceCalendarByType();
-      console.log(resCals);
+      // console.log(resCals);
       const orderedCals = resCals.sort((a, b) =>
         a.resourceName.localeCompare(b.resourceName)
       );
