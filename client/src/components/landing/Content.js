@@ -26,10 +26,10 @@ const Content = () => {
             </li>
             <li className="content-list-item">
               <Link
-                to="/book-the-lab"
+                to="/gds-research-labs"
                 className="govuk-link content-list-item-link"
               >
-                Book the lab
+                The GDS labs
               </Link>
             </li>
           </ol>

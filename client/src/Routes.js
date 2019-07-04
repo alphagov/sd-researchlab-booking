@@ -28,7 +28,7 @@ const Root = () => (
       <Route path="/register/confirm/:_id" component={RegisterConfirm} />
       <Route path="/register/verify" component={RegisterLink} />
       <Route path="/login/2fa/:id" component={Login2FA} />
-      <Route path="/book-the-lab" component={Labs} />
+      <Route path="/gds-research-labs" component={Labs} />
       <Redirect to="/" />
     </Switch>
   </Router>
