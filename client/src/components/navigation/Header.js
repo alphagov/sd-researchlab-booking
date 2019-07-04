@@ -6,8 +6,8 @@ const Header = () => {
     <header className="govuk-header " role="banner" data-module="header">
       <div className="govuk-header__container govuk-width-container">
         <div className="govuk-header__logo">
-          <a
-            href="/"
+          <NavLink
+            to="/"
             className="govuk-header__link govuk-header__link--homepage"
           >
             <span className="govuk-header__logotype">
@@ -33,15 +33,15 @@ const Header = () => {
               </svg>
               <span className="govuk-header__logotype-text"> GOV.UK</span>
             </span>
-          </a>
+          </NavLink>
         </div>
         <div className="govuk-header__content">
-          <a
+          <NavLink
             href="/"
             className="govuk-header__link govuk-header__link--service-name"
           >
             Book the GDS user research lab
-          </a>
+          </NavLink>
         </div>
       </div>
     </header>
