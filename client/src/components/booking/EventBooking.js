@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import styles from './EventBooking.module.css';
+// import styles from './EventBooking.module.css';
 
 class EventBooking extends Component {
   state = {

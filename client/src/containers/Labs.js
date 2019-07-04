@@ -1,4 +1,8 @@
 import React from 'react';
+import { Query } from 'react-apollo';
+import { GET_RESEARCH_LABS } from '../queries';
+
+import Spinner from '../components/shared/Spinner';
 
 import BookingInstructions from '../components/lab/BookingInstructions';
 
@@ -6,6 +10,7 @@ const Lab = () => {
   return (
     <div className="govuk-grid-row">
       <BookingInstructions />
+      <Spinner />
     </div>
   );
 };
