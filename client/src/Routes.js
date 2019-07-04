@@ -14,6 +14,7 @@ import RegisterLink from './components/auth/RegisterLink';
 import Login2FA from './components/auth/Login2FA';
 
 import Labs from './containers/Labs';
+import LabBooking from './containers/LabBooking';
 
 const Root = () => (
   <Router>
@@ -29,6 +30,7 @@ const Root = () => (
       <Route path="/register/verify" component={RegisterLink} />
       <Route path="/login/2fa/:id" component={Login2FA} />
       <Route path="/gds-research-labs" component={Labs} />
+      <Route path="/book-a-research-lab/:id" component={LabBooking} />
       <Redirect to="/" />
     </Switch>
   </Router>
