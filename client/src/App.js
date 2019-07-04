@@ -3,11 +3,7 @@ import Layout from './containers/Layout';
 import Routes from './Routes';
 
 const App = () => {
-  return (
-    <Layout>
-      <Routes />
-    </Layout>
-  );
+  return <Layout />;
 };
 
 export default App;
