@@ -15,12 +15,13 @@ const LabList = () => {
         {({ loading, error, data }) => {
           if (loading) return <Spinner />;
           if (error) return <Error error={error} />;
-          const { success, labs } = data.getResourceResearchLab;
-          console.log(labs);
+          // console.log(data);
+          const { success, calendars } = data.getResourceCalendarList;
+          // console.log(labs);
           if (!success) {
             return <div>No labs found</div>;
           }
-          return labs.map((lab) => (
+          return calendars.map((lab) => (
             <LabDetails key={lab.resourceId} lab={lab} />
           ));
         }}

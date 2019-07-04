@@ -9,8 +9,12 @@ const resolvers = {
       return { success: true, event: addEvent };
     },
     getResourceCalendarList: async (_, args, { dataSources }) => {
-      const resCals = await dataSources.googleResourcesAPI.getResourceCalendars();
-      return { success: true, calendars: resCals };
+      const resCals = await dataSources.googleResourcesAPI.getResourceCalendarByType();
+      console.log(resCals);
+      const orderedCals = resCals.sort((a, b) =>
+        a.resourceName.localeCompare(b.resourceName)
+      );
+      return { success: true, calendars: orderedCals };
     },
     getResourceBuildingList: async (_, args, { dataSources }) => {
       const resBuildings = await dataSources.googleResourcesAPI.getResourceBuildings();

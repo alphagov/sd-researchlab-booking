@@ -2,23 +2,17 @@ import { gql } from 'apollo-boost';
 
 export const GET_RESEARCH_LABS = gql`
   query {
-    getResourceResearchLab {
+    getResourceCalendarList {
       success
-      labs {
+      calendars {
         resourceId
         resourceName
         resourceEmail
-        capacity
+        resourceType
         floorName
         building {
-          buildingId
           buildingName
           description
-        }
-        freeBusy {
-          title
-          start
-          end
         }
       }
     }
