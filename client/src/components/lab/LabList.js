@@ -9,7 +9,7 @@ import { GET_RESEARCH_LABS } from '../../queries';
 
 const LabList = () => {
   return (
-    <div className="govuk-grid-column">
+    <div className="govuk-grid-column-full">
       <h1 className="govuk-heading-xl">The GDS Labs</h1>
       <Query query={GET_RESEARCH_LABS}>
         {({ loading, error, data }) => {

@@ -8,12 +8,10 @@ export const GET_RESEARCH_LABS = gql`
         resourceId
         resourceName
         resourceEmail
-        resourceType
         capacity
         floorName
         building {
           buildingName
-          description
         }
       }
     }
