@@ -24,8 +24,8 @@
 /* VARIABLES */
 
 :root {
-  --main-color: #1a8fff;
-  --text-color: #777;
+  --main-color: #005ea5;
+  --text-color: black;
   --text-color-light: #ccc;
   --border-color: #eee;
   --bg-color: #f9f9f9;
@@ -34,7 +34,7 @@
 
 /* GENERAL */
 
-/* * {
+* {
   box-sizing: border-box;
 }
 
@@ -58,7 +58,7 @@ header {
 header #logo {
   font-size: 175%;
   text-align: center;
-  color: var(--main-color);
+  color: #005ea5;
   line-height: 1;
 }
 
@@ -71,7 +71,7 @@ main {
   margin: 0 auto;
   margin-top: 5em;
   max-width: 50em;
-} */
+}
 
 /* GRID */
 
@@ -135,7 +135,7 @@ main {
 .calendar .header .icon:hover {
   transform: scale(1.75);
   transition: 0.25s ease-out;
-  color: var(--main-color);
+  color: #005ea5;
 }
 
 .calendar .header .icon:first-of-type {
@@ -172,7 +172,7 @@ main {
 
 .calendar .body .selected {
   border-left: 10px solid transparent;
-  border-image: linear-gradient(45deg, #1a8fff 0%, #53cbf1 40%);
+  border-image: linear-gradient(45deg, #005ea5 0%, #005ea5 40%);
   border-image-slice: 1;
 }
 
@@ -205,7 +205,7 @@ main {
 .calendar .body .cell .bg {
   font-weight: 700;
   line-height: 1;
-  color: var(--main-color);
+  color: #005ea5;
   opacity: 0;
   font-size: 8em;
   position: absolute;
