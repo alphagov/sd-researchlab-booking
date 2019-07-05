@@ -28,7 +28,12 @@ const LabCalendarList = () => {
               return <div>No lab calendars found</div>;
             }
             return calendars.map((calendar) => (
-              <LabCalendar key={calendar.resourceId} calendar={calendar} />
+              <div
+                className="govuk-grid-column-one-half"
+                key={calendar.resourceId}
+              >
+                <LabCalendar calendar={calendar} />
+              </div>
             ));
           }}
         </Query>

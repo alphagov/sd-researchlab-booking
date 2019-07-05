@@ -102,14 +102,16 @@ const LabCalendar = ({ calendar }) => {
   };
 
   return (
-    <div className="govuk-grid-column-one-half">
+    // <div className="govuk-grid-column-one-half">
+    <>
       <h3 className="govuk-heading-m">{resourceName}</h3>
       <div className={styles.calendar}>
         {renderHeader()}
         {renderDays()}
         {renderCells()}
       </div>
-    </div>
+    </>
+    // </div>
   );
 };
 
