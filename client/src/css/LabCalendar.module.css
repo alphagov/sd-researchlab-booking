@@ -203,6 +203,12 @@ main {
   pointer-events: none;
 }
 
+.calendar .body .disabledBusy {
+  color: white;
+  background-color: #b10e1e;
+  pointer-events: none;
+}
+
 .calendar .body .cell .bg {
   font-weight: 700;
   line-height: 1;

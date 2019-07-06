@@ -33,7 +33,12 @@ const LabCalendarCells = ({ month, calendar }) => {
       {({ loading, error, data }) => {
         if (loading) return <Spinner />;
         if (error) return <Error error={error} />;
-        console.log(data);
+
+        const { busy } = data.getCalendarFreeBusyList.calendars[0];
+
+        const busyDays = busy.map((bDay) =>
+          dateFns.format(bDay.start, dateFormat)
+        );
 
         let days = [];
         let day = startDate;
@@ -42,6 +47,7 @@ const LabCalendarCells = ({ month, calendar }) => {
           for (let i = 0; i < 7; i++) {
             formattedDate = dateFns.format(day, dateFormat);
             const cloneDay = day;
+
             days.push(
               <div
                 className={`${styles.col} ${styles.cell} ${
@@ -50,7 +56,7 @@ const LabCalendarCells = ({ month, calendar }) => {
                     : dateFns.isSameDay(day, selectedDate)
                     ? `${styles.selected}`
                     : ''
-                }`}
+                } ${busyDays.includes(formattedDate) && styles.disabledBusy}`}
                 key={day}
                 onClick={() => onDateClick(dateFns.parse(cloneDay))}
               >
