@@ -37,7 +37,7 @@ const Header = () => {
         </div>
         <div className="govuk-header__content">
           <NavLink
-            href="/"
+            to="/"
             className="govuk-header__link govuk-header__link--service-name"
           >
             Book the GDS user research lab
