@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import dateFns from 'date-fns';
 import styles from '../../css/LabCalendar.module.css';
 
+import { Query } from 'react-apollo';
+import { GET_CALENDAR_FREE_BUSY } from '../../queries';
+
+import Spinner from '../shared/Spinner';
+import Error from '../../containers/Error';
+
 const LabCalendarCells = ({ month, calendar }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const monthStart = dateFns.startOfMonth(month);
@@ -15,41 +21,57 @@ const LabCalendarCells = ({ month, calendar }) => {
   const onDateClick = (day) => {
     setSelectedDate(day);
   };
+  return (
+    <Query
+      query={GET_CALENDAR_FREE_BUSY}
+      variables={{
+        start: startDate,
+        end: endDate,
+        items: calendar.resourceEmail
+      }}
+    >
+      {({ loading, error, data }) => {
+        if (loading) return <Spinner />;
+        if (error) return <Error error={error} />;
+        console.log(data);
 
-  let days = [];
-  let day = startDate;
-  let formattedDate = '';
-  while (day <= endDate) {
-    for (let i = 0; i < 7; i++) {
-      formattedDate = dateFns.format(day, dateFormat);
-      const cloneDay = day;
-      days.push(
-        <div
-          className={`${styles.col} ${styles.cell} ${
-            !dateFns.isSameMonth(day, monthStart)
-              ? `${styles.disabled}`
-              : dateFns.isSameDay(day, selectedDate)
-              ? `${styles.selected}`
-              : ''
-          }`}
-          key={day}
-          onClick={() => onDateClick(dateFns.parse(cloneDay))}
-        >
-          <span className={styles.number}>{formattedDate}</span>
-          <span className={styles.bg}>{formattedDate}</span>
-        </div>
-      );
+        let days = [];
+        let day = startDate;
+        let formattedDate = '';
+        while (day <= endDate) {
+          for (let i = 0; i < 7; i++) {
+            formattedDate = dateFns.format(day, dateFormat);
+            const cloneDay = day;
+            days.push(
+              <div
+                className={`${styles.col} ${styles.cell} ${
+                  !dateFns.isSameMonth(day, monthStart)
+                    ? `${styles.disabled}`
+                    : dateFns.isSameDay(day, selectedDate)
+                    ? `${styles.selected}`
+                    : ''
+                }`}
+                key={day}
+                onClick={() => onDateClick(dateFns.parse(cloneDay))}
+              >
+                <span className={styles.number}>{formattedDate}</span>
+                <span className={styles.bg}>{formattedDate}</span>
+              </div>
+            );
 
-      day = dateFns.addDays(day, 1);
-    }
-    rows.push(
-      <div className={styles.row} key={day}>
-        {days}
-      </div>
-    );
-    days = [];
-  }
-  return <div className={styles.body}>{rows}</div>;
+            day = dateFns.addDays(day, 1);
+          }
+          rows.push(
+            <div className={styles.row} key={day}>
+              {days}
+            </div>
+          );
+          days = [];
+        }
+        return <div className={styles.body}>{rows}</div>;
+      }}
+    </Query>
+  );
 };
 
 export default LabCalendarCells;
