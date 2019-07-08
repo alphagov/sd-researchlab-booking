@@ -2,7 +2,9 @@ import React from 'react';
 import { useForm } from '../../hooks/useForm';
 
 const initialState = {
-  firstName: { value: '', valid: true, reason: '' }
+  firstName: { value: '', valid: true, reason: '' },
+  lastName: { value: '', valid: true, reason: '' },
+  email: { value: '', valid: true, reason: '' }
 };
 
 const BookingForm = () => {
@@ -42,6 +44,55 @@ const BookingForm = () => {
               id="firstName"
               onChange={handleChange}
               value={values.firstName.value}
+            />
+          </div>
+          <div
+            className={`govuk-form-group ${!values.lastName.valid &&
+              `govuk-form-group--error`}`}
+          >
+            <label htmlFor="lastName" className="govuk-label">
+              Last name
+            </label>
+            {!values.lastName.valid && (
+              <span id="event-name-error" className="govuk-error-message">
+                <span className="govuk-visually-hidden">Error:</span> Enter your
+                last name
+              </span>
+            )}
+            <input
+              type="text"
+              className={`govuk-input govuk-!-width-two-thirds ${!values
+                .lastName.valid && `govuk-input--error`}`}
+              name="lastName"
+              id="lastName"
+              onChange={handleChange}
+              value={values.lastName.value}
+            />
+          </div>
+          <div
+            className={`govuk-form-group ${!values.email.valid &&
+              `govuk-form-group--error`}`}
+          >
+            <label htmlFor="email" className="govuk-label">
+              Email
+            </label>
+            <span id="email-hint" className="govuk-hint">
+              Contact email address for session owner.
+            </span>
+            {!values.email.valid && (
+              <span id="event-name-error" className="govuk-error-message">
+                <span className="govuk-visually-hidden">Error:</span> Enter your
+                email address
+              </span>
+            )}
+            <input
+              type="email"
+              className={`govuk-input ${!values.email.valid &&
+                `govuk-input--error`}`}
+              name="email"
+              id="email"
+              onChange={handleChange}
+              value={values.email.value}
             />
           </div>
         </form>
