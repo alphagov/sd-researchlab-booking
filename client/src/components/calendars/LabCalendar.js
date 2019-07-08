@@ -49,7 +49,7 @@ const LabCalendar = ({ calendar }) => {
             end: endDate,
             items: calendar.resourceEmail
           }}
-          pollInterval={60000}
+          // pollInterval={60000}
         >
           {({ loading, error, data }) => {
             if (loading) return <Spinner />;

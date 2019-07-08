@@ -1,6 +1,6 @@
 import React from 'react';
 
-import BookingForm from '../components/booking/BookingForm';
+import BookingFormName from '../components/booking/BookingFormName';
 import LabCalendarList from '../components/calendars/LabCalendarList';
 
 const LabBooking = () => {
@@ -15,7 +15,7 @@ const LabBooking = () => {
         <LabCalendarList />
       </div>
       <div className="govuk-grid-row">
-        <BookingForm />
+        <BookingFormName />
       </div>
     </>
   );

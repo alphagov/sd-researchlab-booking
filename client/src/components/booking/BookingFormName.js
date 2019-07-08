@@ -7,20 +7,25 @@ const initialState = {
   email: { value: '', valid: true, reason: '' }
 };
 
-const BookingForm = () => {
+const BookingFormName = () => {
   const [values, handleChange] = useForm(initialState);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(values);
+    // if everything works ok move to next part of form
   };
+
+  // console.log(props);
 
   return (
     <div className="govuk-grid-column-two-thirds">
       <h2 className="govuk-heading-l">Lab booking form</h2>
       <fieldset className="govuk-fieldset">
         <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
-          <h3 className="govuk-fieldset__heading">Enter your details</h3>
+          <h3 className="govuk-fieldset__heading">
+            Enter details of the person this booking is for
+          </h3>
         </legend>
         <form onSubmit={(event) => handleSubmit(event)}>
           <div
@@ -95,10 +100,13 @@ const BookingForm = () => {
               value={values.email.value}
             />
           </div>
+          <button to="/booking-details" className="govuk-button">
+            Save and continue
+          </button>
         </form>
       </fieldset>
     </div>
   );
 };
 
-export default BookingForm;
+export default BookingFormName;
