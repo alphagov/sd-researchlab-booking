@@ -1,7 +1,9 @@
 import React from 'react';
 
-import BookingFormName from '../components/booking/BookingFormName';
 import LabCalendarList from '../components/calendars/LabCalendarList';
+
+import BookingFormName from '../components/booking/BookingFormName';
+import BookingFormDate from '../components/booking/BookingFormDate';
 
 const LabBooking = () => {
   return (
@@ -11,11 +13,12 @@ const LabBooking = () => {
           <div className="govuk-heading-xl">Book a research lab</div>
         </div>
       </div>
+      {/* <div className="govuk-grid-row"> */}
+      <LabCalendarList />
+      {/* </div> */}
       <div className="govuk-grid-row">
-        <LabCalendarList />
-      </div>
-      <div className="govuk-grid-row">
-        <BookingFormName />
+        {/* <BookingFormName /> */}
+        <BookingFormDate />
       </div>
     </>
   );

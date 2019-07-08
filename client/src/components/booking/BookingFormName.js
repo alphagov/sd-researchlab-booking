@@ -100,7 +100,7 @@ const BookingFormName = () => {
               value={values.email.value}
             />
           </div>
-          <button to="/booking-details" className="govuk-button">
+          <button type="submit" className="govuk-button">
             Save and continue
           </button>
         </form>
