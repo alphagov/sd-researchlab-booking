@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 
 const initialState = {
@@ -7,13 +8,14 @@ const initialState = {
   email: { value: '', valid: true, reason: '' }
 };
 
-const BookingFormName = () => {
+const BookingFormName = ({ history }) => {
   const [values, handleChange] = useForm(initialState);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(values);
     // if everything works ok move to next part of form
+    history.push('/book-a-research-lab/booking-details');
   };
 
   // console.log(props);

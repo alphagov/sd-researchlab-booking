@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-const BookingFormDate = () => {
+const BookingFormDate = ({ history }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // console.log(values);
     // if everything works ok move to next part of form
+    history.push('/book-a-research-lab/booking-name');
   };
 
   return (
@@ -87,11 +88,10 @@ const BookingFormDate = () => {
               Save and continue
             </button>
           </form>
-          <Link to="/book-a-research-lab/booking-name">Next</Link>
         </fieldset>
       </div>
     </div>
   );
 };
 
-export default BookingFormDate;
+export default withRouter(BookingFormDate);

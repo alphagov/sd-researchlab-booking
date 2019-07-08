@@ -1,13 +1,13 @@
 import React from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import LabCalendarList from '../components/calendars/LabCalendarList';
 
 import BookingFormDate from '../components/booking/BookingFormDate';
 import BookingFormName from '../components/booking/BookingFormName';
+import BookingFormDetails from '../components/booking/BookingFormDetails';
 
-const LabBooking = ({ match, children }) => {
-  console.log(match);
+const LabBooking = () => {
   return (
     <>
       <div className="govuk-grid-row">
@@ -19,15 +19,18 @@ const LabBooking = ({ match, children }) => {
       <div className="govuk-grid-row">
         <Switch>
           <Route
-            path="/book-a-research-lab/booking-date"
+            path="/book-a-research-lab/start"
             component={BookingFormDate}
           />
           <Route
             path="/book-a-research-lab/booking-name"
             component={BookingFormName}
           />
+          <Route
+            path="/book-a-research-lab/booking-details"
+            component={BookingFormDetails}
+          />
         </Switch>
-        <Link to="/book-a-research-lab/booking-date">Booking Date</Link>
       </div>
     </>
   );

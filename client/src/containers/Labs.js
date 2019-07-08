@@ -1,7 +1,7 @@
 import React from 'react';
 
 import LabList from '../components/lab/LabList';
-import BookingInstructions from '../components/lab/BookingInstructions';
+import BookingInstructions from '../components/booking/BookingInstructions';
 
 const Lab = () => {
   return (

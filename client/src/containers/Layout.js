@@ -19,14 +19,19 @@ import Labs from './Labs';
 import LabBooking from './LabBooking';
 import BookingFormName from '../components/booking/BookingFormName';
 import BookingFormDate from '../components/booking/BookingFormDate';
+import BookingFormDetails from '../components/booking/BookingFormDetails';
 
 const bookingFormRoutes = [
   {
     path: '/book-a-research-lab',
     component: LabBooking,
     routes: [
-      { path: '/book-a-research-lab/booking-date', component: BookingFormDate },
-      { path: '/book-a-research-lab/booking-name', component: BookingFormName }
+      { path: '/book-a-research-lab/start', component: BookingFormDate },
+      { path: '/book-a-research-lab/booking-name', component: BookingFormName },
+      {
+        path: '/book-a-research-lab/booking-details',
+        component: BookingFormDetails
+      }
     ]
   }
 ];
@@ -55,7 +60,11 @@ const Layout = () => {
             <Switch>
               <Route path="/" exact component={Landing} />
               <Route path="/gds-research-labs" component={Labs} />
-              {/* <Route path="/book-a-research-lab" component={LabBooking} exact /> */}
+              <Route
+                path="/book-a-research-lab/start"
+                exact
+                component={LabBooking}
+              />
               {bookingFormRoutes.map((route, i) => (
                 <RouteWithSubRoutes key={i} {...route} />
               ))}
