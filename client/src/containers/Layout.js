@@ -17,6 +17,31 @@ import Landing from './Landing';
 
 import Labs from './Labs';
 import LabBooking from './LabBooking';
+import BookingFormName from '../components/booking/BookingFormName';
+import BookingFormDate from '../components/booking/BookingFormDate';
+
+const bookingFormRoutes = [
+  {
+    path: '/book-a-research-lab',
+    component: LabBooking,
+    routes: [
+      { path: '/book-a-research-lab/booking-date', component: BookingFormDate },
+      { path: '/book-a-research-lab/booking-name', component: BookingFormName }
+    ]
+  }
+];
+
+const RouteWithSubRoutes = (route) => {
+  return (
+    <Route
+      path={route.path}
+      render={(props) => (
+        // pass the sub-routes down to keep nesting
+        <route.component {...props} routes={route.routes} />
+      )}
+    />
+  );
+};
 
 const Layout = () => {
   initAll();
@@ -30,7 +55,10 @@ const Layout = () => {
             <Switch>
               <Route path="/" exact component={Landing} />
               <Route path="/gds-research-labs" component={Labs} />
-              <Route path="/book-a-research-lab" component={LabBooking} />
+              {/* <Route path="/book-a-research-lab" component={LabBooking} exact /> */}
+              {bookingFormRoutes.map((route, i) => (
+                <RouteWithSubRoutes key={i} {...route} />
+              ))}
               <Redirect to="/" />
             </Switch>
           </main>

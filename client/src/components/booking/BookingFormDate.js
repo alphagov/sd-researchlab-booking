@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const BookingFormDate = () => {
   const handleSubmit = (event) => {
@@ -86,6 +87,7 @@ const BookingFormDate = () => {
               Save and continue
             </button>
           </form>
+          <Link to="/book-a-research-lab/booking-name">Next</Link>
         </fieldset>
       </div>
     </div>
