@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
+import { BookingContext } from '../../contexts/BookingContext';
 
 const BookingFormDate = ({ history }) => {
+  const [bookingValues, setBookingValues] = useContext(BookingContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // console.log(values);

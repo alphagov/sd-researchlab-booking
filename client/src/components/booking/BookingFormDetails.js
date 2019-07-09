@@ -29,11 +29,10 @@ const BookingFormDetails = ({ history }) => {
             <div style={{ marginBottom: '2rem' }}>
               <div className="govuk-form-group">
                 <label className="govuk-label" htmlFor="moreDetail">
-                  Can you provide more detail?
+                  Can you provide some detail?
                 </label>
                 <span id="more-detail-hint" className="govuk-hint">
-                  Do not include personal or financial information, like your
-                  National Insurance number or credit card details.
+                  Do not include personal information.
                 </span>
                 <textarea
                   className="govuk-textarea"
@@ -41,6 +40,8 @@ const BookingFormDetails = ({ history }) => {
                   name="moreDetail"
                   rows="5"
                   aria-describedby="more-detail-hint"
+                  onChange={handleChange}
+                  value={values.moreDetail.value}
                 />
               </div>
             </div>
