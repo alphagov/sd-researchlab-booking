@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
+import { BookingContext } from '../../contexts/BookingContext';
 
 const initialState = {
   firstName: { value: '', valid: true, reason: '' },
@@ -10,6 +11,9 @@ const initialState = {
 
 const BookingFormName = ({ history }) => {
   const [values, handleChange] = useForm(initialState);
+  const [bookingValues, setBookingValues] = useContext(BookingContext);
+
+  console.log(bookingValues);
 
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -1,14 +1,37 @@
 import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
+
+import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 
+const initialState = {
+  bookYear: { value: 2019, valid: true, reason: '' },
+  bookMonth: { value: 2, valid: true, reason: '' },
+  bookDay: { value: 1, valid: true, reason: '' }
+};
+
 const BookingFormDate = ({ history }) => {
+  const [values, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log(values);
+    const { bookDay, bookMonth, bookYear } = values;
+
+    // need to check these dates are valid
+
     // if everything works ok move to next part of form
+    // need to check if the date is available here
+
+    setBookingValues({
+      ...bookingValues,
+      bookedDay: bookDay.value,
+      bookedMonth: bookMonth.value,
+      bookedYear: bookYear.value
+    });
+
+    // console.log(bookingValues);
+
     history.push('/book-a-research-lab/booking-name');
   };
 
@@ -38,16 +61,18 @@ const BookingFormDate = ({ history }) => {
                 <div className="govuk-form-group">
                   <label
                     className="govuk-label govuk-date-input__label"
-                    htmlFor="booked-date-day"
+                    htmlFor="bookDay"
                   >
                     Day
                   </label>
                   <input
                     className="govuk-input govuk-date-input__input govuk-input--width-2"
-                    id="booked-date-day"
-                    name="booked-date-day"
+                    id="bookDay"
+                    name="bookDay"
                     type="number"
                     pattern="[0-9]*"
+                    onChange={handleChange}
+                    value={values.bookDay.value}
                   />
                 </div>
               </div>
@@ -55,16 +80,18 @@ const BookingFormDate = ({ history }) => {
                 <div className="govuk-form-group">
                   <label
                     className="govuk-label govuk-date-input__label"
-                    htmlFor="booked-date-month"
+                    htmlFor="bookMonth"
                   >
                     Month
                   </label>
                   <input
                     className="govuk-input govuk-date-input__input govuk-input--width-2"
-                    id="booked-date-month"
-                    name="booked-date-month"
+                    id="bookMonth"
+                    name="bookMonth"
                     type="number"
                     pattern="[0-9]*"
+                    onChange={handleChange}
+                    value={values.bookMonth.value}
                   />
                 </div>
               </div>
@@ -72,16 +99,18 @@ const BookingFormDate = ({ history }) => {
                 <div className="govuk-form-group">
                   <label
                     className="govuk-label govuk-date-input__label"
-                    htmlFor="booked-date-year"
+                    htmlFor="bookYear"
                   >
                     Year
                   </label>
                   <input
                     className="govuk-input govuk-date-input__input govuk-input--width-4"
-                    id="booked-date-year"
-                    name="booked-date-year"
+                    id="bookYear"
+                    name="bookYear"
                     type="number"
                     pattern="[0-9]*"
+                    onChange={handleChange}
+                    value={values.bookYear.value}
                   />
                   >
                 </div>
