@@ -27,6 +27,8 @@ export const useForm = (initialValues) => {
     const { name, value } = event.target;
     event.persist();
 
+    console.log(value);
+
     // check length of the value
     if (!checkLength(value)) {
       setValues({

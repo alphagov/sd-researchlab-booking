@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { withRouter } from 'react-router-dom';
 
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
@@ -11,12 +10,13 @@ const initialState = {
 };
 
 const BookingFormDate = ({ history }) => {
-  const [values, handleChange] = useForm(initialState);
+  const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const { bookDay, bookMonth, bookYear } = values;
+    console.log(values);
 
     // need to check these dates are valid
 
@@ -25,14 +25,12 @@ const BookingFormDate = ({ history }) => {
 
     setBookingValues({
       ...bookingValues,
-      bookedDay: bookDay.value,
-      bookedMonth: bookMonth.value,
-      bookedYear: bookYear.value
+      bookedDay: bookDay,
+      bookedMonth: bookMonth,
+      bookedYear: bookYear
     });
 
-    // console.log(bookingValues);
-
-    history.push('/book-a-research-lab/booking-name');
+    // history.push('/book-a-research-lab/booking-name');
   };
 
   return (
@@ -126,4 +124,4 @@ const BookingFormDate = ({ history }) => {
   );
 };
 
-export default withRouter(BookingFormDate);
+export default BookingFormDate;

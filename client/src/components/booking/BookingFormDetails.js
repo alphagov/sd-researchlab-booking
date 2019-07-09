@@ -7,7 +7,7 @@ const initialState = {
 };
 
 const BookingFormDetails = ({ history }) => {
-  const [values, handleChange] = useForm(initialState);
+  const [values, validateInputs, handleChange] = useForm(initialState);
 
   const handleSubmit = (event) => {
     event.preventDefault();

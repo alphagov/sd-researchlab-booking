@@ -1,13 +1,9 @@
 import React from 'react';
-import { BookingContextProvider } from './contexts/BookingContext';
+// import { BookingContextProvider } from './contexts/BookingContext';
 import Layout from './containers/Layout';
 
 const App = () => {
-  return (
-    <BookingContextProvider>
-      <Layout />
-    </BookingContextProvider>
-  );
+  return <Layout />;
 };
 
 export default App;

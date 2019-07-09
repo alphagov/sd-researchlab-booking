@@ -10,7 +10,7 @@ const initialState = {
 };
 
 const BookingFormName = ({ history }) => {
-  const [values, handleChange] = useForm(initialState);
+  const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 
   console.log(bookingValues);

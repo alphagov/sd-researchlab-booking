@@ -1,11 +1,8 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { BookingContextProvider } from '../contexts/BookingContext';
 
 import LabCalendarList from '../components/calendars/LabCalendarList';
-
-import BookingFormDate from '../components/booking/BookingFormDate';
-import BookingFormName from '../components/booking/BookingFormName';
-import BookingFormDetails from '../components/booking/BookingFormDetails';
+import BookingForm from '../components/booking/BookingForm';
 
 const LabBooking = () => {
   return (
@@ -17,20 +14,9 @@ const LabBooking = () => {
       </div>
       <LabCalendarList />
       <div className="govuk-grid-row">
-        <Switch>
-          <Route
-            path="/book-a-research-lab/start"
-            component={BookingFormDate}
-          />
-          <Route
-            path="/book-a-research-lab/booking-name"
-            component={BookingFormName}
-          />
-          <Route
-            path="/book-a-research-lab/booking-details"
-            component={BookingFormDetails}
-          />
-        </Switch>
+        <BookingContextProvider>
+          <BookingForm />
+        </BookingContextProvider>
       </div>
     </>
   );
