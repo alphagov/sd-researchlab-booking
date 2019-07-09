@@ -50,7 +50,7 @@ const LabCalendarCells = ({ month, busyDays }) => {
     );
     days = [];
   }
-  return <div className={styles.body}>{rows}</div>;
+  return <div className={styles.calBody}>{rows}</div>;
 };
 
 export default LabCalendarCells;

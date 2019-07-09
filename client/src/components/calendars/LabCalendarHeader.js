@@ -6,7 +6,7 @@ const LabCalendarHeader = ({ month, nextMonth, prevMonth }) => {
   const dateFormat = 'MMM YYYY';
 
   return (
-    <div className={`${styles.header} ${styles.row} ${styles.flexMiddle}`}>
+    <div className={`${styles.calHeader} ${styles.row} ${styles.flexMiddle}`}>
       <div className={`${styles.col} ${styles.colStart}`}>
         <div className={styles.icon} onClick={prevMonth}>
           chevron_left
