@@ -16,7 +16,6 @@ const BookingFormDate = ({ history }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const { bookDay, bookMonth, bookYear } = values;
-    console.log(values);
 
     // need to check these dates are valid
 
@@ -27,10 +26,9 @@ const BookingFormDate = ({ history }) => {
       ...bookingValues,
       bookedDay: bookDay,
       bookedMonth: bookMonth,
-      bookedYear: bookYear
+      bookedYear: bookYear,
+      bookedDate: true
     });
-
-    // history.push('/book-a-research-lab/booking-name');
   };
 
   return (

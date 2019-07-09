@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { withRouter } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 
@@ -17,9 +16,17 @@ const BookingFormName = ({ history }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(values);
+
+    const { firstName, lastName, email } = values;
+
     // if everything works ok move to next part of form
-    history.push('/book-a-research-lab/booking-details');
+    setBookingValues({
+      ...bookingValues,
+      bookedFirstName: firstName,
+      bookedLastName: lastName,
+      bookedEmail: email,
+      bookedName: true
+    });
   };
 
   return (
@@ -116,4 +123,4 @@ const BookingFormName = ({ history }) => {
   );
 };
 
-export default withRouter(BookingFormName);
+export default BookingFormName;
