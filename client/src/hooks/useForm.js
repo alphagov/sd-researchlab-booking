@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { checkDay, checkMonth, checkYear } from '../utils/dateUtils';
 
 export const useForm = (initialValues) => {
   const [values, setValues] = useState(initialValues);
@@ -39,6 +40,40 @@ export const useForm = (initialValues) => {
             reason: ''
           }
         });
+
+        break;
+
+      case 'number':
+        if (name === 'bookDay') {
+          setValues({
+            ...values,
+            [name]: {
+              value,
+              valid: checkDay(value),
+              reason: ''
+            }
+          });
+        }
+        if (name === 'bookMonth') {
+          setValues({
+            ...values,
+            [name]: {
+              value,
+              valid: checkMonth(value),
+              reason: ''
+            }
+          });
+        }
+        if (name === 'bookYear') {
+          setValues({
+            ...values,
+            [name]: {
+              value,
+              valid: checkYear(value),
+              reason: ''
+            }
+          });
+        }
 
         break;
 

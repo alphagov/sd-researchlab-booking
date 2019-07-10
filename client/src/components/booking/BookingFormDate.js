@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 import { withRouter } from 'react-router-dom';
+import dateFns from 'date-fns';
 
 const initialState = {
   bookYear: { value: 2019, valid: true, reason: '' },
@@ -20,21 +21,25 @@ const BookingFormDate = ({ history }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const { bookDay, bookMonth, bookYear, bookAM, bookPM } = values;
-
+    // console.log(bookMonth);
     // need to check these dates are valid
-
+    // const bookingDate = dateFns.format(
+    //   new Date(bookYear.value, bookMonth.value - 1, bookDay.value),
+    //   'DD/MM/YYYY'
+    // );
+    // console.log(bookingDate);
     // if everything works ok move to next part of form
     // need to check if the date is available here
 
-    setBookingValues({
-      ...bookingValues,
-      bookedDay: bookDay,
-      bookedMonth: bookMonth,
-      bookedYear: bookYear,
-      bookedAM: bookAM,
-      bookedPM: bookPM,
-      bookedDate: true
-    });
+    // setBookingValues({
+    //   ...bookingValues,
+    //   bookedDay: bookDay,
+    //   bookedMonth: bookMonth,
+    //   bookedYear: bookYear,
+    //   bookedAM: bookAM,
+    //   bookedPM: bookPM,
+    //   bookedDate: true
+    // });
   };
 
   return (
@@ -55,21 +60,27 @@ const BookingFormDate = ({ history }) => {
               For example, 25 11 2019
             </span>
 
-            <div
-              className="govuk-date-input"
-              id="booked-date"
-              style={{ marginBottom: '2rem' }}
-            >
+            <div className="govuk-date-input" id="booked-date">
               <div className="govuk-date-input__item">
-                <div className="govuk-form-group">
+                <div
+                  className={`govuk-form-group ${!values.bookDay.valid &&
+                    `govuk-form-group--error`}`}
+                >
                   <label
                     className="govuk-label govuk-date-input__label"
                     htmlFor="bookDay"
                   >
                     Day
                   </label>
+                  {!values.bookDay.valid && (
+                    <span id="event-name-error" className="govuk-error-message">
+                      <span className="govuk-visually-hidden">Error:</span>
+                      Day must be between 1 and 31
+                    </span>
+                  )}
                   <input
-                    className="govuk-input govuk-date-input__input govuk-input--width-2"
+                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${!values
+                      .bookDay.valid && `govuk-input--error`}`}
                     id="bookDay"
                     name="bookDay"
                     type="number"
@@ -79,16 +90,27 @@ const BookingFormDate = ({ history }) => {
                   />
                 </div>
               </div>
+
               <div className="govuk-date-input__item">
-                <div className="govuk-form-group">
+                <div
+                  className={`govuk-form-group ${!values.bookMonth.valid &&
+                    `govuk-form-group--error`}`}
+                >
                   <label
                     className="govuk-label govuk-date-input__label"
                     htmlFor="bookMonth"
                   >
                     Month
                   </label>
+                  {!values.bookMonth.valid && (
+                    <span id="event-name-error" className="govuk-error-message">
+                      <span className="govuk-visually-hidden">Error:</span>
+                      Month must be between 1 and 12
+                    </span>
+                  )}
                   <input
-                    className="govuk-input govuk-date-input__input govuk-input--width-2"
+                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${!values
+                      .bookMonth.valid && `govuk-input--error`}`}
                     id="bookMonth"
                     name="bookMonth"
                     type="number"
@@ -99,15 +121,25 @@ const BookingFormDate = ({ history }) => {
                 </div>
               </div>
               <div className="govuk-date-input__item">
-                <div className="govuk-form-group">
+                <div
+                  className={`govuk-form-group ${!values.bookYear.valid &&
+                    `govuk-form-group--error`}`}
+                >
                   <label
                     className="govuk-label govuk-date-input__label"
                     htmlFor="bookYear"
                   >
                     Year
                   </label>
+                  {!values.bookYear.valid && (
+                    <span id="event-name-error" className="govuk-error-message">
+                      <span className="govuk-visually-hidden">Error:</span>
+                      Year must be in the format YYYY and cannot be in the past
+                    </span>
+                  )}
                   <input
-                    className="govuk-input govuk-date-input__input govuk-input--width-4"
+                    className={`govuk-input govuk-date-input__input govuk-input--width-4 ${!values
+                      .bookYear.valid && `govuk-input--error`}`}
                     id="bookYear"
                     name="bookYear"
                     type="number"
