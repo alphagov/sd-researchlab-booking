@@ -31,7 +31,7 @@ const BookingInstructions = () => {
         and have access to a mobile phone to complete two factor authentication.
       </p>
       <Link
-        to="/book-a-research-lab/start"
+        to="/book-a-research-lab"
         role="button"
         draggable="false"
         className="govuk-button govuk-button--start"

@@ -24,30 +24,45 @@ export const useForm = (initialValues) => {
   };
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value, type } = event.target;
     event.persist();
 
-    console.log(value);
+    console.log(event.target.type);
 
-    // check length of the value
-    if (!checkLength(value)) {
-      setValues({
-        ...values,
-        [name]: {
-          value,
-          valid: false,
-          reason: ''
+    switch (type) {
+      case 'checkbox':
+        setValues({
+          ...values,
+          [name]: {
+            value: event.target.checked,
+            valid: true,
+            reason: ''
+          }
+        });
+
+        break;
+
+      default:
+        if (!checkLength(value)) {
+          setValues({
+            ...values,
+            [name]: {
+              value,
+              valid: false,
+              reason: ''
+            }
+          });
+        } else {
+          setValues({
+            ...values,
+            [name]: {
+              value,
+              valid: true,
+              reason: ''
+            }
+          });
         }
-      });
-    } else {
-      setValues({
-        ...values,
-        [name]: {
-          value,
-          valid: true,
-          reason: ''
-        }
-      });
+        break;
     }
   };
 
