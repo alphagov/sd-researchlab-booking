@@ -2,12 +2,14 @@ import React, { useContext } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 import { withRouter } from 'react-router-dom';
-import dateFns from 'date-fns';
+
+import { yearBuilder } from '../../utils/dateUtils';
 
 const initialState = {
   bookYear: { value: 2019, valid: true, reason: '' },
   bookMonth: { value: 2, valid: true, reason: '' },
   bookDay: { value: 1, valid: true, reason: '' },
+  bookDate: { value: '', valid: true, reason: '' },
   bookAM: { value: false, valid: true, reason: '' },
   bookPM: { value: false, valid: true, reason: '' }
 };
@@ -20,14 +22,16 @@ const BookingFormDate = ({ history }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { bookDay, bookMonth, bookYear, bookAM, bookPM } = values;
-    // console.log(bookMonth);
+    const { bookDay, bookMonth, bookYear, bookAM, bookPM, bookDate } = values;
+    // console.log(bookDate);
     // need to check these dates are valid
-    // const bookingDate = dateFns.format(
-    //   new Date(bookYear.value, bookMonth.value - 1, bookDay.value),
-    //   'DD/MM/YYYY'
-    // );
-    // console.log(bookingDate);
+    bookDate.value = yearBuilder(
+      bookDay.value,
+      bookMonth.value,
+      bookYear.value
+    );
+    validateInputs('bookDate', bookDate);
+
     // if everything works ok move to next part of form
     // need to check if the date is available here
 
@@ -45,7 +49,10 @@ const BookingFormDate = ({ history }) => {
   return (
     <div className="govuk-grid-column-full">
       <form onSubmit={(event) => handleSubmit(event)}>
-        <div className="govuk-form-group">
+        <div
+          className={`govuk-form-group ${!values.bookDate.valid &&
+            `govuk-form-group--error`} `}
+        >
           <fieldset
             className="govuk-fieldset"
             aria-describedby="booked-date-hint"
@@ -59,7 +66,12 @@ const BookingFormDate = ({ history }) => {
             <span id="booked-date-hint" className="govuk-hint">
               For example, 25 11 2019
             </span>
-
+            {!values.bookDate.valid && (
+              <span id="date-error" className="govuk-error-message">
+                <span className="govuk-visually-hidden">Error:</span>{' '}
+                {values.bookDate.reason}
+              </span>
+            )}
             <div className="govuk-date-input" id="booked-date">
               <div className="govuk-date-input__item">
                 <div
@@ -79,8 +91,10 @@ const BookingFormDate = ({ history }) => {
                     </span>
                   )}
                   <input
-                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${!values
-                      .bookDay.valid && `govuk-input--error`}`}
+                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${(!values
+                      .bookDay.valid ||
+                      !values.bookDate.valid) &&
+                      `govuk-input--error`}`}
                     id="bookDay"
                     name="bookDay"
                     type="number"
@@ -109,8 +123,10 @@ const BookingFormDate = ({ history }) => {
                     </span>
                   )}
                   <input
-                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${!values
-                      .bookMonth.valid && `govuk-input--error`}`}
+                    className={`govuk-input govuk-date-input__input govuk-input--width-2 ${(!values
+                      .bookMonth.valid ||
+                      !values.bookDate.valid) &&
+                      `govuk-input--error`}`}
                     id="bookMonth"
                     name="bookMonth"
                     type="number"
@@ -138,8 +154,10 @@ const BookingFormDate = ({ history }) => {
                     </span>
                   )}
                   <input
-                    className={`govuk-input govuk-date-input__input govuk-input--width-4 ${!values
-                      .bookYear.valid && `govuk-input--error`}`}
+                    className={`govuk-input govuk-date-input__input govuk-input--width-4 ${(!values
+                      .bookYear.valid ||
+                      !values.bookDate.valid) &&
+                      `govuk-input--error`}`}
                     id="bookYear"
                     name="bookYear"
                     type="number"
@@ -154,16 +172,29 @@ const BookingFormDate = ({ history }) => {
           </fieldset>
         </div>
 
-        <div className="govuk-form-group">
-          <fieldset className="govuk-fieldset" aria-describedby="waste-hint">
+        <div
+          className={`govuk-form-group ${!values.bookAM.valid &&
+            !values.bookPM.valid &&
+            `govuk-form-group--error`}`}
+        >
+          <fieldset
+            className="govuk-fieldset"
+            aria-describedby="am-or-pm-hint am-pm-error"
+          >
             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h2 className="govuk-fieldset__heading">
                 What part(s) of the day would you like to book
               </h2>
             </legend>
-            <span id="waste-hint" className="govuk-hint">
+            <span id="date-hint" className="govuk-hint">
               Select both AM and PM if you need the whole day
             </span>
+            {!values.bookAM.valid && !values.bookPM.valid && (
+              <span id="am-pm-error" className="govuk-error-message">
+                <span className="govuk-visually-hidden">Error:</span> Select
+                either AM or PM or both if you need the whole day
+              </span>
+            )}
             <div className="govuk-checkboxes">
               <div className="govuk-checkboxes__item">
                 <input
@@ -178,8 +209,14 @@ const BookingFormDate = ({ history }) => {
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="am"
                 >
-                  AM from 08:30 to 12:00
+                  AM
                 </label>
+                <span
+                  id="am-item-hint"
+                  className="govuk-hint govuk-checkboxes__hint"
+                >
+                  from 08:30 to 12:00
+                </span>
               </div>
               <div className="govuk-checkboxes__item">
                 <input
@@ -194,8 +231,14 @@ const BookingFormDate = ({ history }) => {
                   className="govuk-label govuk-checkboxes__label"
                   htmlFor="pm"
                 >
-                  PM from 12:00 to 17:30
+                  PM
                 </label>
+                <span
+                  id="pm-item-hint"
+                  className="govuk-hint govuk-checkboxes__hint"
+                >
+                  from 12:00 to 17:00
+                </span>
               </div>
             </div>
           </fieldset>

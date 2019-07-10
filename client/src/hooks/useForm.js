@@ -1,25 +1,67 @@
 import { useState } from 'react';
-import { checkDay, checkMonth, checkYear } from '../utils/dateUtils';
+import dateFns from 'date-fns';
+import {
+  checkDay,
+  checkMonth,
+  checkYear,
+  dateIsPast,
+  dateIsMoreThan10Weeks,
+  dateIsWeekend
+} from '../utils/dateUtils';
 
 export const useForm = (initialValues) => {
   const [values, setValues] = useState(initialValues);
 
-  const validateInputs = (event) => {
-    const { name, value } = event.target;
-    event.persist();
+  const validateInputs = (name, obj) => {
+    let value = '';
+    let valid = false;
+    let reason = '';
+
+    switch (name) {
+      case 'bookDate':
+        if (dateIsPast(obj.value)) {
+          value = dateFns.format(new Date());
+          valid = false;
+          reason = 'Date cannot be in the past';
+        } else if (dateIsMoreThan10Weeks(obj.value)) {
+          value = dateFns.format(new Date());
+          valid = false;
+          reason = 'You cannot book more than 10 weeks in advance';
+        } else if (dateIsWeekend(obj.value)) {
+          value = obj.value;
+          valid = false;
+          reason = 'You cannot book the research lab on a weekend';
+        } else {
+          value = obj.value;
+          valid = true;
+          reason = '';
+        }
+        setValues({
+          ...values,
+          [name]: {
+            value,
+            valid,
+            reason
+          }
+        });
+        break;
+
+      default:
+        break;
+    }
 
     // check password length
-    if (name === 'password' && checkLength(value) && value.length < 10) {
-      console.log('Yeah it is a password', value.length);
-      setValues({
-        ...values,
-        [name]: {
-          value,
-          valid: false,
-          reason: 'Password must be at least 10 characters.'
-        }
-      });
-    }
+    // if (name === 'password' && checkLength(value) && value.length < 10) {
+    //   console.log('Yeah it is a password', value.length);
+    //   setValues({
+    //     ...values,
+    //     [name]: {
+    //       value,
+    //       valid: false,
+    //       reason: 'Password must be at least 10 characters.'
+    //     }
+    //   });
+    // }
 
     // check it is a gov.uk email address
   };
@@ -28,7 +70,7 @@ export const useForm = (initialValues) => {
     const { name, value, type } = event.target;
     event.persist();
 
-    console.log(event.target.type);
+    // console.log(event.target.type);
 
     switch (type) {
       case 'checkbox':

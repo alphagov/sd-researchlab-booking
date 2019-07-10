@@ -8,6 +8,8 @@ import dateFns from 'date-fns';
 //   }
 //   return false;
 // };
+
+// day functions
 export const checkDay = (day) => {
   if (day > 31 || day < 1) {
     return false;
@@ -15,6 +17,7 @@ export const checkDay = (day) => {
   return true;
 };
 
+// month functions
 export const checkMonth = (month) => {
   if (month > 12 || month < 1) {
     return false;
@@ -22,6 +25,7 @@ export const checkMonth = (month) => {
   return true;
 };
 
+// year functions
 export const checkYear = (year) => {
   if (year.length < 4) {
     return false;
@@ -30,4 +34,27 @@ export const checkYear = (year) => {
     return false;
   }
   return true;
+};
+
+export const yearBuilder = (day, month, year) => {
+  return dateFns.format(new Date(year, month - 1, day));
+};
+
+// date functions
+export const dateIsPast = (date) => {
+  return dateFns.isPast(date);
+};
+
+export const dateIsMoreThan10Weeks = (date) => {
+  if (
+    dateFns.differenceInCalendarWeeks(date, new Date(), { weekStartsOn: 1 }) >
+    10
+  ) {
+    return true;
+  }
+  return false;
+};
+
+export const dateIsWeekend = (date) => {
+  return dateFns.isWeekend(date);
 };
