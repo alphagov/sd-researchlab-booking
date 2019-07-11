@@ -128,9 +128,9 @@
   position: relative;
   height: 8rem;
   border-right: 1px solid var(--border-color);
-  overflow: hidden;
-  background: var(--neutral-color);
-  transition: 0.25s ease-out;
+  /* overflow:  */
+  /* background: var(--neutral-color); */
+  /* transition: 0.25s ease-out; */
 }
 
 .calendar .calBody .selected {
@@ -158,9 +158,20 @@
   top: 0.75em;
   right: 0.75em;
   font-weight: 700;
+  color: white;
 }
 
-.calendar .calBody .disabled {
+.calendar .calBody .cell .dayBlock {
+  position: absolute;
+  font-size: 82.5%;
+  line-height: 1;
+  top: 0.75em;
+  left: 0.75em;
+  font-weight: 700;
+  color: white;
+}
+
+/* .calendar .calBody .disabled {
   color: var(--text-color-light);
   pointer-events: none;
 }
@@ -169,6 +180,17 @@
   color: white;
   background-color: #b10e1e;
   pointer-events: none;
+} */
+
+.calFree {
+  /* background-image: url(../assets/images/free.svg);
+  height: auto;
+  width: auto; */
+  background: #006435;
+}
+
+.calBusy {
+  background: #b10e1e;
 }
 
 .calendar .calBody .cell .bg {

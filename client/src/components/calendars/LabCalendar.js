@@ -65,13 +65,17 @@ const LabCalendar = ({ calendar }) => {
             if (error) return <Error error={error} />;
 
             const { busy } = data.getCalendarFreeBusyList.calendars[0];
-            const dateFormat = 'DD';
 
-            const busyDays = busy.map((bDay) =>
-              dateFns.format(bDay.start, dateFormat)
-            );
+            const busyDays = busy.map((bDay) => {
+              return {
+                date: bDay.end,
+                am: dateFns.getHours(bDay.end) < 13,
+                pm: dateFns.getHours(bDay.end) > 13,
+                avail: false
+              };
+            });
 
-            return <LabCalendarCells week={currentWeek} busyDays={busyDays} />;
+            return <LabCalendarCells week={currentWeek} busy={busyDays} />;
           }}
         </Query>
       </div>
