@@ -14,24 +14,15 @@ import Error from '../../containers/Error';
 import styles from '../../css/LabCalendar.module.css';
 
 const LabCalendar = ({ calendar }) => {
-  const [currentMonth, setMonth] = useState(new Date());
   const [currentWeek, setWeek] = useState(
     dateFns.startOfWeek(new Date(), { weekStartsOn: 1 })
   );
 
   const { resourceName } = calendar;
 
-  // const prevMonth = () => {
-  //   setMonth(dateFns.subMonths(currentMonth, 1));
-  // };
-
   const prevWeek = () => {
     setWeek(dateFns.subWeeks(currentWeek, 1));
   };
-
-  // const nextMonth = () => {
-  //   setMonth(dateFns.addMonths(currentMonth, 1));
-  // };
 
   const nextWeek = () => {
     setWeek(dateFns.addWeeks(currentWeek, 1));
@@ -41,8 +32,6 @@ const LabCalendar = ({ calendar }) => {
     setWeek(dateFns.startOfWeek(new Date(), { weekStartsOn: 1 }));
   };
 
-  // const monthStart = dateFns.startOfMonth(currentMonth);
-  // const monthEnd = dateFns.endOfMonth(monthStart);
   // this will be today's date
   const startDate = new Date();
   // google only give 2 months of free/busy so get 2 months from todays date
@@ -82,13 +71,7 @@ const LabCalendar = ({ calendar }) => {
               dateFns.format(bDay.start, dateFormat)
             );
 
-            return (
-              <LabCalendarCells
-                month={currentMonth}
-                week={currentWeek}
-                busyDays={busyDays}
-              />
-            );
+            return <LabCalendarCells week={currentWeek} busyDays={busyDays} />;
           }}
         </Query>
       </div>

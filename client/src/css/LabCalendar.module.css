@@ -1,25 +1,5 @@
 /* FONT IMPORTS */
 
-@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
-
-.icon {
-  font-family: 'Material Icons', serif;
-  font-style: normal;
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: 'liga';
-}
-
 /* VARIABLES */
 
 :root {
@@ -52,7 +32,7 @@
 }
 
 .calHeader {
-  font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  /* font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; */
   font-size: 1em;
   display: block;
   width: 100%;
@@ -146,17 +126,11 @@
 
 .calendar .calBody .cell {
   position: relative;
-  height: 5em;
+  height: 8rem;
   border-right: 1px solid var(--border-color);
   overflow: hidden;
-  cursor: pointer;
   background: var(--neutral-color);
   transition: 0.25s ease-out;
-}
-
-.calendar .calBody .cell:hover {
-  background: var(--bg-color);
-  transition: 0.5s ease-out;
 }
 
 .calendar .calBody .selected {
@@ -210,14 +184,8 @@
   letter-spacing: -0.07em;
 }
 
-.calendar .calBody .cell:hover .bg,
-.calendar .calBody .selected .bg {
-  opacity: 0.05;
-  transition: 0.5s ease-in;
-}
-
 .calendar .calBody .col {
   flex-grow: 0;
-  flex-basis: calc(100% / 7);
-  width: calc(100% / 7);
+  flex-basis: calc(100% / 5);
+  width: calc(100% / 5);
 }
