@@ -2,16 +2,16 @@ import React from 'react';
 import dateFns from 'date-fns';
 import styles from '../../css/LabCalendar.module.css';
 
-const LabCalendarDays = ({ month }) => {
+const LabCalendarDays = ({ week }) => {
   const dateFormat = 'ddd';
   const days = [];
 
-  let startDate = dateFns.startOfWeek(month, { weekStartsOn: 1 });
-
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 5; i++) {
     days.push(
       <div className={`${styles.col} ${styles.colCenter}`} key={i}>
-        {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
+        <h4 className="govuk-heading-s" style={{ marginBottom: '0px' }}>
+          {dateFns.format(dateFns.addDays(week, i), dateFormat)}
+        </h4>
       </div>
     );
   }

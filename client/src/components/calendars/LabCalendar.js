@@ -15,32 +15,52 @@ import styles from '../../css/LabCalendar.module.css';
 
 const LabCalendar = ({ calendar }) => {
   const [currentMonth, setMonth] = useState(new Date());
+  const [currentWeek, setWeek] = useState(
+    dateFns.startOfWeek(new Date(), { weekStartsOn: 1 })
+  );
 
   const { resourceName } = calendar;
 
-  const prevMonth = () => {
-    setMonth(dateFns.subMonths(currentMonth, 1));
+  // const prevMonth = () => {
+  //   setMonth(dateFns.subMonths(currentMonth, 1));
+  // };
+
+  const prevWeek = () => {
+    setWeek(dateFns.subWeeks(currentWeek, 1));
   };
 
-  const nextMonth = () => {
-    setMonth(dateFns.addMonths(currentMonth, 1));
+  // const nextMonth = () => {
+  //   setMonth(dateFns.addMonths(currentMonth, 1));
+  // };
+
+  const nextWeek = () => {
+    setWeek(dateFns.addWeeks(currentWeek, 1));
   };
 
-  const monthStart = dateFns.startOfMonth(currentMonth);
-  const monthEnd = dateFns.endOfMonth(monthStart);
-  const startDate = dateFns.startOfWeek(monthStart, { weekStartsOn: 1 });
-  const endDate = dateFns.endOfWeek(monthEnd);
+  const setToday = () => {
+    setWeek(dateFns.startOfWeek(new Date(), { weekStartsOn: 1 }));
+  };
+
+  // const monthStart = dateFns.startOfMonth(currentMonth);
+  // const monthEnd = dateFns.endOfMonth(monthStart);
+  // this will be today's date
+  const startDate = new Date();
+  // google only give 2 months of free/busy so get 2 months from todays date
+  const endDate = dateFns.addMonths(startDate, 2);
 
   return (
     <>
       <h3 className="govuk-heading-m">{resourceName}</h3>
       <div className={styles.calendar}>
         <LabCalendarHeader
-          month={currentMonth}
-          prevMonth={prevMonth}
-          nextMonth={nextMonth}
+          startDate={startDate}
+          endDate={endDate}
+          week={currentWeek}
+          prevWeek={prevWeek}
+          nextWeek={nextWeek}
+          setToday={setToday}
         />
-        <LabCalendarDays month={currentMonth} />
+        <LabCalendarDays week={currentWeek} />
 
         <Query
           query={GET_CALENDAR_FREE_BUSY}
@@ -63,7 +83,11 @@ const LabCalendar = ({ calendar }) => {
             );
 
             return (
-              <LabCalendarCells month={currentMonth} busyDays={busyDays} />
+              <LabCalendarCells
+                month={currentMonth}
+                week={currentWeek}
+                busyDays={busyDays}
+              />
             );
           }}
         </Query>
