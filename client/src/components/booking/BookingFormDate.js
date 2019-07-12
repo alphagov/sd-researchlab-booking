@@ -2,16 +2,32 @@ import React, { useContext } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 import { withRouter } from 'react-router-dom';
+import dateFns from 'date-fns';
 
 import { yearBuilder } from '../../utils/dateUtils';
 
+let initDate = dateFns.addDays(new Date(), 1);
+
+while (dateFns.isWeekend(initDate)) {
+  initDate = dateFns.addDays(initDate, 1);
+}
+
 const initialState = {
-  bookYear: { value: 2019, valid: true, reason: '' },
-  bookMonth: { value: 2, valid: true, reason: '' },
-  bookDay: { value: 1, valid: true, reason: '' },
+  bookYear: { value: dateFns.getYear(initDate), valid: true, reason: '' },
+  bookMonth: {
+    value: dateFns.getMonth(initDate) + 1,
+    valid: true,
+    reason: ''
+  },
+  bookDay: {
+    value: dateFns.getDate(initDate),
+    valid: true,
+    reason: ''
+  },
   bookDate: { value: '', valid: true, reason: '' },
   bookAM: { value: false, valid: true, reason: '' },
-  bookPM: { value: false, valid: true, reason: '' }
+  bookPM: { value: false, valid: true, reason: '' },
+  bookAMPM: { value: false, valid: true, reason: '' }
 };
 
 const BookingFormDate = ({ history }) => {
@@ -31,6 +47,8 @@ const BookingFormDate = ({ history }) => {
       bookYear.value
     );
     validateInputs('bookDate', bookDate);
+
+    validateInputs('bookAMPM', { bookAM, bookPM });
 
     // if everything works ok move to next part of form
     // need to check if the date is available here
@@ -173,8 +191,7 @@ const BookingFormDate = ({ history }) => {
         </div>
 
         <div
-          className={`govuk-form-group ${!values.bookAM.valid &&
-            !values.bookPM.valid &&
+          className={`govuk-form-group ${!values.bookAMPM.valid &&
             `govuk-form-group--error`}`}
         >
           <fieldset
@@ -189,7 +206,7 @@ const BookingFormDate = ({ history }) => {
             <span id="date-hint" className="govuk-hint">
               Select both AM and PM if you need the whole day
             </span>
-            {!values.bookAM.valid && !values.bookPM.valid && (
+            {!values.bookAMPM.valid && (
               <span id="am-pm-error" className="govuk-error-message">
                 <span className="govuk-visually-hidden">Error:</span> Select
                 either AM or PM or both if you need the whole day

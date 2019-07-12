@@ -46,6 +46,49 @@ export const useForm = (initialValues) => {
         });
         break;
 
+      case 'bookAMPM':
+        let falseCount = 0;
+
+        for (let key in obj) {
+          if (!obj[key].value) falseCount += 1;
+        }
+
+        if (falseCount === 2) {
+          reason = 'You must select either AM or PM or both';
+          setValues({
+            ...values,
+            [name]: {
+              value: false,
+              valid: false,
+              reason
+            }
+          });
+        } else {
+          setValues({
+            ...values,
+            [name]: {
+              value: true,
+              valid: true,
+              reason: ''
+            }
+          });
+        }
+
+        // for (let key in obj) {
+        //   // console.log(key);
+        //   console.log(reason);
+        //   setValues({
+        //     ...values,
+        //     [key]: {
+        //       value: obj[key].value,
+        //       valid,
+        //       reason
+        //     }
+        //   });
+        // }
+
+        break;
+
       default:
         break;
     }
