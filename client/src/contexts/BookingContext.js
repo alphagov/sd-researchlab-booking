@@ -1,10 +1,6 @@
 import React, { createContext, useState } from 'react';
 
-const initialValues = {
-  bookedDate: false,
-  bookedName: false,
-  bookedDetails: false
-};
+const initialValues = {};
 
 const BookingContext = createContext([{}, () => {}]);
 

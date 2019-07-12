@@ -34,8 +34,6 @@ const BookingFormDate = ({ history }) => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 
-  console.log(values);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const { bookDay, bookMonth, bookYear, bookAM, bookPM, bookDate } = values;
@@ -50,18 +48,21 @@ const BookingFormDate = ({ history }) => {
 
     validateInputs('bookAMPM', { bookAM, bookPM });
 
-    // if everything works ok move to next part of form
+    // TODO
     // need to check if the date is available here
+    // TODO
 
-    // setBookingValues({
-    //   ...bookingValues,
-    //   bookedDay: bookDay,
-    //   bookedMonth: bookMonth,
-    //   bookedYear: bookYear,
-    //   bookedAM: bookAM,
-    //   bookedPM: bookPM,
-    //   bookedDate: true
-    // });
+    setBookingValues({
+      ...bookingValues,
+      bookedDay: bookDay.value,
+      bookedMonth: bookMonth.value,
+      bookedYear: bookYear.value,
+      bookedAM: bookAM.value,
+      bookedPM: bookPM.value
+    });
+
+    // if everything works ok move to next part of form
+    history.push('/book-a-research-lab/booking-name');
   };
 
   return (

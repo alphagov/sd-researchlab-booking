@@ -74,19 +74,6 @@ export const useForm = (initialValues) => {
           });
         }
 
-        // for (let key in obj) {
-        //   // console.log(key);
-        //   console.log(reason);
-        //   setValues({
-        //     ...values,
-        //     [key]: {
-        //       value: obj[key].value,
-        //       valid,
-        //       reason
-        //     }
-        //   });
-        // }
-
         break;
 
       default:

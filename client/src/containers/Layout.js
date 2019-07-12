@@ -26,12 +26,7 @@ const bookingFormRoutes = [
     path: '/book-a-research-lab',
     component: LabBooking,
     routes: [
-      { path: '/book-a-research-lab/booking-date', component: BookingFormDate },
-      { path: '/book-a-research-lab/booking-name', component: BookingFormName },
-      {
-        path: '/book-a-research-lab/booking-details',
-        component: BookingFormDetails
-      }
+      { path: '/book-a-research-lab/booking-date', component: BookingFormDate }
     ]
   }
 ];
@@ -61,9 +56,12 @@ const Layout = () => {
               <Route path="/" exact component={Landing} />
               <Route path="/gds-research-labs" component={Labs} />
               <Route path="/book-a-research-lab" exact component={LabBooking} />
-              {bookingFormRoutes.map((route, i) => (
-                <RouteWithSubRoutes key={i} {...route} />
-              ))}
+
+              <Route
+                path="/book-a-research-lab/booking-name"
+                component={BookingFormName}
+              />
+
               <Redirect to="/" />
             </Switch>
           </main>
