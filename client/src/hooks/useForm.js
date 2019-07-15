@@ -55,7 +55,7 @@ export const useForm = (initialValues) => {
         for (let key in obj) {
           if (!obj[key].value) falseCount += 1;
         }
-        console.log(falseCount);
+        // console.log(falseCount);
         if (falseCount === 2) {
           bookAMPM.reason = 'You must select either AM or PM or both';
           bookAMPM.valid = false;
@@ -110,7 +110,7 @@ export const useForm = (initialValues) => {
         if (!checkLength(obj.value)) {
           email.value = '';
           email.valid = false;
-          email.reason = 'You must enter a last name';
+          email.reason = 'You must enter a valid email address';
         } else {
           email.value = obj.value;
           email.valid = true;
@@ -146,7 +146,7 @@ export const useForm = (initialValues) => {
     const { name, value, type } = event.target;
     event.persist();
 
-    // console.log(event.target.type);
+    console.log(event.target.type);
 
     switch (type) {
       case 'checkbox':
@@ -192,6 +192,32 @@ export const useForm = (initialValues) => {
             }
           });
         }
+
+        break;
+
+      case 'text':
+        if (name === 'firstName' || name === 'lastName') {
+          setValues({
+            ...values,
+            [name]: {
+              value,
+              valid: checkLength(value),
+              reason: ''
+            }
+          });
+        }
+
+        break;
+
+      case 'email':
+        setValues({
+          ...values,
+          [name]: {
+            value,
+            valid: checkLength(value),
+            reason: ''
+          }
+        });
 
         break;
 

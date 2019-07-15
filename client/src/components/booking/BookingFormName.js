@@ -19,9 +19,11 @@ const BookingFormName = ({ history }) => {
 
     validateInputs('firstName', firstName);
     validateInputs('lastName', lastName);
-    validateInputs('email', lastName);
+    validateInputs('email', email);
 
-    if (!firstName.valid || !lastName.Valid || !email.valid) {
+    console.log(values);
+
+    if (!firstName.valid || !lastName.valid || !email.valid) {
       console.log('invalid');
       return;
     }
