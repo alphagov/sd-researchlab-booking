@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 
 const initialState = {
@@ -55,4 +54,4 @@ const BookingFormDetails = ({ history }) => {
   );
 };
 
-export default withRouter(BookingFormDetails);
+export default BookingFormDetails;

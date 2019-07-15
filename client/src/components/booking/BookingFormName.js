@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { withRouter } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 
@@ -153,4 +152,4 @@ const BookingFormName = ({ history }) => {
   );
 };
 
-export default withRouter(BookingFormName);
+export default BookingFormName;

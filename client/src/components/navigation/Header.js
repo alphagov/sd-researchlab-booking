@@ -1,12 +1,12 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from '@reach/router';
 
 const Header = () => {
   return (
     <header className="govuk-header " role="banner" data-module="header">
       <div className="govuk-header__container govuk-width-container">
         <div className="govuk-header__logo">
-          <NavLink
+          <Link
             to="/"
             className="govuk-header__link govuk-header__link--homepage"
           >
@@ -33,15 +33,15 @@ const Header = () => {
               </svg>
               <span className="govuk-header__logotype-text"> GOV.UK</span>
             </span>
-          </NavLink>
+          </Link>
         </div>
         <div className="govuk-header__content">
-          <NavLink
+          <Link
             to="/"
             className="govuk-header__link govuk-header__link--service-name"
           >
             Book the GDS user research lab
-          </NavLink>
+          </Link>
         </div>
       </div>
     </header>

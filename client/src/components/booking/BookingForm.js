@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Route } from 'react-router-dom';
+// import { Route } from 'react-router-dom';
 
 import { BookingContext } from '../../contexts/BookingContext';
 import BookingFormName from './BookingFormName';
@@ -13,7 +13,7 @@ const BookingForm = () => {
   return (
     <>
       <BookingFormDate />
-      <Route
+      {/* <Route
         exact
         path="/book-a-research-lab/booking-name"
         component={BookingFormName}
@@ -21,7 +21,7 @@ const BookingForm = () => {
       <Route
         path="/book-a-research-lab/booking-details"
         component={BookingFormDetails}
-      />
+      /> */}
     </>
   );
 };

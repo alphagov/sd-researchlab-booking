@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom';
+import { Router } from '@reach/router';
 
 import '../css/layout.scss';
 
@@ -29,12 +24,11 @@ const Layout = () => {
         <div className="govuk-width-container">
           <Proto />
           <main className="govuk-main-wrapper " id="main-content" role="main">
-            <Switch>
-              <Route path="/" exact component={Landing} />
-              <Route path="/gds-research-labs" component={Labs} />
-              <Route path="/book-a-research-lab" exact component={LabBooking} />
+            <Landing path="/" />
+            <Labs path="/gds-research-labs" />
+            <LabBooking path="/book-a-research-lab" />
 
-              {/* <Route
+            {/* <Route
                 exact
                 path="/book-a-research-lab/booking-name"
                 component={BookingFormName}
@@ -43,9 +37,6 @@ const Layout = () => {
                 path="/book-a-research-lab/booking-details"
                 component={BookingFormDetails}
               /> */}
-
-              <Redirect to="/" />
-            </Switch>
           </main>
         </div>
         <Footer />

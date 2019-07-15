@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
-import { withRouter } from 'react-router-dom';
 import dateFns from 'date-fns';
 
 import { yearBuilder } from '../../utils/dateUtils';
@@ -76,7 +75,7 @@ const BookingFormDate = ({ history }) => {
     });
 
     // if everything works ok move to next part of form
-    history.push('/book-a-research-lab/booking-name');
+    // history.push('/book-a-research-lab/booking-name');
   };
 
   return (
@@ -282,4 +281,4 @@ const BookingFormDate = ({ history }) => {
   );
 };
 
-export default withRouter(BookingFormDate);
+export default BookingFormDate;
