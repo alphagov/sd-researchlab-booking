@@ -24,7 +24,7 @@ const initialState = {
     valid: true,
     reason: ''
   },
-  bookDate: { value: '', valid: true, reason: '' },
+  bookDate: { value: initDate, valid: true, reason: '' },
   bookAM: { value: false, valid: true, reason: '' },
   bookPM: { value: false, valid: true, reason: '' },
   bookAMPM: { value: false, valid: true, reason: '' }
@@ -36,29 +36,43 @@ const BookingFormDate = ({ history }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { bookDay, bookMonth, bookYear, bookAM, bookPM, bookDate } = values;
-    // console.log(bookDate);
+    const {
+      bookDay,
+      bookMonth,
+      bookYear,
+      bookAM,
+      bookPM,
+      bookDate,
+      bookAMPM
+    } = values;
     // need to check these dates are valid
     bookDate.value = yearBuilder(
       bookDay.value,
       bookMonth.value,
       bookYear.value
     );
-    validateInputs('bookDate', bookDate);
 
+    validateInputs('bookDate', bookDate);
     validateInputs('bookAMPM', { bookAM, bookPM });
 
     // TODO
     // need to check if the date is available here
     // TODO
 
+    if (!bookDate.valid || !bookAMPM.valid) {
+      console.log('not valid');
+
+      return;
+    }
+    //
     setBookingValues({
       ...bookingValues,
       bookedDay: bookDay.value,
       bookedMonth: bookMonth.value,
       bookedYear: bookYear.value,
       bookedAM: bookAM.value,
-      bookedPM: bookPM.value
+      bookedPM: bookPM.value,
+      bookedDate: bookDate.value
     });
 
     // if everything works ok move to next part of form
@@ -69,8 +83,8 @@ const BookingFormDate = ({ history }) => {
     <div className="govuk-grid-column-full">
       <form onSubmit={(event) => handleSubmit(event)}>
         <div
-          className={`govuk-form-group ${!values.bookDate.valid &&
-            `govuk-form-group--error`} `}
+          className={`govuk-form-group 
+           ${!values.bookDate.valid && `govuk-form-group--error`}  `}
         >
           <fieldset
             className="govuk-fieldset"
@@ -190,7 +204,7 @@ const BookingFormDate = ({ history }) => {
             </div>
           </fieldset>
         </div>
-
+        {console.log(values.bookAMPM)}
         <div
           className={`govuk-form-group ${!values.bookAMPM.valid &&
             `govuk-form-group--error`}`}

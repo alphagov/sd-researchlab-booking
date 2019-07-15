@@ -17,6 +17,8 @@ export const useForm = (initialValues) => {
     let valid = false;
     let reason = '';
 
+    const { bookAMPM, bookDate } = values;
+
     switch (name) {
       case 'bookDate':
         if (dateIsPast(obj.value)) {
@@ -36,45 +38,63 @@ export const useForm = (initialValues) => {
           valid = true;
           reason = '';
         }
+
+        bookDate.reason = reason;
+        bookDate.valid = valid;
+        bookDate.value = value;
+
         setValues({
           ...values,
-          [name]: {
-            value,
-            valid,
-            reason
-          }
+          bookDate
         });
+
         break;
 
       case 'bookAMPM':
         let falseCount = 0;
-
         for (let key in obj) {
           if (!obj[key].value) falseCount += 1;
         }
-
+        console.log(falseCount);
         if (falseCount === 2) {
-          reason = 'You must select either AM or PM or both';
-          setValues({
-            ...values,
-            [name]: {
-              value: false,
-              valid: false,
-              reason
-            }
-          });
+          bookAMPM.reason = 'You must select either AM or PM or both';
+          bookAMPM.valid = false;
+          bookAMPM.value = false;
         } else {
-          setValues({
-            ...values,
-            [name]: {
-              value: true,
-              valid: true,
-              reason: ''
-            }
-          });
+          bookAMPM.reason = '';
+          bookAMPM.valid = true;
+          bookAMPM.value = true;
         }
 
+        setValues({
+          ...values,
+          bookAMPM
+        });
+        console.log(values);
         break;
+
+      // case 'firstName':
+      //   console.log(obj);
+      //   if (!checkLength(obj.value)) {
+      //     setValues({
+      //       ...values,
+      //       [name]: {
+      //         value: '',
+      //         valid: false,
+      //         reason: 'You must enter a first name'
+      //       }
+      //     });
+      //   } else {
+      //     setValues({
+      //       ...values,
+      //       [name]: {
+      //         value: obj.value,
+      //         valid: true,
+      //         reason: ''
+      //       }
+      //     });
+      //   }
+      //   break;
 
       default:
         break;
