@@ -146,7 +146,7 @@ export const useForm = (initialValues) => {
     const { name, value, type } = event.target;
     event.persist();
 
-    console.log(event.target.type);
+    // console.log(event.target.type);
 
     switch (type) {
       case 'checkbox':

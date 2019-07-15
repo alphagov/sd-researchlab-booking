@@ -204,7 +204,6 @@ const BookingFormDate = ({ history }) => {
             </div>
           </fieldset>
         </div>
-        {console.log(values.bookAMPM)}
         <div
           className={`govuk-form-group ${!values.bookAMPM.valid &&
             `govuk-form-group--error`}`}

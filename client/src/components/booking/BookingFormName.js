@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { withRouter } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 
@@ -37,6 +38,9 @@ const BookingFormName = ({ history }) => {
     });
   };
 
+  // if everything works ok move to next part of form
+  history.push('/book-a-research-lab/booking-details');
+
   return (
     <>
       <div className="govuk-grid-row">
@@ -45,7 +49,7 @@ const BookingFormName = ({ history }) => {
         </div>
       </div>
       <div className="govuk-grid-row">
-        <div className="govuk-grid-column-full">
+        <div className="govuk-grid-column-two-thirds">
           <div className="govuk-form-group">
             <fieldset className="govuk-fieldset">
               <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -149,4 +153,4 @@ const BookingFormName = ({ history }) => {
   );
 };
 
-export default BookingFormName;
+export default withRouter(BookingFormName);
