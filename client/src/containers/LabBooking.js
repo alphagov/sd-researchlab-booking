@@ -1,5 +1,4 @@
 import React from 'react';
-import { BookingContextProvider } from '../contexts/BookingContext';
 
 import LabCalendarList from '../components/calendars/LabCalendarList';
 import BookingForm from '../components/booking/BookingForm';
@@ -14,9 +13,7 @@ const LabBooking = () => {
       </div>
       <LabCalendarList />
       <div className="govuk-grid-row">
-        <BookingContextProvider>
-          <BookingForm />
-        </BookingContextProvider>
+        <BookingForm />
       </div>
     </>
   );
