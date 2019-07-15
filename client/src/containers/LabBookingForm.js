@@ -1,9 +1,8 @@
 import React from 'react';
 
 import LabCalendarList from '../components/calendars/LabCalendarList';
-import BookingForm from '../components/booking/BookingForm';
 
-const LabBooking = () => {
+const LabBookingForm = ({ children }) => {
   return (
     <>
       <div className="govuk-grid-row">
@@ -11,12 +10,9 @@ const LabBooking = () => {
           <div className="govuk-heading-xl">Book a research lab</div>
         </div>
       </div>
-      <LabCalendarList />
-      <div className="govuk-grid-row">
-        <BookingForm />
-      </div>
+      <div>{children}</div>
     </>
   );
 };
 
-export default LabBooking;
+export default LabBookingForm;

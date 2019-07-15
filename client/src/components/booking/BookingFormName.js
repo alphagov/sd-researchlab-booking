@@ -38,15 +38,10 @@ const BookingFormName = ({ history }) => {
   };
 
   // if everything works ok move to next part of form
-  history.push('/book-a-research-lab/booking-details');
+  // history.push('/book-a-research-lab/booking-details');
 
   return (
     <>
-      <div className="govuk-grid-row">
-        <div className="govuk-grid-column-full">
-          <div className="govuk-heading-xl">Book a research lab</div>
-        </div>
-      </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <div className="govuk-form-group">
