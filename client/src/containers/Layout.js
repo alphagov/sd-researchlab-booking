@@ -28,9 +28,9 @@ const Layout = () => {
             <Landing path="/" />
             <Labs path="/gds-research-labs" />
             <LabBookingForm path="/book-a-research-lab">
-              <BookingFormDate path="booking-date" />
-              <BookingFormName path="booking-name" />
-              <BookingFormDetails path="booking-details" />
+              <BookingFormDate path="/booking-date" />
+              <BookingFormName path="/booking-name" />
+              <BookingFormDetails path="/booking-details" />
             </LabBookingForm>
           </Router>
         </main>
