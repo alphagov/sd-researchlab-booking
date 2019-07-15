@@ -1,7 +1,5 @@
 import React from 'react';
 
-import LabCalendarList from '../components/calendars/LabCalendarList';
-
 const LabBookingForm = ({ children }) => {
   return (
     <>

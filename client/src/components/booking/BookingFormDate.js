@@ -63,22 +63,20 @@ const BookingFormDate = ({ history }) => {
 
     if (!bookDate.valid || !bookAMPM.valid) {
       console.log('not valid');
-
       return;
+    } else {
+      setBookingValues({
+        ...bookingValues,
+        bookedDay: bookDay.value,
+        bookedMonth: bookMonth.value,
+        bookedYear: bookYear.value,
+        bookedAM: bookAM.value,
+        bookedPM: bookPM.value,
+        bookedDate: bookDate.value
+      });
+      // if everything works ok move to next part of form
+      navigate('/book-a-research-lab/booking-name');
     }
-    //
-    setBookingValues({
-      ...bookingValues,
-      bookedDay: bookDay.value,
-      bookedMonth: bookMonth.value,
-      bookedYear: bookYear.value,
-      bookedAM: bookAM.value,
-      bookedPM: bookPM.value,
-      bookedDate: bookDate.value
-    });
-
-    // if everything works ok move to next part of form
-    navigate('/book-a-research-lab/booking-name');
   };
 
   return (
