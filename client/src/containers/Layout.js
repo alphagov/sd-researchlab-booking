@@ -34,7 +34,7 @@ const Layout = () => {
               <Route path="/gds-research-labs" component={Labs} />
               <Route path="/book-a-research-lab" exact component={LabBooking} />
 
-              <Route
+              {/* <Route
                 exact
                 path="/book-a-research-lab/booking-name"
                 component={BookingFormName}
@@ -42,7 +42,7 @@ const Layout = () => {
               <Route
                 path="/book-a-research-lab/booking-details"
                 component={BookingFormDetails}
-              />
+              /> */}
 
               <Redirect to="/" />
             </Switch>
