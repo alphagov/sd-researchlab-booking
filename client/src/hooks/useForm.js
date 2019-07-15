@@ -17,7 +17,7 @@ export const useForm = (initialValues) => {
     let valid = false;
     let reason = '';
 
-    const { bookAMPM, bookDate } = values;
+    const { bookAMPM, bookDate, firstName, lastName, email } = values;
 
     switch (name) {
       case 'bookDate':
@@ -70,31 +70,57 @@ export const useForm = (initialValues) => {
           ...values,
           bookAMPM
         });
-        console.log(values);
         break;
 
-      // case 'firstName':
-      //   console.log(obj);
-      //   if (!checkLength(obj.value)) {
-      //     setValues({
-      //       ...values,
-      //       [name]: {
-      //         value: '',
-      //         valid: false,
-      //         reason: 'You must enter a first name'
-      //       }
-      //     });
-      //   } else {
-      //     setValues({
-      //       ...values,
-      //       [name]: {
-      //         value: obj.value,
-      //         valid: true,
-      //         reason: ''
-      //       }
-      //     });
-      //   }
-      //   break;
+      case 'firstName':
+        // console.log(obj);
+        if (!checkLength(obj.value)) {
+          firstName.value = '';
+          firstName.valid = false;
+          firstName.reason = 'You must enter a first name';
+        } else {
+          firstName.value = obj.value;
+          firstName.valid = true;
+          firstName.reason = '';
+        }
+        setValues({
+          ...values,
+          firstName
+        });
+        break;
+
+      case 'lastName':
+        if (!checkLength(obj.value)) {
+          lastName.value = '';
+          lastName.valid = false;
+          lastName.reason = 'You must enter a last name';
+        } else {
+          lastName.value = obj.value;
+          lastName.valid = true;
+          lastName.reason = '';
+        }
+        setValues({
+          ...values,
+          lastName
+        });
+        break;
+
+      case 'email':
+        // need to do more checking on email
+        if (!checkLength(obj.value)) {
+          email.value = '';
+          email.valid = false;
+          email.reason = 'You must enter a last name';
+        } else {
+          email.value = obj.value;
+          email.valid = true;
+          email.reason = '';
+        }
+        setValues({
+          ...values,
+          email
+        });
+        break;
 
       default:
         break;

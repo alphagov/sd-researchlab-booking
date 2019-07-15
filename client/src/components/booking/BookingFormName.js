@@ -12,14 +12,19 @@ const BookingFormName = ({ history }) => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 
-  console.log(bookingValues);
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const { firstName, lastName, email } = values;
 
     validateInputs('firstName', firstName);
+    validateInputs('lastName', lastName);
+    validateInputs('email', lastName);
+
+    if (!firstName.valid || !lastName.Valid || !email.valid) {
+      console.log('invalid');
+      return;
+    }
 
     // if everything works ok move to next part of form
     setBookingValues({
