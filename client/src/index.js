@@ -26,7 +26,9 @@ const client = new ApolloClient({
       credentials: 'same-origin'
     })
   ]),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    dataIdFromObject: (object) => object.key || null
+  })
 });
 
 ReactDOM.render(

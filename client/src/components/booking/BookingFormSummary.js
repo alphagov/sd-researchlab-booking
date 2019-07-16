@@ -1,13 +1,17 @@
 import React, { useContext, useState } from 'react';
 import dateFns from 'date-fns';
 import { Link } from '@reach/router';
+import { withApollo } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { BookingContext } from '../../contexts/BookingContext';
+import Spinner from '../shared/Spinner';
+import { GET_RESEARCH_LABS } from '../../queries';
 
-const BookinFormSummary = () => {
+const BookinFormSummary = ({ client }) => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
   const [bookingState, setBookingState] = useState(false);
-  console.log(bookingValues);
+  // console.log(bookingValues);
   const {
     bookedDate,
     bookedAM,
@@ -25,6 +29,12 @@ const BookinFormSummary = () => {
     setBookingState(true);
     // then navigate to user area
   };
+
+  const calendarList = client.readQuery({
+    query: GET_RESEARCH_LABS
+  });
+
+  console.log(calendarList);
 
   return (
     <>
@@ -126,4 +136,4 @@ const BookinFormSummary = () => {
   );
 };
 
-export default BookinFormSummary;
+export default withApollo(BookinFormSummary);
