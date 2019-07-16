@@ -12,7 +12,8 @@ import Landing from './Landing';
 
 import Labs from './Labs';
 import LabBookingForm from './LabBookingForm';
-import BookingFormDate from '../components/booking/BookingFormDate';
+import BookingFormDateCal from '../components/booking/BookingFormDateCal';
+
 import BookingFormName from '../components/booking/BookingFormName';
 import BookingFormDetails from '../components/booking/BookingFormDetails';
 
@@ -28,7 +29,7 @@ const Layout = () => {
             <Landing path="/" />
             <Labs path="/gds-research-labs" />
             <LabBookingForm path="/book-a-research-lab">
-              <BookingFormDate path="/booking-date" />
+              <BookingFormDateCal path="/booking-date" />
               <BookingFormName path="/booking-name" />
               <BookingFormDetails path="/booking-details" />
             </LabBookingForm>

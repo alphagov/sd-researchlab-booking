@@ -9,7 +9,7 @@ const initialState = {
   email: { value: '', valid: true, reason: '' }
 };
 
-const BookingFormName = ({ history }) => {
+const BookingFormName = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 

@@ -4,8 +4,6 @@ import { BookingContext } from '../../contexts/BookingContext';
 import dateFns from 'date-fns';
 import { navigate } from '@reach/router';
 
-import LabCalendarList from '../calendars/LabCalendarList';
-
 import { yearBuilder } from '../../utils/dateUtils';
 
 let initDate = dateFns.addDays(new Date(), 2);
@@ -80,223 +78,217 @@ const BookingFormDate = ({ history }) => {
   };
 
   return (
-    <>
-      <div className="govuk-grid-row">
-        <LabCalendarList />
-      </div>
-
-      <div className="govuk-grid-row">
-        <div className="govuk-grid-column-full">
-          <form onSubmit={(event) => handleSubmit(event)}>
-            <div
-              className={`govuk-form-group 
+    <div className="govuk-grid-row">
+      <div className="govuk-grid-column-full">
+        <form onSubmit={(event) => handleSubmit(event)}>
+          <div
+            className={`govuk-form-group 
            ${!values.bookDate.valid && `govuk-form-group--error`}  `}
+          >
+            <fieldset
+              className="govuk-fieldset"
+              aria-describedby="booked-date-hint"
+              role="group"
             >
-              <fieldset
-                className="govuk-fieldset"
-                aria-describedby="booked-date-hint"
-                role="group"
-              >
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                  <h2 className="govuk-fieldset__heading">
-                    What date would you like to book?
-                  </h2>
-                </legend>
-                <span id="booked-date-hint" className="govuk-hint">
-                  For example, 25 11 2019
+              <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h2 className="govuk-fieldset__heading">
+                  What date would you like to book?
+                </h2>
+              </legend>
+              <span id="booked-date-hint" className="govuk-hint">
+                For example, 25 11 2019
+              </span>
+              {!values.bookDate.valid && (
+                <span id="date-error" className="govuk-error-message">
+                  <span className="govuk-visually-hidden">Error:</span>{' '}
+                  {values.bookDate.reason}
                 </span>
-                {!values.bookDate.valid && (
-                  <span id="date-error" className="govuk-error-message">
-                    <span className="govuk-visually-hidden">Error:</span>{' '}
-                    {values.bookDate.reason}
-                  </span>
-                )}
-                <div className="govuk-date-input" id="booked-date">
-                  <div className="govuk-date-input__item">
-                    <div
-                      className={`govuk-form-group ${!values.bookDay.valid &&
-                        `govuk-form-group--error`}`}
+              )}
+              <div className="govuk-date-input" id="booked-date">
+                <div className="govuk-date-input__item">
+                  <div
+                    className={`govuk-form-group ${!values.bookDay.valid &&
+                      `govuk-form-group--error`}`}
+                  >
+                    <label
+                      className="govuk-label govuk-date-input__label"
+                      htmlFor="bookDay"
                     >
-                      <label
-                        className="govuk-label govuk-date-input__label"
-                        htmlFor="bookDay"
+                      Day
+                    </label>
+                    {!values.bookDay.valid && (
+                      <span
+                        id="event-name-error"
+                        className="govuk-error-message"
                       >
-                        Day
-                      </label>
-                      {!values.bookDay.valid && (
-                        <span
-                          id="event-name-error"
-                          className="govuk-error-message"
-                        >
-                          <span className="govuk-visually-hidden">Error:</span>
-                          Day must be between 1 and 31
-                        </span>
-                      )}
-                      <input
-                        className={`govuk-input govuk-date-input__input govuk-input--width-2 ${(!values
-                          .bookDay.valid ||
-                          !values.bookDate.valid) &&
-                          `govuk-input--error`}`}
-                        id="bookDay"
-                        name="bookDay"
-                        type="number"
-                        pattern="[0-9]*"
-                        onChange={handleChange}
-                        value={values.bookDay.value}
-                      />
-                    </div>
+                        <span className="govuk-visually-hidden">Error:</span>
+                        Day must be between 1 and 31
+                      </span>
+                    )}
+                    <input
+                      className={`govuk-input govuk-date-input__input govuk-input--width-2 ${(!values
+                        .bookDay.valid ||
+                        !values.bookDate.valid) &&
+                        `govuk-input--error`}`}
+                      id="bookDay"
+                      name="bookDay"
+                      type="number"
+                      pattern="[0-9]*"
+                      onChange={handleChange}
+                      value={values.bookDay.value}
+                    />
                   </div>
+                </div>
 
-                  <div className="govuk-date-input__item">
-                    <div
-                      className={`govuk-form-group ${!values.bookMonth.valid &&
-                        `govuk-form-group--error`}`}
+                <div className="govuk-date-input__item">
+                  <div
+                    className={`govuk-form-group ${!values.bookMonth.valid &&
+                      `govuk-form-group--error`}`}
+                  >
+                    <label
+                      className="govuk-label govuk-date-input__label"
+                      htmlFor="bookMonth"
                     >
-                      <label
-                        className="govuk-label govuk-date-input__label"
-                        htmlFor="bookMonth"
+                      Month
+                    </label>
+                    {!values.bookMonth.valid && (
+                      <span
+                        id="event-name-error"
+                        className="govuk-error-message"
                       >
-                        Month
-                      </label>
-                      {!values.bookMonth.valid && (
-                        <span
-                          id="event-name-error"
-                          className="govuk-error-message"
-                        >
-                          <span className="govuk-visually-hidden">Error:</span>
-                          Month must be between 1 and 12
-                        </span>
-                      )}
-                      <input
-                        className={`govuk-input govuk-date-input__input govuk-input--width-2 ${(!values
-                          .bookMonth.valid ||
-                          !values.bookDate.valid) &&
-                          `govuk-input--error`}`}
-                        id="bookMonth"
-                        name="bookMonth"
-                        type="number"
-                        pattern="[0-9]*"
-                        onChange={handleChange}
-                        value={values.bookMonth.value}
-                      />
-                    </div>
-                  </div>
-                  <div className="govuk-date-input__item">
-                    <div
-                      className={`govuk-form-group ${!values.bookYear.valid &&
-                        `govuk-form-group--error`}`}
-                    >
-                      <label
-                        className="govuk-label govuk-date-input__label"
-                        htmlFor="bookYear"
-                      >
-                        Year
-                      </label>
-                      {!values.bookYear.valid && (
-                        <span
-                          id="event-name-error"
-                          className="govuk-error-message"
-                        >
-                          <span className="govuk-visually-hidden">Error:</span>
-                          Year must be in the format YYYY and cannot be in the
-                          past
-                        </span>
-                      )}
-                      <input
-                        className={`govuk-input govuk-date-input__input govuk-input--width-4 ${(!values
-                          .bookYear.valid ||
-                          !values.bookDate.valid) &&
-                          `govuk-input--error`}`}
-                        id="bookYear"
-                        name="bookYear"
-                        type="number"
-                        pattern="[0-9]*"
-                        onChange={handleChange}
-                        value={values.bookYear.value}
-                      />
-                      >
-                    </div>
+                        <span className="govuk-visually-hidden">Error:</span>
+                        Month must be between 1 and 12
+                      </span>
+                    )}
+                    <input
+                      className={`govuk-input govuk-date-input__input govuk-input--width-2 ${(!values
+                        .bookMonth.valid ||
+                        !values.bookDate.valid) &&
+                        `govuk-input--error`}`}
+                      id="bookMonth"
+                      name="bookMonth"
+                      type="number"
+                      pattern="[0-9]*"
+                      onChange={handleChange}
+                      value={values.bookMonth.value}
+                    />
                   </div>
                 </div>
-              </fieldset>
-            </div>
-            <div
-              className={`govuk-form-group ${!values.bookAMPM.valid &&
-                `govuk-form-group--error`}`}
+                <div className="govuk-date-input__item">
+                  <div
+                    className={`govuk-form-group ${!values.bookYear.valid &&
+                      `govuk-form-group--error`}`}
+                  >
+                    <label
+                      className="govuk-label govuk-date-input__label"
+                      htmlFor="bookYear"
+                    >
+                      Year
+                    </label>
+                    {!values.bookYear.valid && (
+                      <span
+                        id="event-name-error"
+                        className="govuk-error-message"
+                      >
+                        <span className="govuk-visually-hidden">Error:</span>
+                        Year must be in the format YYYY and cannot be in the
+                        past
+                      </span>
+                    )}
+                    <input
+                      className={`govuk-input govuk-date-input__input govuk-input--width-4 ${(!values
+                        .bookYear.valid ||
+                        !values.bookDate.valid) &&
+                        `govuk-input--error`}`}
+                      id="bookYear"
+                      name="bookYear"
+                      type="number"
+                      pattern="[0-9]*"
+                      onChange={handleChange}
+                      value={values.bookYear.value}
+                    />
+                    >
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div
+            className={`govuk-form-group ${!values.bookAMPM.valid &&
+              `govuk-form-group--error`}`}
+          >
+            <fieldset
+              className="govuk-fieldset"
+              aria-describedby="am-or-pm-hint am-pm-error"
             >
-              <fieldset
-                className="govuk-fieldset"
-                aria-describedby="am-or-pm-hint am-pm-error"
-              >
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                  <h2 className="govuk-fieldset__heading">
-                    What part(s) of the day would you like to book
-                  </h2>
-                </legend>
-                <span id="date-hint" className="govuk-hint">
-                  Select both AM and PM if you need the whole day
+              <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h2 className="govuk-fieldset__heading">
+                  What part(s) of the day would you like to book
+                </h2>
+              </legend>
+              <span id="date-hint" className="govuk-hint">
+                Select both AM and PM if you need the whole day
+              </span>
+              {!values.bookAMPM.valid && (
+                <span id="am-pm-error" className="govuk-error-message">
+                  <span className="govuk-visually-hidden">Error:</span> Select
+                  either AM or PM or both if you need the whole day
                 </span>
-                {!values.bookAMPM.valid && (
-                  <span id="am-pm-error" className="govuk-error-message">
-                    <span className="govuk-visually-hidden">Error:</span> Select
-                    either AM or PM or both if you need the whole day
+              )}
+              <div className="govuk-checkboxes">
+                <div className="govuk-checkboxes__item">
+                  <input
+                    className="govuk-checkboxes__input"
+                    id="bookAM"
+                    name="bookAM"
+                    type="checkbox"
+                    value={values.bookAM.value}
+                    onChange={handleChange}
+                  />
+                  <label
+                    className="govuk-label govuk-checkboxes__label"
+                    htmlFor="am"
+                  >
+                    AM
+                  </label>
+                  <span
+                    id="am-item-hint"
+                    className="govuk-hint govuk-checkboxes__hint"
+                  >
+                    from 08:30 to 12:00
                   </span>
-                )}
-                <div className="govuk-checkboxes">
-                  <div className="govuk-checkboxes__item">
-                    <input
-                      className="govuk-checkboxes__input"
-                      id="bookAM"
-                      name="bookAM"
-                      type="checkbox"
-                      value={values.bookAM.value}
-                      onChange={handleChange}
-                    />
-                    <label
-                      className="govuk-label govuk-checkboxes__label"
-                      htmlFor="am"
-                    >
-                      AM
-                    </label>
-                    <span
-                      id="am-item-hint"
-                      className="govuk-hint govuk-checkboxes__hint"
-                    >
-                      from 08:30 to 12:00
-                    </span>
-                  </div>
-                  <div className="govuk-checkboxes__item">
-                    <input
-                      className="govuk-checkboxes__input"
-                      id="bookPM"
-                      name="bookPM"
-                      type="checkbox"
-                      value={values.bookPM.value}
-                      onChange={handleChange}
-                    />
-                    <label
-                      className="govuk-label govuk-checkboxes__label"
-                      htmlFor="pm"
-                    >
-                      PM
-                    </label>
-                    <span
-                      id="pm-item-hint"
-                      className="govuk-hint govuk-checkboxes__hint"
-                    >
-                      from 12:00 to 17:00
-                    </span>
-                  </div>
                 </div>
-              </fieldset>
-            </div>
-            <button type="submit" className="govuk-button">
-              Save and continue
-            </button>
-          </form>
-        </div>
+                <div className="govuk-checkboxes__item">
+                  <input
+                    className="govuk-checkboxes__input"
+                    id="bookPM"
+                    name="bookPM"
+                    type="checkbox"
+                    value={values.bookPM.value}
+                    onChange={handleChange}
+                  />
+                  <label
+                    className="govuk-label govuk-checkboxes__label"
+                    htmlFor="pm"
+                  >
+                    PM
+                  </label>
+                  <span
+                    id="pm-item-hint"
+                    className="govuk-hint govuk-checkboxes__hint"
+                  >
+                    from 12:00 to 17:00
+                  </span>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <button type="submit" className="govuk-button">
+            Save and continue
+          </button>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 
