@@ -4,7 +4,7 @@ import {
   checkDay,
   checkMonth,
   checkYear,
-  dateIsPast,
+  dateIsNot48,
   dateIsMoreThan10Weeks,
   dateIsWeekend
 } from '../utils/dateUtils';
@@ -21,10 +21,10 @@ export const useForm = (initialValues) => {
 
     switch (name) {
       case 'bookDate':
-        if (dateIsPast(obj.value)) {
+        if (dateIsNot48(obj.value)) {
           value = dateFns.format(new Date());
           valid = false;
-          reason = 'Date cannot be in the past';
+          reason = 'You can only book 48hrs in advance';
         } else if (dateIsMoreThan10Weeks(obj.value)) {
           value = dateFns.format(new Date());
           valid = false;
