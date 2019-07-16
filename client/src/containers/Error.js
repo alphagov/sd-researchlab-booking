@@ -7,7 +7,7 @@ const Error = ({ error }) => (
     className="govuk-error-summary"
     aria-labelledby="error-summary-title"
     role="alert"
-    tabindex="-1"
+    tabIndex="-1"
     data-module="error-summary"
   >
     <h2 className="govuk-error-summary__title" id="error-summary-title">
