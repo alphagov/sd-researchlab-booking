@@ -33,9 +33,9 @@ const LabCalendar = ({ calendar }) => {
   };
 
   // this will be today's date
-  const startDate = new Date();
+  const startDate = dateFns.startOfDay(new Date());
   // google only give 2 months of free/busy so get 2 months from todays date
-  const endDate = dateFns.addMonths(startDate, 2);
+  const endDate = dateFns.endOfDay(dateFns.addMonths(startDate, 2));
 
   return (
     <>

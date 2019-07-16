@@ -2,16 +2,25 @@ import React, { useContext, useState } from 'react';
 import dateFns from 'date-fns';
 import { Link } from '@reach/router';
 import { withApollo } from 'react-apollo';
-import gql from 'graphql-tag';
+// import gql from 'graphql-tag';
 
 import { BookingContext } from '../../contexts/BookingContext';
 import Spinner from '../shared/Spinner';
-import { GET_RESEARCH_LABS } from '../../queries';
+import Error from '../../containers/Error';
+
+import { GET_RESEARCH_LABS, GET_CALENDAR_FREE_BUSY } from '../../queries';
+
+const initialErrorState = {
+  status: false,
+  error: ''
+};
 
 const BookinFormSummary = ({ client }) => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
   const [bookingState, setBookingState] = useState(false);
+  const [errorState, setErrorState] = useState(initialErrorState);
   // console.log(bookingValues);
+
   const {
     bookedDate,
     bookedAM,
@@ -24,17 +33,48 @@ const BookinFormSummary = ({ client }) => {
 
   const bookLab = () => {
     console.log(bookingValues);
+    let items;
+
+    try {
+      // get the calendar list from the cache
+      const { getResourceCalendarList } = client.readQuery({
+        query: GET_RESEARCH_LABS
+      });
+      console.log(getResourceCalendarList.calendars);
+      items = getResourceCalendarList.calendars.map(
+        (calendar) => calendar.resourceEmail
+      );
+    } catch (error) {
+      console.log(error);
+      setErrorState({ status: true, error });
+      return;
+    }
+
+    // get the free busy dates from cache
+    // potentially risky but the polling should take care of things?
+    // may switch to getting from db.......
+    // this is really a duplicate of what we should be looking at in booking dates
+    try {
+      const start = dateFns.startOfDay(new Date());
+      // google only give 2 months of free/busy so get 2 months from todays date
+      const end = dateFns.endOfDay(dateFns.addMonths(start, 2));
+
+      const { getCalendarFreeBusyList } = client.readQuery({
+        query: GET_CALENDAR_FREE_BUSY,
+        variables: {}
+      });
+      console.log(getCalendarFreeBusyList);
+    } catch (error) {
+      console.log(error);
+      setErrorState({ status: true, error });
+      return;
+    }
+
     // book the lab
     // show confirmation
     setBookingState(true);
     // then navigate to user area
   };
-
-  const calendarList = client.readQuery({
-    query: GET_RESEARCH_LABS
-  });
-
-  console.log(calendarList);
 
   return (
     <>
@@ -119,6 +159,7 @@ const BookinFormSummary = ({ client }) => {
       </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
+          {errorState.status && <Error error={errorState.error} />}
           {bookingState ? (
             <div className="govuk-inset-text">
               Your booking request has been submitted. This is a tentative
