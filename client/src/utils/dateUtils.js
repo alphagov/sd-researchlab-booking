@@ -47,7 +47,6 @@ export const dateIsPast = (date) => {
 
 export const dateIsNot48 = (date) => {
   let compDate = dateFns.addDays(new Date(), 1);
-  console.log(date, compDate);
   return dateFns.isBefore(date, compDate);
 };
 

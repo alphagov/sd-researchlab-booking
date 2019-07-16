@@ -17,7 +17,14 @@ export const useForm = (initialValues) => {
     let valid = false;
     let reason = '';
 
-    const { bookAMPM, bookDate, firstName, lastName, email } = values;
+    const {
+      bookAMPM,
+      bookDate,
+      firstName,
+      lastName,
+      email,
+      bookingDetail
+    } = values;
 
     switch (name) {
       case 'bookDate':
@@ -122,6 +129,23 @@ export const useForm = (initialValues) => {
         });
         break;
 
+      case 'bookingDetail':
+        if (!checkLength(obj.value)) {
+          bookingDetail.value = '';
+          bookingDetail.valid = false;
+          bookingDetail.reason =
+            'Please enter some details about the research session';
+        } else {
+          bookingDetail.value = obj.value;
+          bookingDetail.valid = true;
+          bookingDetail.reason = '';
+        }
+        setValues({
+          ...values,
+          bookingDetail
+        });
+        break;
+
       default:
         break;
     }
@@ -210,6 +234,18 @@ export const useForm = (initialValues) => {
         break;
 
       case 'email':
+        setValues({
+          ...values,
+          [name]: {
+            value,
+            valid: checkLength(value),
+            reason: ''
+          }
+        });
+
+        break;
+
+      case 'bookingDetail':
         setValues({
           ...values,
           [name]: {
