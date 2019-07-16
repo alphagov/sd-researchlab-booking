@@ -31,9 +31,9 @@ const BookingFormName = () => {
       // if everything works ok move to next part of form
       setBookingValues({
         ...bookingValues,
-        bookedFirstName: firstName,
-        bookedLastName: lastName,
-        bookedEmail: email
+        bookedFirstName: firstName.value,
+        bookedLastName: lastName.value,
+        bookedEmail: email.value
       });
       navigate('/book-a-research-lab/booking-details');
     }

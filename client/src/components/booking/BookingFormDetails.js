@@ -13,7 +13,7 @@ const BookingFormDetails = ({ history }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(values);
+    // console.log(values);
 
     const { bookingDetail } = values;
     validateInputs('bookingDetail', bookingDetail);
@@ -28,12 +28,10 @@ const BookingFormDetails = ({ history }) => {
         bookedDetail: bookingDetail.value
         // equipment list array
       });
+      // if everything works ok move to next part of form with
+
       navigate('/book-a-research-lab/booking-summary');
     }
-
-    // if everything works ok move to next part of form with
-    // summary of booking
-    // history.push('/book-a-research-lab/booking-details');
   };
   return (
     <div className="govuk-grid-row">
@@ -79,7 +77,7 @@ const BookingFormDetails = ({ history }) => {
                 </div>
               </div>
               <button type="submit" className="govuk-button">
-                Book the lab
+                Save and continue
               </button>
             </form>
           </fieldset>
