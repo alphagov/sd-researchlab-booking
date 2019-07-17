@@ -29,7 +29,10 @@ const resolvers = {
 
     getResourceResearchLab: async (_, args, { dataSources }) => {
       const resLabs = await dataSources.googleResourcesAPI.getResourceCalendarByType();
-      return { success: true, labs: resLabs };
+      const orderedLabs = resLabs.sort((a, b) =>
+        a.resourceName.localeCompare(b.resourceName)
+      );
+      return { success: true, labs: orderedLabs };
     },
     getCalendarFreeBusyList: async (
       _,

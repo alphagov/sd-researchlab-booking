@@ -28,7 +28,8 @@ const client = new ApolloClient({
   ]),
   cache: new InMemoryCache({
     dataIdFromObject: (object) => object.key || null
-  })
+  }),
+  connectToDevTools: true
 });
 
 ReactDOM.render(

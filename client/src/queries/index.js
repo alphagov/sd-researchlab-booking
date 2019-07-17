@@ -18,6 +18,22 @@ export const GET_RESEARCH_LABS = gql`
   }
 `;
 
+export const GET_RESEARCH_LABS_FREEBUSY = gql`
+  query {
+    getResourceResearchLab {
+      success
+      labs {
+        resourceName
+        resourceEmail
+        freeBusy {
+          start
+          end
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CALENDAR_FREE_BUSY = gql`
   query($start: String!, $end: String!, $items: [String!]) {
     getCalendarFreeBusyList(start: $start, end: $end, items: $items) {
