@@ -15,9 +15,7 @@ const LabCalendarList = () => {
         {({ loading, error, data }) => {
           if (loading) return <Spinner />;
           if (error) return <Error error={error} />;
-          console.log(data);
           const { success, labs } = data.getResourceResearchLab;
-          // console.log(labs);
           if (!success) {
             return <div>No lab calendars found</div>;
           }

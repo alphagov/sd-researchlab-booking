@@ -53,7 +53,7 @@ const LabCalendar = ({ lab }) => {
           setToday={setToday}
         />
         <LabCalendarDays week={currentWeek} />
-        <LabCalendarCells week={currentWeek} busy={busyDays} />;
+        <LabCalendarCells week={currentWeek} busy={busyDays} />
       </div>
     </>
   );

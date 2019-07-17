@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
-import { useForm } from '../../hooks/useForm';
-import { BookingContext } from '../../contexts/BookingContext';
+
 import dateFns from 'date-fns';
 import { navigate } from '@reach/router';
+import { withApollo } from 'react-apollo';
 
 import { yearBuilder } from '../../utils/dateUtils';
+import { checkAvailability } from '../../utils/bookingUtils';
+import { useForm } from '../../hooks/useForm';
+import { BookingContext } from '../../contexts/BookingContext';
+import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
 
 let initDate = dateFns.addDays(new Date(), 2);
 
@@ -30,9 +34,42 @@ const initialState = {
   bookAMPM: { value: false, valid: true, reason: '' }
 };
 
-const BookingFormDate = ({ history }) => {
+const BookingFormDate = ({ client }) => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
+
+  const checkAvail = async (details) => {
+    const { bookedAM, bookedPM, bookedDate } = details;
+
+    let researchLabs = [];
+
+    try {
+      // get the free busy dates from cache
+      // potentially risky but the polling should take care of things?
+      // may switch to getting from db.......
+      const { getResourceResearchLab } = await client.readQuery({
+        query: GET_RESEARCH_LABS_FREEBUSY
+      });
+      researchLabs = getResourceResearchLab.labs;
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+
+    // get the number of labs
+    const numLabs = researchLabs.length;
+
+    const availableDetails = await checkAvailability(researchLabs, details);
+    console.log(availableDetails);
+
+    // get the number of booked labs
+    const numBookedLabs = availableDetails.length;
+
+    // if it is all day booking and there is at least one lab available
+    if (bookedAM && bookedPM && numLabs - numBookedLabs >= 1) {
+      console.log('yeah there is a lab!');
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -57,6 +94,11 @@ const BookingFormDate = ({ history }) => {
 
     // TODO
     // need to check if the date is available here
+    checkAvail({
+      bookedDate: bookDate.value,
+      bookedAM: bookAM.value,
+      bookedPM: bookPM.value
+    });
     // TODO
 
     if (!bookDate.valid || !bookAMPM.valid) {
@@ -72,8 +114,9 @@ const BookingFormDate = ({ history }) => {
         bookedPM: bookPM.value,
         bookedDate: bookDate.value
       });
+
       // if everything works ok move to next part of form
-      navigate('/book-a-research-lab/booking-name');
+      // navigate('/book-a-research-lab/booking-name');
     }
   };
 
@@ -292,4 +335,4 @@ const BookingFormDate = ({ history }) => {
   );
 };
 
-export default BookingFormDate;
+export default withApollo(BookingFormDate);

@@ -8,6 +8,7 @@ import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
 
 import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
+import { checkAvailability } from '../../utils/bookingUtils';
 
 const initialErrorState = {
   status: false,
@@ -29,25 +30,33 @@ const BookinFormSummary = ({ client }) => {
     bookedDetail
   } = bookingValues;
 
-  const bookLab = () => {
-    console.log(bookingValues);
+  const bookLab = async () => {
+    let researchLabs = [];
 
     try {
+      // get the free busy dates from cache
+      // potentially risky but the polling should take care of things?
+      // may switch to getting from db.......
       const { getResourceResearchLab } = client.readQuery({
         query: GET_RESEARCH_LABS_FREEBUSY
       });
-      console.log(getResourceResearchLab);
+      researchLabs = getResourceResearchLab.labs;
     } catch (error) {
       console.log(error);
       setErrorState({ status: true, error });
       return;
     }
 
-    // get the free busy dates from cache
-    // potentially risky but the polling should take care of things?
-    // may switch to getting from db.......
-    // this is really a duplicate of what we should be looking at in booking dates
+    console.log(researchLabs);
+    console.log(bookingValues);
 
+    // this is really a duplicate of what we should be looking at in booking dates
+    //  but we should check again just in case someone else has booked
+    const availableDetails = await checkAvailability(
+      researchLabs,
+      bookingValues
+    );
+    console.log(availableDetails);
     // book the lab
     // show confirmation
     setBookingState(true);
