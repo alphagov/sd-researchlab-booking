@@ -5,7 +5,7 @@ import { navigate } from '@reach/router';
 import { withApollo } from 'react-apollo';
 
 import { yearBuilder } from '../../utils/dateUtils';
-import { checkAvailability } from '../../utils/bookingUtils';
+import { checkClashDates } from '../../utils/bookingUtils';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
@@ -39,7 +39,7 @@ const BookingFormDate = ({ client }) => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 
   const checkAvail = async (details) => {
-    const { bookedAM, bookedPM, bookedDate } = details;
+    const { bookedDate } = details;
 
     let researchLabs = [];
 
@@ -56,19 +56,17 @@ const BookingFormDate = ({ client }) => {
       return;
     }
 
-    // get the number of labs
-    const numLabs = researchLabs.length;
-
-    const availableDetails = await checkAvailability(researchLabs, details);
+    const availableDetails = await checkClashDates(researchLabs, details);
     console.log(availableDetails);
 
-    // get the number of booked labs
-    const numBookedLabs = availableDetails.length;
+    // send it off to validate inputs
 
-    // if it is all day booking and there is at least one lab available
-    if (bookedAM && bookedPM && numLabs - numBookedLabs >= 1) {
-      console.log('yeah there is a lab!');
-    }
+    let checkBooking = {
+      ...details,
+      value: bookedDate,
+      researchLabs,
+      availableDetails
+    };
   };
 
   const handleSubmit = (event) => {

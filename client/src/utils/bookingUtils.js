@@ -1,17 +1,14 @@
 import dateFns from 'date-fns';
 
-export const checkAvailability = async (labs, details) => {
+export const checkClashDates = async (labs, details) => {
   // need to select a date based on the included diagram
-  const { bookedAM, bookedPM, bookedDate } = details;
-
+  const { bookedDate } = details;
   //   get an array of busy days
   const busyDays = await buildFreeBusy(labs);
 
-  let clashDates = busyDays.filter((bDay) =>
+  let clashDates = await busyDays.filter((bDay) =>
     dateFns.isSameDay(bDay.start, bookedDate)
   );
-
-  console.log(clashDates);
 
   return clashDates;
 };

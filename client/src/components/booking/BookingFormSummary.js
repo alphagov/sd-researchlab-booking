@@ -8,7 +8,7 @@ import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
 
 import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
-import { checkAvailability } from '../../utils/bookingUtils';
+import { checkClashDates } from '../../utils/bookingUtils';
 
 const initialErrorState = {
   status: false,
@@ -52,10 +52,7 @@ const BookinFormSummary = ({ client }) => {
 
     // this is really a duplicate of what we should be looking at in booking dates
     //  but we should check again just in case someone else has booked
-    const availableDetails = await checkAvailability(
-      researchLabs,
-      bookingValues
-    );
+    const availableDetails = await checkClashDates(researchLabs, bookingValues);
     console.log(availableDetails);
     // book the lab
     // show confirmation
