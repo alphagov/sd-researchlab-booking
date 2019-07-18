@@ -8,7 +8,7 @@ import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
 
 import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
-import { checkClashDates } from '../../utils/bookingUtils';
+import { checkClashDates, checkBookingSlots } from '../../utils/bookingUtils';
 
 const initialErrorState = {
   status: false,
@@ -32,12 +32,13 @@ const BookinFormSummary = ({ client }) => {
 
   const bookLab = async () => {
     let researchLabs = [];
+    const { bookedAM, bookedPM, bookedDate } = bookingValues;
 
     try {
       // get the free busy dates from cache
       // potentially risky but the polling should take care of things?
       // may switch to getting from db.......
-      const { getResourceResearchLab } = client.readQuery({
+      const { getResourceResearchLab } = await client.readQuery({
         query: GET_RESEARCH_LABS_FREEBUSY
       });
       researchLabs = getResourceResearchLab.labs;
@@ -47,14 +48,36 @@ const BookinFormSummary = ({ client }) => {
       return;
     }
 
-    console.log(researchLabs);
-    console.log(bookingValues);
+    // console.log(researchLabs);
 
     // this is really a duplicate of what we should be looking at in booking dates
     //  but we should check again just in case someone else has booked
-    const availableDetails = await checkClashDates(researchLabs, bookingValues);
-    console.log(availableDetails);
+    const bookedLabs = await checkClashDates(researchLabs, bookingValues);
+    // console.log(bookedLabs);
+
+    const checkBooking = {
+      bookedAM,
+      bookedPM,
+      bookedDate,
+      researchLabs,
+      bookedLabs
+    };
+
+    console.log(checkBooking);
+    const availability = await checkBookingSlots(checkBooking);
+    console.log(availability);
+
+    if (!availability) {
+      let error = {
+        msg:
+          'I am sorry but that date and slot has now been booked by someone else'
+      };
+      setErrorState({ status: true, error });
+      return;
+    }
+
     // book the lab
+
     // show confirmation
     setBookingState(true);
     // then navigate to user area

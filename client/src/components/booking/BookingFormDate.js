@@ -60,9 +60,9 @@ const BookingFormDate = ({ client }) => {
 
     // send it off to validate inputs
 
-    let checkBooking = {
+    const checkBooking = {
       ...details,
-      value: bookedDate,
+      // value: bookedDate,
       researchLabs,
       bookedLabs
     };
