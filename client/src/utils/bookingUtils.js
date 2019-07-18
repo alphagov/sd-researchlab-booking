@@ -35,7 +35,7 @@ export const buildFreeBusy = (labs) => {
 // reason being we will need to check again
 // on the summary page just in case another booking is made
 export const checkBookingSlots = async (booking) => {
-  console.log(booking);
+  // console.log(booking);
   const { bookedAM, bookedPM } = booking;
 
   // if it is an all day booking
@@ -44,7 +44,7 @@ export const checkBookingSlots = async (booking) => {
     return fullDay;
   } else {
     const partDay = await checkPartDayBookings(booking);
-    console.log('part day', partDay);
+    // console.log('part day', partDay);
     return partDay;
   }
 };
@@ -62,7 +62,7 @@ const checkAllDayBookings = async (booking) => {
     const availLabs = await resLabsArray.filter(
       (lab) => !bookedLabsArray.includes(lab)
     );
-    console.log(availLabs);
+    // console.log(availLabs);
     // just return the first available in the array
     return { available: true, resourceEmail: availLabs[0] };
   }
@@ -91,7 +91,7 @@ const checkPartDayBookings = async (booking) => {
       (lab) => dateFns.getHours(lab.end) < 13
     );
   }
-  console.log(availBookedSlot);
+  // console.log(availBookedSlot);
 
   // if there are slots available take the first one
   if (availBookedSlot.length > 0) {

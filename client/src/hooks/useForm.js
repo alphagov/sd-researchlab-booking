@@ -146,6 +146,17 @@ export const useForm = (initialValues) => {
         });
         break;
 
+      case 'bookingSlots':
+        bookDate.reason = obj.reason;
+        bookDate.valid = obj.valid;
+        bookDate.value = obj.value;
+
+        setValues({
+          ...values,
+          bookDate
+        });
+        break;
+
       default:
         break;
     }

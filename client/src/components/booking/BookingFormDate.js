@@ -67,10 +67,10 @@ const BookingFormDate = ({ client }) => {
       bookedLabs
     };
 
-    console.log(checkBooking);
+    // console.log(checkBooking);
 
     const availability = await checkBookingSlots(checkBooking);
-    console.log(availability);
+    // console.log(availability);
     return availability;
   };
 
@@ -101,30 +101,35 @@ const BookingFormDate = ({ client }) => {
       bookedAM: bookAM.value,
       bookedPM: bookPM.value
     }).then((result) => {
-      console.log(result);
+      // console.log(result);
       if (!result.available) {
         bookDate.valid = false;
         bookDate.reason = 'Sorry but that date is booked';
+        validateInputs('bookingSlots', {
+          value: bookDate.value,
+          valid: bookDate.valid,
+          reason: bookDate.reason
+        });
+      }
+
+      if (!bookDate.valid || !bookAMPM.valid) {
+        console.log('not valid');
+        return;
+      } else {
+        setBookingValues({
+          ...bookingValues,
+          bookedDay: bookDay.value,
+          bookedMonth: bookMonth.value,
+          bookedYear: bookYear.value,
+          bookedAM: bookAM.value,
+          bookedPM: bookPM.value,
+          bookedDate: bookDate.value
+        });
+
+        // if everything works ok move to next part of form
+        navigate('/book-a-research-lab/booking-name');
       }
     });
-
-    if (!bookDate.valid || !bookAMPM.valid) {
-      console.log('not valid');
-      return;
-    } else {
-      setBookingValues({
-        ...bookingValues,
-        bookedDay: bookDay.value,
-        bookedMonth: bookMonth.value,
-        bookedYear: bookYear.value,
-        bookedAM: bookAM.value,
-        bookedPM: bookPM.value,
-        bookedDate: bookDate.value
-      });
-
-      // if everything works ok move to next part of form
-      // navigate('/book-a-research-lab/booking-name');
-    }
   };
 
   return (
