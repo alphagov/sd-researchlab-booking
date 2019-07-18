@@ -5,7 +5,7 @@ import { navigate } from '@reach/router';
 import { withApollo } from 'react-apollo';
 
 import { yearBuilder } from '../../utils/dateUtils';
-import { checkClashDates } from '../../utils/bookingUtils';
+import { checkClashDates, checkBookingSlots } from '../../utils/bookingUtils';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
@@ -56,8 +56,7 @@ const BookingFormDate = ({ client }) => {
       return;
     }
 
-    const availableDetails = await checkClashDates(researchLabs, details);
-    console.log(availableDetails);
+    const bookedLabs = await checkClashDates(researchLabs, details);
 
     // send it off to validate inputs
 
@@ -65,8 +64,14 @@ const BookingFormDate = ({ client }) => {
       ...details,
       value: bookedDate,
       researchLabs,
-      availableDetails
+      bookedLabs
     };
+
+    console.log(checkBooking);
+
+    const availability = await checkBookingSlots(checkBooking);
+    console.log(availability);
+    return availability;
   };
 
   const handleSubmit = (event) => {
@@ -90,14 +95,18 @@ const BookingFormDate = ({ client }) => {
     validateInputs('bookDate', bookDate);
     validateInputs('bookAMPM', { bookAM, bookPM });
 
-    // TODO
     // need to check if the date is available here
     checkAvail({
       bookedDate: bookDate.value,
       bookedAM: bookAM.value,
       bookedPM: bookPM.value
+    }).then((result) => {
+      console.log(result);
+      if (!result.available) {
+        bookDate.valid = false;
+        bookDate.reason = 'Sorry but that date is booked';
+      }
     });
-    // TODO
 
     if (!bookDate.valid || !bookAMPM.valid) {
       console.log('not valid');
