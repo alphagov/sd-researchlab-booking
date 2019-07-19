@@ -226,6 +226,16 @@ export const useForm = (initialValues) => {
               reason: ''
             }
           });
+          if (name === 'bookingAttend') {
+            setValues({
+              ...values,
+              [name]: {
+                value,
+                valid: true,
+                reason: ''
+              }
+            });
+          }
         }
 
         break;

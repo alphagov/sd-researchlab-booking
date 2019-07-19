@@ -27,7 +27,9 @@ const BookinFormSummary = ({ client }) => {
     bookedFirstName,
     bookedLastName,
     bookedEmail,
-    bookedDetail
+    bookedDetail,
+    bookedAttend,
+    bookedEquipment
   } = bookingValues;
 
   const bookLab = async () => {
@@ -149,15 +151,28 @@ const BookinFormSummary = ({ client }) => {
             <div className="govuk-summary-list__row">
               <dt className="govuk-summary-list__key">Booking details</dt>
               <dd className="govuk-summary-list__value">
+                <p className="govuk-body">
+                  {bookedAttend} people will be attending
+                </p>
                 <p className="govuk-body">{bookedDetail}</p>
+                {bookedEquipment && (
+                  <>
+                    <p className="govuk-body">
+                      The following equipment will be needed:
+                    </p>
+
+                    <ul className="govuk-list govuk-list--bullet">
+                      {bookedEquipment.map((equip, i) => (
+                        <li key={i}>{equip}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </dd>
               <dd className="govuk-summary-list__actions">
                 <a className="govuk-link" href="/">
                   Change
-                  <span className="govuk-visually-hidden">
-                    {' '}
-                    booking details
-                  </span>
+                  <span className="govuk-visually-hidden">booking details</span>
                 </a>
               </dd>
             </div>
