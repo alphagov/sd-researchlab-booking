@@ -62,7 +62,6 @@ const BookingFormDate = ({ client }) => {
 
     const checkBooking = {
       ...details,
-      // value: bookedDate,
       researchLabs,
       bookedLabs
     };
