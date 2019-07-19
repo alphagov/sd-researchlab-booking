@@ -39,8 +39,6 @@ const BookingFormDate = ({ client }) => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 
   const checkAvail = async (details) => {
-    const { bookedDate } = details;
-
     let researchLabs = [];
 
     try {

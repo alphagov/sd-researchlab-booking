@@ -227,6 +227,7 @@ export const useForm = (initialValues) => {
             }
           });
           if (name === 'bookingAttend') {
+            console.log(value);
             setValues({
               ...values,
               [name]: {

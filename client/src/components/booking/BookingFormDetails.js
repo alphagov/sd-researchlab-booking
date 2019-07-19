@@ -24,12 +24,10 @@ const BookingFormDetails = ({ history }) => {
       console.log('not valid;');
       return;
     } else {
-      // 'need to change this when we have equipment list'
       setBookingValues({
         ...bookingValues,
         bookedDetail: bookingDetail.value,
         bookedAttend: bookingAttend.value
-        // equipment list array
       });
       // if everything works ok move to next part of form with
 

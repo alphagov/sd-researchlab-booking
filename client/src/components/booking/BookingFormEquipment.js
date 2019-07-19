@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { navigate } from '@reach/router';
 
-import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 
 const initialState = {
