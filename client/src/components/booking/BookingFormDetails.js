@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { navigate } from '@reach/router';
+
 import { BookingContext } from '../../contexts/BookingContext';
+
+import BookingFormEquipment from './BookingFormEquipment';
 
 const initialState = {
   bookingDetail: { value: '', valid: true, reason: '' }
@@ -30,7 +33,7 @@ const BookingFormDetails = ({ history }) => {
       });
       // if everything works ok move to next part of form with
 
-      navigate('/book-a-research-lab/booking-summary');
+      navigate('/book-a-research-lab/booking-equipment');
     }
   };
   return (
@@ -45,6 +48,17 @@ const BookingFormDetails = ({ history }) => {
             </legend>
             <form onSubmit={(event) => handleSubmit(event)}>
               <div style={{ marginBottom: '2rem' }}>
+                <div className="govuk-form-group">
+                  <label className="govuk-label" htmlFor="event-name">
+                    Number of attendees
+                  </label>
+                  <input
+                    className="govuk-input govuk-input--width-2"
+                    id="bookingAttend"
+                    name="bookingAttend"
+                    type="number"
+                  />
+                </div>
                 <div
                   className={`govuk-form-group ${!values.bookingDetail.valid &&
                     `govuk-form-group--error`}`}

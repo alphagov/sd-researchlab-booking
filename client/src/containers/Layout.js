@@ -15,6 +15,7 @@ import LabBookingForm from './LabBookingForm';
 import BookingFormDateCal from '../components/booking/BookingFormDateCal';
 import BookingFormName from '../components/booking/BookingFormName';
 import BookingFormDetails from '../components/booking/BookingFormDetails';
+import BookingFormEquipment from '../components/booking/BookingFormEquipment';
 import BookingFormSummary from '../components/booking/BookingFormSummary';
 
 const Layout = () => {
@@ -32,6 +33,7 @@ const Layout = () => {
               <BookingFormDateCal path="/booking-date" />
               <BookingFormName path="/booking-name" />
               <BookingFormDetails path="/booking-details" />
+              <BookingFormEquipment path="/booking-equipment" />
               <BookingFormSummary path="/booking-summary" />
             </LabBookingForm>
           </Router>
