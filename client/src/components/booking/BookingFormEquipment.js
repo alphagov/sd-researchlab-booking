@@ -1,21 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { navigate } from '@reach/router';
 
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
 
 const initialState = {
-  iphone8: { value: false },
-  ipad2: { value: false },
-  androidPhone: { value: false },
-  appleMac: { value: false },
-  windowsPC: { value: false },
-  clickShare: { value: false },
-  talkBackMic: { value: false }
+  iphone8: { value: false, name: 'Apple iPhone 8' },
+  ipad2: { value: false, name: 'Apple iPad 2' },
+  androidPhone: { value: false, name: 'Android Phone' },
+  appleMac: { value: false, name: 'Apple Mac' },
+  windowsPC: { value: false, name: 'Microsoft Windows PC' },
+  clickShare: { value: false, name: 'Click Share' },
+  talkBackMic: { value: false, name: 'Talk Back Microphone' }
 };
 
 const BookingFormEquipment = () => {
-  const [values, validateInputs, handleChange] = useForm(initialState);
+  const [values, setValues] = useState(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 
   const {
@@ -28,8 +28,34 @@ const BookingFormEquipment = () => {
     talkBackMic
   } = values;
 
+  const handleChange = (event) => {
+    const { name, checked } = event.target;
+    setValues({
+      ...values,
+      [name]: {
+        value: checked,
+        name: values[name].name
+      }
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    //  no verification is needed and no error checking is required
+    let equipArray = [];
+    for (let key in values) {
+      if (values[key].value) {
+        equipArray.push(values[key].name);
+      }
+    }
+    console.log(equipArray);
+    setBookingValues({
+      ...bookingValues,
+      bookedEquipment: equipArray
+    });
+
+    navigate('/book-a-research-lab/booking-summary');
   };
 
   return (
