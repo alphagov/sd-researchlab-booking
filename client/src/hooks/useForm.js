@@ -181,7 +181,7 @@ export const useForm = (initialValues) => {
     const { name, value, type } = event.target;
     event.persist();
 
-    // console.log(event.target.type);
+    // console.log(event.target.type, name);
 
     switch (type) {
       case 'checkbox':
@@ -226,17 +226,16 @@ export const useForm = (initialValues) => {
               reason: ''
             }
           });
-          if (name === 'bookingAttend') {
-            console.log(value);
-            setValues({
-              ...values,
-              [name]: {
-                value,
-                valid: true,
-                reason: ''
-              }
-            });
-          }
+        }
+        if (name === 'bookingAttend') {
+          setValues({
+            ...values,
+            [name]: {
+              value,
+              valid: true,
+              reason: ''
+            }
+          });
         }
 
         break;

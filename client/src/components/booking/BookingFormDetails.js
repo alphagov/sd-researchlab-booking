@@ -9,7 +9,7 @@ const initialState = {
   bookingAttend: { value: 1, valid: true, reason: '' }
 };
 
-const BookingFormDetails = ({ history }) => {
+const BookingFormDetails = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
 
