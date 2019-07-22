@@ -156,9 +156,6 @@ export const BOOK_LAB_SLOT = gql`
       success
       event {
         eventId
-        resource {
-          resourceEmail
-        }
         eventTitle
         eventDescription
         eventStatus

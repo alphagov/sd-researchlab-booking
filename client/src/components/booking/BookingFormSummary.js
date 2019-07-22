@@ -22,7 +22,7 @@ const BookinFormSummary = ({ client }) => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
   const [bookingState, setBookingState] = useState(false);
   const [errorState, setErrorState] = useState(initialErrorState);
-  const [addBooking, { loading, error }] = useMutation(BOOK_LAB_SLOT);
+  const [addBooking] = useMutation(BOOK_LAB_SLOT);
 
   const {
     bookedDate,
@@ -41,25 +41,31 @@ const BookinFormSummary = ({ client }) => {
     // const { bookedAM, bookedPM, bookedDate } = bookingValues;
 
     try {
-      // get the free busy dates from cache
-      // potentially risky but the polling should take care of things?
-      // may switch to getting from db.......
-      const { getResourceResearchLab } = await client.readQuery({
-        query: GET_RESEARCH_LABS_FREEBUSY
+      const { data, loading, error } = await client.query({
+        query: GET_RESEARCH_LABS_FREEBUSY,
+        options: {
+          fetchPolicy: 'network-only'
+        }
       });
-      researchLabs = getResourceResearchLab.labs;
+      if (loading) {
+        return <Spinner />;
+      }
+      if (error) {
+        return setErrorState({ status: true, error });
+      }
+      researchLabs = data.getResourceResearchLab.labs;
     } catch (error) {
       console.log(error);
       setErrorState({ status: true, error });
       return;
     }
 
-    // console.log(researchLabs);
+    console.log(researchLabs);
 
     // this is really a duplicate of what we should be looking at in booking dates
     //  but we should check again just in case someone else has booked
     const bookedLabs = await checkClashDates(researchLabs, bookingValues);
-    // console.log(bookedLabs);
+    console.log(bookedLabs);
 
     const checkBooking = {
       bookedAM,
@@ -69,8 +75,8 @@ const BookinFormSummary = ({ client }) => {
       bookedLabs
     };
 
-    console.log(checkBooking);
     const availability = await checkBookingSlots(checkBooking);
+
     console.log(availability);
 
     if (!availability) {
@@ -96,29 +102,34 @@ const BookinFormSummary = ({ client }) => {
       slots = makeStartEnd(bookedDate, 'DAY');
     }
 
-    console.log(slots);
-
     // book the lab
-    const bookingResult = await addBooking({
-      variables: {
-        calendarId: availability.resourceEmail,
-        start: slots.start,
-        end: slots.end,
-        attendees: parseInt(bookedAttend),
-        title: `not done this`,
-        description: `${bookedDetail} equipment required ${bookedEquipment}`,
-        creator: `${bookedFirstName} ${bookedLastName}`,
-        email: bookedEmail
-      }
-    });
+    let bookingResult;
 
-    console.log(bookingResult);
-    // show confirmation
-    if (bookingResult.success) {
-      console.log(bookingResult.event);
-      setBookingState(true);
-      // then navigate to user area
+    try {
+      bookingResult = await addBooking({
+        variables: {
+          calendarId: availability.resourceEmail,
+          start: slots.start,
+          end: slots.end,
+          attendees: parseInt(bookedAttend),
+          title: `not done this`,
+          description: `${bookedDetail} equipment required ${bookedEquipment}`,
+          creator: `${bookedFirstName} ${bookedLastName}`,
+          email: bookedEmail
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      setErrorState({ status: true, error });
     }
+
+    console.log(bookingResult.data);
+    // show confirmation
+    // if (bookingResult.success) {
+    //   console.log(bookingResult.event);
+    //   setBookingState(true);
+    //   // then navigate to user area
+    // }
   };
 
   return (

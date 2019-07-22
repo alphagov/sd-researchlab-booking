@@ -82,16 +82,21 @@ const checkPartDayBookings = async (booking) => {
   // first check booked dates to see if there is an availabale slot
   let availBookedSlot = [];
 
+  let bookedSlots = [];
+
   if (bookedAM) {
-    availBookedSlot = await bookedLabs.filter(
-      (lab) => dateFns.getHours(lab.end) > 13
+    // get the number of am booked slots as well as all day slots
+    bookedSlots = await bookedLabs.filter(
+      (lab) =>
+        dateFns.getHours(lab.end) < 13 ||
+        (dateFns.getHours(lab.start) === 8 && dateFns.getHours(lab.end) === 17)
     );
-  } else {
-    availBookedSlot = await bookedLabs.filter(
-      (lab) => dateFns.getHours(lab.end) < 13
-    );
+    if (bookedSlots.length === numLabs) {
+      return { available: false, resourceEmail: '' };
+    }
   }
-  // console.log(availBookedSlot);
+  console.log('booked', bookedSlots);
+  console.log('available', availBookedSlot);
 
   // if there are slots available take the first one
   if (availBookedSlot.length > 0) {

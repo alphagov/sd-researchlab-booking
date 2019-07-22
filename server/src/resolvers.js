@@ -47,10 +47,10 @@ const resolvers = {
   },
   Mutation: {
     addResearchLabEvent: async (_, args, { dataSources }) => {
-      console.log('we are here in resolver');
       const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
         args
       );
+      console.log(addEvent);
       return { success: true, event: addEvent };
     }
   },
