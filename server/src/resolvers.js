@@ -2,12 +2,6 @@ import moment from 'moment';
 
 const resolvers = {
   Query: {
-    addResearchLabEvent: async (_, args, { dataSources }) => {
-      const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
-        args
-      );
-      return { success: true, event: addEvent };
-    },
     getResourceCalendarList: async (_, args, { dataSources }) => {
       const resCals = await dataSources.googleResourcesAPI.getResourceCalendarByType();
       // console.log(resCals);
@@ -49,6 +43,15 @@ const resolvers = {
         success: true,
         calendars: resFreeBusy
       };
+    }
+  },
+  Mutation: {
+    addResearchLabEvent: async (_, args, { dataSources }) => {
+      console.log('we are here in resolver');
+      const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
+        args
+      );
+      return { success: true, event: addEvent };
     }
   },
   ResourceCalendar: {

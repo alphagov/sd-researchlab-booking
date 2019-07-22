@@ -63,3 +63,28 @@ export const dateIsMoreThan10Weeks = (date) => {
 export const dateIsWeekend = (date) => {
   return dateFns.isWeekend(date);
 };
+
+export const makeStartEnd = (date, slot) => {
+  let start = '';
+  let end = '';
+
+  switch (slot) {
+    case 'AM':
+      start = dateFns.setMinutes(dateFns.setHours(date, 8), 30);
+      end = dateFns.setHours(date, 12);
+      return { start, end };
+
+    case 'PM':
+      start = dateFns.setMinutes(dateFns.setHours(date, 12), 30);
+      end = dateFns.setHours(date, 17);
+      return { start, end };
+
+    case 'DAY':
+      start = dateFns.setMinutes(dateFns.setHours(date, 8), 30);
+      end = dateFns.setHours(date, 17);
+      return { start, end };
+
+    default:
+      return { start, end };
+  }
+};

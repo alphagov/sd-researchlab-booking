@@ -131,3 +131,44 @@ export const REGISTER_USER = gql`
     }
   }
 `;
+
+export const BOOK_LAB_SLOT = gql`
+  mutation(
+    $calendarId: String!
+    $start: String!
+    $end: String!
+    $attendees: Int
+    $title: String!
+    $description: String!
+    $creator: String!
+    $email: String!
+  ) {
+    addResearchLabEvent(
+      calendarId: $calendarId
+      start: $start
+      end: $end
+      attendees: $attendees
+      title: $title
+      description: $description
+      creator: $creator
+      email: $email
+    ) {
+      success
+      event {
+        eventId
+        resource {
+          resourceEmail
+        }
+        eventTitle
+        eventDescription
+        eventStatus
+        eventStart
+        eventEnd
+        eventOwner {
+          displayName
+          email
+        }
+      }
+    }
+  }
+`;

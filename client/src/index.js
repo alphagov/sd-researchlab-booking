@@ -7,6 +7,7 @@ import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 
 import App from './App';
 
@@ -34,7 +35,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <ApolloHooksProvider client={client}>
+      <App />
+    </ApolloHooksProvider>
   </ApolloProvider>,
 
   document.getElementById('root')

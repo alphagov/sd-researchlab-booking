@@ -2,12 +2,15 @@ import React, { useContext, useState } from 'react';
 import dateFns from 'date-fns';
 import { Link } from '@reach/router';
 import { withApollo } from 'react-apollo';
+import { useMutation } from 'react-apollo-hooks';
 
 import { BookingContext } from '../../contexts/BookingContext';
 import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
 
-import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
+import { makeStartEnd } from '../../utils/dateUtils';
+
+import { GET_RESEARCH_LABS_FREEBUSY, BOOK_LAB_SLOT } from '../../queries';
 import { checkClashDates, checkBookingSlots } from '../../utils/bookingUtils';
 
 const initialErrorState = {
@@ -19,6 +22,7 @@ const BookinFormSummary = ({ client }) => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
   const [bookingState, setBookingState] = useState(false);
   const [errorState, setErrorState] = useState(initialErrorState);
+  const [addBooking, { loading, error }] = useMutation(BOOK_LAB_SLOT);
 
   const {
     bookedDate,
@@ -34,7 +38,7 @@ const BookinFormSummary = ({ client }) => {
 
   const bookLab = async () => {
     let researchLabs = [];
-    const { bookedAM, bookedPM, bookedDate } = bookingValues;
+    // const { bookedAM, bookedPM, bookedDate } = bookingValues;
 
     try {
       // get the free busy dates from cache
@@ -78,11 +82,43 @@ const BookinFormSummary = ({ client }) => {
       return;
     }
 
-    // book the lab
+    let slots = {};
 
+    if (bookedAM && !bookedPM) {
+      slots = makeStartEnd(bookedDate, 'AM');
+    }
+
+    if (!bookedAM && bookedPM) {
+      slots = makeStartEnd(bookedDate, 'PM');
+    }
+
+    if (bookedAM && bookedPM) {
+      slots = makeStartEnd(bookedDate, 'DAY');
+    }
+
+    console.log(slots);
+
+    // book the lab
+    const bookingResult = await addBooking({
+      variables: {
+        calendarId: availability.resourceEmail,
+        start: slots.start,
+        end: slots.end,
+        attendees: parseInt(bookedAttend),
+        title: `not done this`,
+        description: `${bookedDetail} equipment required ${bookedEquipment}`,
+        creator: `${bookedFirstName} ${bookedLastName}`,
+        email: bookedEmail
+      }
+    });
+
+    console.log(bookingResult);
     // show confirmation
-    setBookingState(true);
-    // then navigate to user area
+    if (bookingResult.success) {
+      console.log(bookingResult.event);
+      setBookingState(true);
+      // then navigate to user area
+    }
   };
 
   return (

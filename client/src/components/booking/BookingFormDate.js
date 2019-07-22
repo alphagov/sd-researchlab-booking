@@ -329,7 +329,7 @@ const BookingFormDate = ({ client }) => {
                     id="pm-item-hint"
                     className="govuk-hint govuk-checkboxes__hint"
                   >
-                    from 12:00 to 17:00
+                    from 12:30 to 17:00
                   </span>
                 </div>
               </div>
