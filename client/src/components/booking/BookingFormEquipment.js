@@ -48,7 +48,7 @@ const BookingFormEquipment = () => {
         equipArray.push(values[key].name);
       }
     }
-    console.log(equipArray);
+    // console.log(equipArray);
     setBookingValues({
       ...bookingValues,
       bookedEquipment: equipArray
