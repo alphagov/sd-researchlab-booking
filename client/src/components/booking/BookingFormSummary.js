@@ -43,10 +43,9 @@ const BookinFormSummary = ({ client }) => {
     try {
       const { data, loading, error } = await client.query({
         query: GET_RESEARCH_LABS_FREEBUSY,
-        options: {
-          fetchPolicy: 'network-only'
-        }
+        fetchPolicy: 'network-only'
       });
+
       if (loading) {
         return <Spinner />;
       }
@@ -79,11 +78,12 @@ const BookinFormSummary = ({ client }) => {
 
     console.log(availability);
 
-    if (!availability) {
-      let error = {
-        msg:
-          'I am sorry but that date and slot has now been booked by someone else'
-      };
+    if (!availability.available) {
+      let error = {};
+      error.message =
+        'I am sorry but that date and slot has now been booked by someone else';
+
+      console.log(error);
       setErrorState({ status: true, error });
       return;
     }
