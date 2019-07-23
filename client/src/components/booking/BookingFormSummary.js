@@ -225,10 +225,13 @@ const BookinFormSummary = ({ client }) => {
         <div className="govuk-grid-column-full">
           {errorState.status && <Error error={errorState.error} />}
           {bookingState ? (
-            <div className="govuk-inset-text">
-              Your booking request has been submitted. This is a tentative
-              booking. The GDS research team will either confirm or deny the
-              booking within 48hrs.
+            <div className="govuk-panel govuk-panel--confirmation">
+              <h1 className="govuk-panel__title">Booking complete</h1>
+              <div className="govuk-panel__body">
+                Your booking reference number
+                <br />
+                <strong>ABC123</strong>
+              </div>
             </div>
           ) : (
             <button type="submit" className="govuk-button" onClick={bookLab}>
