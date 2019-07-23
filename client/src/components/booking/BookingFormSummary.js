@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import dateFns from 'date-fns';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import { withApollo } from 'react-apollo';
 import { useMutation } from 'react-apollo-hooks';
 
@@ -59,12 +59,9 @@ const BookinFormSummary = ({ client }) => {
       return;
     }
 
-    console.log(researchLabs);
-
     // this is really a duplicate of what we should be looking at in booking dates
     //  but we should check again just in case someone else has booked
     const bookedLabs = await checkClashDates(researchLabs, bookingValues);
-    console.log(bookedLabs);
 
     const checkBooking = {
       bookedAM,
@@ -75,8 +72,6 @@ const BookinFormSummary = ({ client }) => {
     };
 
     const availability = await checkBookingSlots(checkBooking);
-
-    console.log(availability);
 
     if (!availability.available) {
       let error = {};
@@ -123,13 +118,13 @@ const BookinFormSummary = ({ client }) => {
       setErrorState({ status: true, error });
     }
 
-    console.log(bookingResult.data);
-    // show confirmation
-    // if (bookingResult.success) {
-    //   console.log(bookingResult.event);
-    //   setBookingState(true);
-    //   // then navigate to user area
-    // }
+    const { data } = bookingResult;
+    console.log(data);
+    if (data.addResearchLabEvent.success) {
+      console.log(data.addResearchLabEvent.event);
+      setBookingState(true);
+      // then navigate to user area
+    }
   };
 
   return (

@@ -27,7 +27,6 @@ export const buildFreeBusy = (labs) => {
     });
     busyArray = [...busyArray, ...bArray];
   }
-  console.log('busyArray', busyArray);
   return busyArray;
 };
 
@@ -119,8 +118,6 @@ const checkPartDayBookings = async (booking) => {
     );
   }
 
-  // console.log('8 starts', eightStarts);
-
   // if 8 starts length = number of reslabs return false
   if (slotStarts.length === numLabs) {
     return {
@@ -140,8 +137,6 @@ const checkPartDayBookings = async (booking) => {
       )
     );
   }
-
-  // console.log('availBookedSlots', availBookedSlot.flat().length);
 
   // if there is a list of booked labs available
   // select the first one in the booked list
