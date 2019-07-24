@@ -34,8 +34,8 @@ const LabCalendar = ({ lab }) => {
   const busyDays = freeBusy.map((bDay) => {
     return {
       date: bDay.end,
-      am: dateFns.getHours(bDay.end) < 13,
-      pm: dateFns.getHours(bDay.end) > 13,
+      am: dateFns.getHours(bDay.start) === 8,
+      pm: dateFns.getHours(bDay.end) === 17,
       avail: false
     };
   });

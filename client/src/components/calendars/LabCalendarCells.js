@@ -15,6 +15,8 @@ const LabCalendarCells = ({ busy, week }) => {
   let isBusy = false;
   let dayCounter = startDate;
 
+  // console.log(busy);
+
   for (let i = 0; i < 5; i++) {
     // check for am busy and build
     for (let x = 0; x < busy.length; x++) {

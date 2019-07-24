@@ -40,6 +40,7 @@ const BookinFormSummary = ({ client }) => {
   const bookLab = async () => {
     let researchLabs = [];
     // const { bookedAM, bookedPM, bookedDate } = bookingValues;
+    setLoadingState(true);
 
     try {
       const { data, error } = await client.query({
@@ -54,6 +55,7 @@ const BookinFormSummary = ({ client }) => {
     } catch (error) {
       console.log(error);
       setErrorState({ status: true, error });
+      setLoadingState(false);
       return;
     }
 
@@ -78,6 +80,7 @@ const BookinFormSummary = ({ client }) => {
 
       console.log(error);
       setErrorState({ status: true, error });
+      setLoadingState(false);
       return;
     }
 
@@ -114,6 +117,7 @@ const BookinFormSummary = ({ client }) => {
     } catch (error) {
       console.log(error);
       setErrorState({ status: true, error });
+      setLoadingState(false);
     }
 
     const { data } = bookingResult;
@@ -121,7 +125,12 @@ const BookinFormSummary = ({ client }) => {
     if (data.addResearchLabEvent.success) {
       console.log(data.addResearchLabEvent.event);
       // add to the booking context setBookingValues
+      setBookingValues({
+        ...bookingValues,
+        bookedEvent: data.addResearchLabEvent.event
+      });
       setBookingState(true);
+      setLoadingState(false);
       // then navigate to user area
     }
   };

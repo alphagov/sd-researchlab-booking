@@ -46,7 +46,8 @@ const BookingFormDate = ({ client }) => {
       // potentially risky but the polling should take care of things?
       // may switch to getting from db.......
       const { getResourceResearchLab } = await client.readQuery({
-        query: GET_RESEARCH_LABS_FREEBUSY
+        query: GET_RESEARCH_LABS_FREEBUSY,
+        fetchPolicy: 'cache-and-network'
       });
       researchLabs = getResourceResearchLab.labs;
     } catch (error) {

@@ -133,7 +133,7 @@ const checkPartDayBookings = async (booking) => {
 
   // if there are no pm/am bookings already...
   if (slotStarts.length === 0) {
-    availBookedSlot = bookedLabs.map((lab) => lab.resourceEmail);
+    availBookedSlot = bookedLabs;
   } else {
     for (let i = 0; i < slotStarts.length; i++) {
       availBookedSlot.push(
