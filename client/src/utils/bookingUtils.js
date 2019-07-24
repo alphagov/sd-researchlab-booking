@@ -126,16 +126,22 @@ const checkPartDayBookings = async (booking) => {
     };
   }
 
-  // remove these 8 starts from the booked labs array
-  // push the other booked labs (will be pm bookings into and array)
+  // console.log(slotStarts);
+  // remove these starts from the booked labs array
+  // push the other booked labs (will be pm/am bookings into and array)
   let availBookedSlot = [];
 
-  for (let i = 0; i < slotStarts.length; i++) {
-    availBookedSlot.push(
-      bookedLabs.filter(
-        (bookedLab) => bookedLab.resourceEmail !== slotStarts[i].resourceEmail
-      )
-    );
+  // if there are no pm/am bookings already...
+  if (slotStarts.length === 0) {
+    availBookedSlot = bookedLabs.map((lab) => lab.resourceEmail);
+  } else {
+    for (let i = 0; i < slotStarts.length; i++) {
+      availBookedSlot.push(
+        bookedLabs.filter(
+          (bookedLab) => bookedLab.resourceEmail !== slotStarts[i].resourceEmail
+        )
+      );
+    }
   }
 
   // if there is a list of booked labs available

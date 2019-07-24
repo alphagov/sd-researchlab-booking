@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import dateFns from 'date-fns';
-import { Link, navigate } from '@reach/router';
+import { Link } from '@reach/router';
 import { withApollo } from 'react-apollo';
 import { useMutation } from 'react-apollo-hooks';
 
@@ -21,6 +21,7 @@ const initialErrorState = {
 const BookinFormSummary = ({ client }) => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
   const [bookingState, setBookingState] = useState(false);
+  const [loadingState, setLoadingState] = useState(false);
   const [errorState, setErrorState] = useState(initialErrorState);
   const [addBooking] = useMutation(BOOK_LAB_SLOT);
 
@@ -41,14 +42,11 @@ const BookinFormSummary = ({ client }) => {
     // const { bookedAM, bookedPM, bookedDate } = bookingValues;
 
     try {
-      const { data, loading, error } = await client.query({
+      const { data, error } = await client.query({
         query: GET_RESEARCH_LABS_FREEBUSY,
         fetchPolicy: 'network-only'
       });
 
-      if (loading) {
-        return <Spinner />;
-      }
       if (error) {
         return setErrorState({ status: true, error });
       }
@@ -122,6 +120,7 @@ const BookinFormSummary = ({ client }) => {
     console.log(data);
     if (data.addResearchLabEvent.success) {
       console.log(data.addResearchLabEvent.event);
+      // add to the booking context setBookingValues
       setBookingState(true);
       // then navigate to user area
     }
@@ -224,7 +223,7 @@ const BookinFormSummary = ({ client }) => {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           {errorState.status && <Error error={errorState.error} />}
-          {bookingState ? (
+          {bookingState && (
             <div className="govuk-panel govuk-panel--confirmation">
               <h1 className="govuk-panel__title">Booking complete</h1>
               <div className="govuk-panel__body">
@@ -233,8 +232,16 @@ const BookinFormSummary = ({ client }) => {
                 <strong>ABC123</strong>
               </div>
             </div>
+          )}
+          {loadingState ? (
+            <Spinner />
           ) : (
-            <button type="submit" className="govuk-button" onClick={bookLab}>
+            <button
+              type="submit"
+              className="govuk-button"
+              onClick={bookLab}
+              disabled={bookingState}
+            >
               Book the lab
             </button>
           )}

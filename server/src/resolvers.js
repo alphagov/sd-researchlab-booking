@@ -50,7 +50,7 @@ const resolvers = {
       const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
         args
       );
-      console.log(addEvent);
+      // console.log(addEvent);
       return { success: true, event: addEvent };
     }
   },
