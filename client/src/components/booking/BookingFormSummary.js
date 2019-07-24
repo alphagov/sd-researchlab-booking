@@ -123,12 +123,13 @@ const BookinFormSummary = ({ client }) => {
     const { data } = bookingResult;
     console.log(data);
     if (data.addResearchLabEvent.success) {
-      console.log(data.addResearchLabEvent.event);
+      // console.log(data.addResearchLabEvent.event);
       // add to the booking context setBookingValues
       setBookingValues({
         ...bookingValues,
         bookedEvent: data.addResearchLabEvent.event
       });
+      console.log(bookingValues);
       setBookingState(true);
       setLoadingState(false);
       // then navigate to user area
@@ -238,7 +239,7 @@ const BookinFormSummary = ({ client }) => {
               <div className="govuk-panel__body">
                 Your booking reference number
                 <br />
-                <strong>ABC123</strong>
+                <strong>{bookingValues.bookedEvent.id}</strong>
               </div>
             </div>
           )}

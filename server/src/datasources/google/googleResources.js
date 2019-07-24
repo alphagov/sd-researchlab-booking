@@ -168,7 +168,7 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   calendarEventReducer(event) {
-    console.log(event);
+    // console.log(event);
     const { id, status, summary, description, start, end, creator } = event;
 
     return {
