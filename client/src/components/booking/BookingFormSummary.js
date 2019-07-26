@@ -20,9 +20,11 @@ const initialErrorState = {
 
 const BookinFormSummary = ({ client }) => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
-  const [bookingState, setBookingState] = useState(false);
-  const [loadingState, setLoadingState] = useState(false);
-  const [bookingInfo, setBookingInfo] = useState();
+  const [bookingState, setBookingState] = useState({
+    loading: false,
+    booked: false,
+    event: {}
+  });
   const [errorState, setErrorState] = useState(initialErrorState);
   const [addBooking] = useMutation(BOOK_LAB_SLOT);
 
@@ -40,8 +42,11 @@ const BookinFormSummary = ({ client }) => {
 
   const bookLab = async () => {
     let researchLabs = [];
-    // const { bookedAM, bookedPM, bookedDate } = bookingValues;
-    setLoadingState(true);
+
+    setBookingState({
+      ...bookingState,
+      loading: true
+    });
 
     try {
       const { data, error } = await client.query({
@@ -56,7 +61,11 @@ const BookinFormSummary = ({ client }) => {
     } catch (error) {
       console.log(error);
       setErrorState({ status: true, error });
-      setLoadingState(false);
+      setBookingState({
+        ...bookingState,
+        loading: false
+      });
+
       return;
     }
 
@@ -81,7 +90,10 @@ const BookinFormSummary = ({ client }) => {
 
       console.log(error);
       setErrorState({ status: true, error });
-      setLoadingState(false);
+      setBookingState({
+        ...bookingState,
+        loading: false
+      });
       return;
     }
 
@@ -118,21 +130,25 @@ const BookinFormSummary = ({ client }) => {
     } catch (error) {
       console.log(error);
       setErrorState({ status: true, error });
-      setLoadingState(false);
+      setBookingState({
+        ...bookingState,
+        loading: false
+      });
     }
 
     const { data } = bookingResult;
 
     if (data.addResearchLabEvent.success) {
-      console.log(data.addResearchLabEvent.event);
       // add to the booking context setBookingValues
       setBookingValues({
         ...bookingValues,
         bookedEvent: data.addResearchLabEvent.event
       });
-      setBookingInfo(data.addResearchLabEvent.event);
-      setBookingState(true);
-      setLoadingState(false);
+      setBookingState({
+        booked: true,
+        loading: false,
+        event: data.addResearchLabEvent.event
+      });
       // then navigate to user area
     }
   };
@@ -234,24 +250,24 @@ const BookinFormSummary = ({ client }) => {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           {errorState.status && <Error error={errorState.error} />}
-          {bookingState && (
+          {bookingState.booked && (
             <div className="govuk-panel govuk-panel--confirmation">
               <h1 className="govuk-panel__title">Booking complete</h1>
               <div className="govuk-panel__body">
                 Your booking reference number is:
                 <br />
-                <strong>{bookingInfo.eventId}</strong>
+                <strong>{bookingState.event.eventId}</strong>
               </div>
             </div>
           )}
-          {loadingState ? (
+          {bookingState.loading ? (
             <Spinner />
           ) : (
             <button
               type="submit"
               className="govuk-button"
               onClick={bookLab}
-              disabled={bookingState}
+              disabled={bookingState.booked}
             >
               Book the lab
             </button>
