@@ -22,6 +22,7 @@ const BookinFormSummary = ({ client }) => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
   const [bookingState, setBookingState] = useState(false);
   const [loadingState, setLoadingState] = useState(false);
+  const [bookingInfo, setBookingInfo] = useState();
   const [errorState, setErrorState] = useState(initialErrorState);
   const [addBooking] = useMutation(BOOK_LAB_SLOT);
 
@@ -108,7 +109,7 @@ const BookinFormSummary = ({ client }) => {
           start: slots.start,
           end: slots.end,
           attendees: parseInt(bookedAttend),
-          title: `not done this`,
+          title: `Research Lab Booking for ${bookedFirstName} ${bookedLastName}`,
           description: `${bookedDetail} equipment required ${bookedEquipment}`,
           creator: `${bookedFirstName} ${bookedLastName}`,
           email: bookedEmail
@@ -121,15 +122,15 @@ const BookinFormSummary = ({ client }) => {
     }
 
     const { data } = bookingResult;
-    console.log(data);
+
     if (data.addResearchLabEvent.success) {
-      // console.log(data.addResearchLabEvent.event);
+      console.log(data.addResearchLabEvent.event);
       // add to the booking context setBookingValues
       setBookingValues({
         ...bookingValues,
         bookedEvent: data.addResearchLabEvent.event
       });
-      console.log(bookingValues);
+      setBookingInfo(data.addResearchLabEvent.event);
       setBookingState(true);
       setLoadingState(false);
       // then navigate to user area
@@ -237,9 +238,9 @@ const BookinFormSummary = ({ client }) => {
             <div className="govuk-panel govuk-panel--confirmation">
               <h1 className="govuk-panel__title">Booking complete</h1>
               <div className="govuk-panel__body">
-                Your booking reference number
+                Your booking reference number is:
                 <br />
-                <strong>{bookingValues.bookedEvent.id}</strong>
+                <strong>{bookingInfo.eventId}</strong>
               </div>
             </div>
           )}
