@@ -11,11 +11,13 @@ const LabCalendarHeader = ({
   setToday
 }) => {
   const dateFormat = 'MMM YYYY';
-
   return (
     <div className={`${styles.calHeader} ${styles.row} ${styles.flexMiddle}`}>
       <div className={`${styles.col} ${styles.colStart}`}>
-        {!dateFns.isBefore(week, startDate) && (
+        {dateFns.isBefore(week, startDate) ||
+        dateFns.isEqual(week, startDate) ? (
+          ''
+        ) : (
           <button
             className="govuk-button govuk-button--secondary"
             onClick={prevWeek}

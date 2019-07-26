@@ -7,9 +7,15 @@ import LabCalendarCells from './LabCalendarCells';
 
 import styles from '../../css/LabCalendar.module.css';
 
+let initDate = dateFns.addDays(new Date(), 2);
+
+while (dateFns.isWeekend(initDate)) {
+  initDate = dateFns.addDays(initDate, 1);
+}
+
 const LabCalendar = ({ lab }) => {
   const [currentWeek, setWeek] = useState(
-    dateFns.startOfWeek(new Date(), { weekStartsOn: 1 })
+    dateFns.startOfWeek(initDate, { weekStartsOn: 1 })
   );
 
   const { resourceName, freeBusy } = lab;
@@ -23,13 +29,13 @@ const LabCalendar = ({ lab }) => {
   };
 
   const setToday = () => {
-    setWeek(dateFns.startOfWeek(new Date(), { weekStartsOn: 1 }));
+    setWeek(dateFns.startOfWeek(initDate, { weekStartsOn: 1 }));
   };
 
-  // this will be today's date
-  const startDate = dateFns.startOfDay(new Date());
+  // this will be today's date +2
+  const startDate = dateFns.startOfDay(initDate);
   // google only give 2 months of free/busy so get 2 months from todays date
-  const endDate = dateFns.endOfDay(dateFns.addMonths(startDate, 1));
+  const endDate = dateFns.endOfDay(dateFns.addMonths(initDate, 1));
 
   const busyDays = freeBusy.map((bDay) => {
     return {
