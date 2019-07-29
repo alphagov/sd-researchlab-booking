@@ -2,15 +2,13 @@ import moment from 'moment';
 
 const resolvers = {
   Query: {
-    addResearchLabEvent: async (_, args, { dataSources }) => {
-      const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
-        args
-      );
-      return { success: true, event: addEvent };
-    },
     getResourceCalendarList: async (_, args, { dataSources }) => {
-      const resCals = await dataSources.googleResourcesAPI.getResourceCalendars();
-      return { success: true, calendars: resCals };
+      const resCals = await dataSources.googleResourcesAPI.getResourceCalendarByType();
+      // console.log(resCals);
+      const orderedCals = resCals.sort((a, b) =>
+        a.resourceName.localeCompare(b.resourceName)
+      );
+      return { success: true, calendars: orderedCals };
     },
     getResourceBuildingList: async (_, args, { dataSources }) => {
       const resBuildings = await dataSources.googleResourcesAPI.getResourceBuildings();
@@ -25,7 +23,10 @@ const resolvers = {
 
     getResourceResearchLab: async (_, args, { dataSources }) => {
       const resLabs = await dataSources.googleResourcesAPI.getResourceCalendarByType();
-      return { success: true, labs: resLabs };
+      const orderedLabs = resLabs.sort((a, b) =>
+        a.resourceName.localeCompare(b.resourceName)
+      );
+      return { success: true, labs: orderedLabs };
     },
     getCalendarFreeBusyList: async (
       _,
@@ -42,6 +43,15 @@ const resolvers = {
         success: true,
         calendars: resFreeBusy
       };
+    }
+  },
+  Mutation: {
+    addResearchLabEvent: async (_, args, { dataSources }) => {
+      const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
+        args
+      );
+      // console.log(addEvent);
+      return { success: true, event: addEvent };
     }
   },
   ResourceCalendar: {

@@ -1,22 +1,31 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export const GET_RESEARCH_LABS = gql`
   query {
-    getResourceResearchLab {
+    getResourceCalendarList {
       success
-      labs {
+      calendars {
         resourceId
         resourceName
         resourceEmail
         capacity
         floorName
         building {
-          buildingId
           buildingName
-          description
         }
+      }
+    }
+  }
+`;
+
+export const GET_RESEARCH_LABS_FREEBUSY = gql`
+  query {
+    getResourceResearchLab {
+      success
+      labs {
+        resourceName
+        resourceEmail
         freeBusy {
-          title
           start
           end
         }
@@ -106,19 +115,57 @@ export const REGISTER_USER = gql`
     $firstName: String!
     $lastName: String!
     $email: String!
-    $phone: String!
+    $mobilePhone: String!
     $password: String!
   ) {
     registerUser(
       firstName: $firstName
       lastName: $lastName
       email: $email
-      phone: $phone
+      phone: $mobilePhone
       password: $password
     ) {
       _id
       ok
       error
+    }
+  }
+`;
+
+export const BOOK_LAB_SLOT = gql`
+  mutation(
+    $calendarId: String!
+    $start: String!
+    $end: String!
+    $attendees: Int
+    $title: String!
+    $description: String!
+    $creator: String!
+    $email: String!
+  ) {
+    addResearchLabEvent(
+      calendarId: $calendarId
+      start: $start
+      end: $end
+      attendees: $attendees
+      title: $title
+      description: $description
+      creator: $creator
+      email: $email
+    ) {
+      success
+      event {
+        eventId
+        eventTitle
+        eventDescription
+        eventStatus
+        eventStart
+        eventEnd
+        eventOwner {
+          displayName
+          email
+        }
+      }
     }
   }
 `;

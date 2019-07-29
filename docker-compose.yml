@@ -1,13 +1,18 @@
 version: '3.5'
 
 services:
+  booking_db:
+    image: mongo:latest
+    volumes:
+      - ./docker/data/db:/data/db
+    container_name: booking_db
+
   booking_server:
     build:
       context: ./server
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules/
-
     env_file:
       - ./server/server.env
     ports:
@@ -16,10 +21,3 @@ services:
       - booking_db
     container_name: booking_server
     command: ['npm', 'start']
-
-  booking_db:
-    image: mongo:latest
-    volumes:
-      - ./docker/data/db:/data/db
-
-    container_name: booking_db

@@ -111,6 +111,8 @@ const typeDefs = gql`
       end: String!
       items: [String!]
     ): CalendarFreeBusyList
+  }
+  type Mutation {
     addResearchLabEvent(
       calendarId: String!
       start: String!
