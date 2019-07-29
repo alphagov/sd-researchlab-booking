@@ -136,7 +136,14 @@ class GoogleResourcesAPI extends RESTDataSource {
     const eventBody = {
       end: { dateTime: end },
       start: { dateTime: start },
-      attendees: [{ displayName: creator, email, additionalGuests: attendees }],
+      attendees: [
+        {
+          displayName: creator,
+          email,
+          additionalGuests: attendees,
+          organizer: true
+        }
+      ],
       summary: title,
       description,
       status: process.env.BOOKING_DEFAULT_STATUS
@@ -153,14 +160,27 @@ class GoogleResourcesAPI extends RESTDataSource {
         params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
         data: eventBody
       });
-      console.log(res.data);
+      return this.calendarEventReducer(res.data);
     } catch (error) {
       console.log('Error:', error);
     }
   }
 
   calendarEventReducer(event) {
-    console.log(event);
+    const { id, status, summary, description, start, end, creator } = event;
+
+    return {
+      eventId: id,
+      eventTitle: summary,
+      eventDescription: description,
+      eventStatus: status,
+      eventStart: start.dateTime,
+      eventEnd: end.dateTime,
+      eventOwner: {
+        displayName: creator.displayName,
+        email: creator.email
+      }
+    };
   }
 
   calendarFreeBusyReducer(calendars) {

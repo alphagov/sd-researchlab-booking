@@ -1,0 +1,121 @@
+/* reset css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+$govuk-global-styles: true;
+
+@import 'node_modules/govuk-frontend/all';
+
+.govuk-rlab_body {
+  min-height: 100vh;
+}
+
+// main {
+//   height: 70vh;
+// }
+
+.responsive-bottom-margin {
+  margin-bottom: 1rem;
+}
+
+.align-left {
+  text-align: left;
+}
+.related-content {
+  color: #0b0c0c;
+  border-top: 2px solid #005ea5;
+}
+
+.related-content h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.list-title {
+  color: #0b0c0c;
+  font-family: 'nta', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+  text-align: left;
+}
+
+.content-list-item {
+  margin-left: 25px;
+  padding-right: 25px;
+  line-height: 1.3;
+  list-style-type: none;
+  font-size: 0.8rem;
+}
+
+.content-list-item-link {
+  text-decoration: none;
+}
+
+.related-links-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  margin-bottom: 1.25em;
+}
+
+.related-links-list-item {
+  list-style-type: none;
+  margin-top: 1rem;
+  font-family: 'nta', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.address {
+  border-left: 1px solid #bfc1c3;
+  padding-left: 1rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.nav-sub-heading {
+  font-family: 'nta', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  border-top: 1px solid #bfc1c3;
+  margin: 0;
+  padding-top: 1rem;
+  text-align: left;
+}
+
+@media (min-width: 641px) {
+  .responsive-bottom-margin {
+    margin-bottom: 3rem;
+  }
+  .list-title {
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  .content-list-item {
+    padding-top: 7.5px;
+  }
+
+  .nav-sub-heading {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+  .related-content h3 {
+    font-size: 1.1rem;
+    line-height: 1.3157894737;
+  }
+
+  .related-links-list-item {
+    margin-top: 5px;
+  }
+}
