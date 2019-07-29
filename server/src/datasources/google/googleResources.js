@@ -160,7 +160,6 @@ class GoogleResourcesAPI extends RESTDataSource {
         params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
         data: eventBody
       });
-
       return this.calendarEventReducer(res.data);
     } catch (error) {
       console.log('Error:', error);
@@ -168,7 +167,6 @@ class GoogleResourcesAPI extends RESTDataSource {
   }
 
   calendarEventReducer(event) {
-    // console.log(event);
     const { id, status, summary, description, start, end, creator } = event;
 
     return {
