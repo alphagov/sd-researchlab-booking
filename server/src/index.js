@@ -6,8 +6,7 @@ import Morgan from 'morgan';
 
 import GoogleResourcesAPI from './datasources/google/googleResources';
 
-import typeDefs from './schemas';
-import resolvers from './resolvers';
+import rlabsSchema from './schema';
 
 const { ObjectId } = Types;
 ObjectId.prototype.valueOf = function() {
@@ -15,8 +14,7 @@ ObjectId.prototype.valueOf = function() {
 };
 
 const apollo = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema: rlabsSchema,
   dataSources: () => ({
     googleResourcesAPI: new GoogleResourcesAPI()
   }),
