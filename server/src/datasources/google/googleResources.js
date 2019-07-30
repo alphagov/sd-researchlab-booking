@@ -141,7 +141,8 @@ class GoogleResourcesAPI extends RESTDataSource {
           displayName: creator,
           email,
           additionalGuests: attendees,
-          organizer: true
+          organizer: true,
+          status: 'tentative'
         }
       ],
       summary: title,

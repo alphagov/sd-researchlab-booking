@@ -139,6 +139,7 @@ const BookinFormSummary = ({ client }) => {
     const { data } = bookingResult;
 
     if (data.addResearchLabEvent.success) {
+      console.log(data);
       // add to the booking context setBookingValues
       setBookingValues({
         ...bookingValues,

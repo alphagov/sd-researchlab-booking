@@ -4,6 +4,7 @@ RUN npm install -g nodemon
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY package.json /usr/src/app
+COPY wait-for.sh /usr/src/app
 RUN npm install
 EXPOSE 4050
 CMD ["npm", "start"]
