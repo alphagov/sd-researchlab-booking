@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server';
 
-const typeDefs = gql`
+const calendarSchema = gql`
   type ResourceCalendar {
     resourceId: String
     resourceName: String
@@ -126,4 +126,4 @@ const typeDefs = gql`
   }
 `;
 
-export default typeDefs;
+export default calendarSchema;

@@ -4,11 +4,9 @@ import { ApolloServer } from 'apollo-server-express';
 import Helmet from 'helmet';
 import Morgan from 'morgan';
 
-import User from './models/User';
-
 import GoogleResourcesAPI from './datasources/google/googleResources';
 
-import typeDefs from './schema';
+import typeDefs from './schemas';
 import resolvers from './resolvers';
 
 const { ObjectId } = Types;
@@ -22,7 +20,7 @@ const apollo = new ApolloServer({
   dataSources: () => ({
     googleResourcesAPI: new GoogleResourcesAPI()
   }),
-  context: ({ req, res }) => ({ User, currentUser: req.currentUser }),
+  context: ({ req }) => ({ authScope: getScope(req.headers.authorization) }),
   playground: {
     settings: {
       'editor.theme': 'light'

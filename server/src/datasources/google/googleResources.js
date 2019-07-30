@@ -4,13 +4,13 @@ import axios from 'axios';
 import path from 'path';
 import moment from 'moment';
 
-import * as keys from '../../keys/uxlabbt.json';
+import * as keys from '../../keys/key-rlabs.json';
 
 const tokens = new googleAuth.TokenCache();
 
 const options = {
   email: keys.client_email,
-  keyFile: path.join(__dirname, '../../keys/uxlabbt.pem'),
+  keyFile: path.join(__dirname, '../../keys/rlabs.pem'),
   delegationEmail: 'admin@digital.cabinet-office.gov.uk',
   scopes: [
     'https://www.googleapis.com/auth/admin.directory.resource.calendar',

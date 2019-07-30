@@ -1,6 +1,6 @@
-import moment from 'moment';
+import { startOfDay, endOfDay, addMonths } from 'date-fns';
 
-const resolvers = {
+const calendarResolvers = {
   Query: {
     getResourceCalendarList: async (_, args, { dataSources }) => {
       const resCals = await dataSources.googleResourcesAPI.getResourceCalendarByType();
@@ -80,13 +80,11 @@ const resolvers = {
       const calId = parent.resourceEmail;
       if (calId) {
         // get the current day, time
-        const startDate = moment(Date.now()).startOf('day');
-        // just get until the end of the next month...this way we can alsways display one
+        const startDate = startOfDay(Date.now());
+        // just get until the end of the next month...this way we can always display 2
         // months worth of data.
         // reason we do this is because Google Cal API will only pull 2 months worth of data
-        const endDate = moment(Date.now())
-          .add(1, 'months')
-          .endOf('month');
+        const endDate = addMonths(endOfDay(startDate), 1);
         const resFreeBusy = await dataSources.googleResourcesAPI.getCalendarFreeBusyList(
           startDate,
           endDate,
@@ -98,4 +96,4 @@ const resolvers = {
   }
 };
 
-export default resolvers;
+export default calendarResolvers;
