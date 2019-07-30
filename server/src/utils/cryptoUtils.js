@@ -24,8 +24,9 @@ export const hashCreator = async (term) => {
 };
 
 export const createToken = (user, expiresIn) => {
-  const { firstName, lastName, email } = user;
-  return sign({ firstName, lastName, email }, process.env.SECRET, {
+  const { firstName, lastName, email, id } = user;
+  console.log(user);
+  return sign({ email, id }, process.env.SECRET, {
     expiresIn
   });
 };

@@ -5,7 +5,6 @@ import Helmet from 'helmet';
 import Morgan from 'morgan';
 
 import User from './models/User';
-import RegToken from './models/RegToken';
 
 import GoogleResourcesAPI from './datasources/google/googleResources';
 
@@ -23,7 +22,7 @@ const apollo = new ApolloServer({
   dataSources: () => ({
     googleResourcesAPI: new GoogleResourcesAPI()
   }),
-  context: ({ req, res }) => ({ User, RegToken, currentUser: req.currentUser }),
+  context: ({ req, res }) => ({ User, currentUser: req.currentUser }),
   playground: {
     settings: {
       'editor.theme': 'light'
