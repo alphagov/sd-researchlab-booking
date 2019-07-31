@@ -6,6 +6,8 @@ import Morgan from 'morgan';
 
 import GoogleResourcesAPI from './datasources/google/googleResources';
 
+import { getUser } from './resolvers/auth';
+
 import rlabsSchema from './schema';
 
 const { ObjectId } = Types;
@@ -18,7 +20,11 @@ const apollo = new ApolloServer({
   dataSources: () => ({
     googleResourcesAPI: new GoogleResourcesAPI()
   }),
-  context: ({ req }) => ({ authScope: getScope(req.headers.authorization) }),
+  context: ({ req }) => {
+    const token = req.headers.authorization || '';
+    const user = getUser(token);
+    return { user };
+  },
   playground: {
     settings: {
       'editor.theme': 'light'
