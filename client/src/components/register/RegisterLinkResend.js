@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
-import { withRouter } from 'react-router-dom';
 
 import { RESEND_REG_LINK } from '../../queries';
 
@@ -39,4 +38,4 @@ class RegLinkResend extends Component {
   }
 }
 
-export default withRouter(RegLinkResend);
+export default RegLinkResend;

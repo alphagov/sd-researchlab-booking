@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
-import { withRouter, Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import queryString from 'query-string';
+import { Link } from '@reach/router';
+import Spinner from '../shared/Spinner';
 
 import { CHECK_REG_TOKEN } from '../../queries';
-import ConfirmRegistration from './ConfirmRegistration';
+// import ConfirmRegistration from './ConfirmRegistration';
 
 const RegisterLink = ({ location }) => {
   const qs = queryString.parse(location.search);
@@ -14,7 +15,7 @@ const RegisterLink = ({ location }) => {
     <div className="App">
       <Query query={CHECK_REG_TOKEN} variables={{ regToken }}>
         {({ loading, data, error }) => {
-          if (loading) return <div>Loading information...........</div>;
+          if (loading) return <Spinner />;
           if (error) return <div>Ooops! {error}</div>;
           const { _id, ok } = data.checkRegToken;
           console.log(data);
@@ -23,7 +24,7 @@ const RegisterLink = ({ location }) => {
               {ok ? (
                 <Fragment>
                   <h4>Link verified</h4>
-                  <ConfirmRegistration userId={_id} />
+                  {/* <ConfirmRegistration userId={_id} /> */}
                 </Fragment>
               ) : (
                 <Fragment>
@@ -39,4 +40,4 @@ const RegisterLink = ({ location }) => {
   );
 };
 
-export default withRouter(RegisterLink);
+export default RegisterLink;

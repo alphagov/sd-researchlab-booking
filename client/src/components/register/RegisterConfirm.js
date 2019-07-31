@@ -1,6 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import RegLinkResend from './RegLinkResend';
+import RegLinkResend from './RegisterLinkResend';
 
 const RegisterConfirm = ({ match }) => {
   const linkId = match.params;
@@ -17,4 +16,4 @@ const RegisterConfirm = ({ match }) => {
   );
 };
 
-export default withRouter(RegisterConfirm);
+export default RegisterConfirm;

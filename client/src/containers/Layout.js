@@ -12,17 +12,15 @@ import Header from '../components/navigation/Header';
 import Proto from '../components/banners/proto';
 import Landing from './Landing';
 
-// import Register from './Register';
-
-// import Labs from './Labs';
-// import LabBookingForm from './LabBookingForm';
-// import BookingFormDateCal from '../components/booking/BookingFormDateCal';
-// import BookingFormName from '../components/booking/BookingFormName';
-// import BookingFormDetails from '../components/booking/BookingFormDetails';
-// import BookingFormEquipment from '../components/booking/BookingFormEquipment';
-// import BookingFormSummary from '../components/booking/BookingFormSummary';
-
+// lazy laoding components
 const Register = lazy(() => import('./Register'));
+const RegisterLink = lazy(() => import('../components/register/RegisterLink'));
+const RegisterLinkResend = lazy(() =>
+  import('../components/register/RegisterLinkResend')
+);
+const RegisterConfirm = lazy(() =>
+  import('../components/register/RegisterConfirm')
+);
 
 const Labs = lazy(() => import('./Labs'));
 const LabBookingForm = lazy(() => import('./LabBookingForm'));
@@ -54,6 +52,9 @@ const Layout = () => {
             <Router>
               <Landing path="/" />
               <Register path="/register-to-book-the-lab" />
+              <RegisterConfirm path="/register/confirm/:id" />
+              <RegisterLink path="/register/verify" />
+              <RegisterLinkResend path="/register/link-resend" />
               <Labs path="/gds-research-labs" />
               <LabBookingForm path="/book-a-research-lab">
                 <BookingFormDateCal path="/booking-date" />
