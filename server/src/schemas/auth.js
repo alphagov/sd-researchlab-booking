@@ -10,12 +10,19 @@ export const typeDef = gql`
     verified: Boolean
   }
 
+  type NewUser {
+    success: Boolean
+    token: String
+    user: [User]
+  }
+
   extend type Mutation {
     registerNewUser(
       firstName: String!
       lastName: String!
       email: String!
       phone: String!
-    ): User
+      password: String!
+    ): NewUser
   }
 `;
