@@ -5,12 +5,12 @@ import path from 'path';
 
 const publicKey = fs.readFileSync(
   path.join(__dirname, '../keys/tokenPublic.key'),
-  'utf8'
+  'utf-8'
 );
 
 const privateKey = fs.readFileSync(
   path.join(__dirname, '../keys/tokenPrivate.key'),
-  'utf8'
+  'utf-8'
 );
 
 const {
@@ -50,7 +50,8 @@ export const createRegToken = async ({ id, email }) => {
     subject: email,
     audience: TOKEN_AUDIENCE,
     expiresIn: REG_TOKEN_EXPIRES,
-    algorithm: TOKEN_ALGORITHM
+    // temp only works with 256?
+    algorithm: 'RS256'
   };
 
   const token = await sign(payload, privateKey, signOptions);
@@ -65,7 +66,7 @@ export const createUserToken = async ({ id, email }) => {
     subject: email,
     audience: TOKEN_AUDIENCE,
     expiresIn: USER_TOKEN_EXPIRES,
-    algorithm: TOKEN_ALGORITHM
+    algorithm: 'RS256'
   };
 
   const token = await sign(payload, privateKey, signOptions);
@@ -78,7 +79,7 @@ export const verifyUserToken = async (token) => {
     issuer: TOKEN_ISSUER,
     audience: TOKEN_AUDIENCE,
     expiresIn: USER_TOKEN_EXPIRES,
-    algorithm: [TOKEN_ALGORITHM]
+    algorithm: ['RS256']
   };
   const legitToken = await verify(token, publicKey, verifyOptions);
   console.log('legit user', legitToken);
@@ -91,7 +92,7 @@ export const verifyRegToken = async (token) => {
     // subject: email,
     audience: TOKEN_AUDIENCE,
     expiresIn: REG_TOKEN_EXPIRES,
-    algorithm: [TOKEN_ALGORITHM]
+    algorithm: ['RS256']
   };
   const legitToken = await verify(token, publicKey, verifyOptions);
   console.log('legit reg', legitToken);

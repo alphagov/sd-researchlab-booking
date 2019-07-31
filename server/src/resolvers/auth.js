@@ -1,6 +1,7 @@
 import User from '../models/User';
 
 import { createRegToken } from '../utils/cryptoUtils';
+import { sendRegMail } from '../services/NotifyMail';
 
 export const getUser = (token) => {
   // temp just return a user object until we add
@@ -14,7 +15,6 @@ const authResolvers = {
       { firstName, lastName, email, phone, password }
     ) => {
       // save the user
-
       try {
         const newUser = await User.create({
           firstName,
@@ -23,24 +23,27 @@ const authResolvers = {
           phone,
           password
         });
-        console.log('new user', newUser);
+        // generate auth (jwt) token for link
+        const regToken = await createRegToken({
+          id: newUser._id,
+          email: newUser.email
+        });
+
+        // email link to user
+        const regMail = await sendRegMail(
+          newUser.firstName,
+          newUser.lastName,
+          regToken
+        );
+
         return {
           success: true,
           user: newUser,
-          token: 'not done yet'
+          token: regToken
         };
       } catch (error) {
         console.log(error);
       }
-
-      // generate auth (jwt) token for link
-      // email link to user
-      // return the success/token/user?
-      // return {
-      //   success: true,
-      //   user: { newUser },
-      //   token: 'not done yet'
-      // };
     }
   }
 };
