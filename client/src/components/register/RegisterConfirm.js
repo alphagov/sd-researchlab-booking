@@ -1,8 +1,7 @@
 import React from 'react';
 import RegLinkResend from './RegisterLinkResend';
 
-const RegisterConfirm = ({ match }) => {
-  const linkId = match.params;
+const RegisterConfirm = ({ id }) => {
   return (
     <div className="App">
       <h2>Registration Confirmation</h2>
@@ -11,7 +10,7 @@ const RegisterConfirm = ({ match }) => {
         this link to complete your registration
       </p>
       <p>Didn't receive the email?</p>
-      <RegLinkResend userId={linkId} />
+      <RegLinkResend userId={id} />
     </div>
   );
 };

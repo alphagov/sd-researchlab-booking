@@ -1,5 +1,9 @@
 import React from 'react';
 import { useForm } from '../../hooks/useForm';
+import { useMutation } from 'react-apollo-hooks';
+import { navigate } from '@reach/router';
+
+import { REGISTER_USER } from '../../queries';
 
 const initialState = {
   firstName: { value: '', valid: true, reason: '' },
@@ -11,10 +15,52 @@ const initialState = {
 
 const RegisterForm = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
+  const [addNewUser] = useMutation(REGISTER_USER);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(values);
+
+    // need to add validation here
+    // check it is only gov.uk email addresses etc.......
+
+    // if all works out ok then register
+    registerNewLabUser(values);
+  };
+
+  const registerNewLabUser = async (user) => {
+    const { firstName, lastName, email, mobilePhone, password } = user;
+
+    let regResult;
+
+    try {
+      regResult = await addNewUser({
+        variables: {
+          firstName: firstName.value,
+          lastName: lastName.value,
+          email: email.value,
+          password: password.value,
+          mobilePhone: mobilePhone.value
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      // need to add error handling in here
+      return;
+    }
+
+    const { registerNewUser } = regResult.data;
+
+    if (!registerNewUser.success) {
+      // return an error here
+      return;
+    }
+
+    // save token to localstorage
+    localStorage.setItem('labtoken', registerNewUser.token);
+
+    // navigate to the confirmation page
+    navigate(`/register/confirm/${registerNewUser.user.id}`);
   };
 
   return (
