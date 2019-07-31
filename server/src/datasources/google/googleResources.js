@@ -2,7 +2,6 @@ import { RESTDataSource } from 'apollo-datasource-rest';
 import * as googleAuth from 'google-oauth-jwt';
 import axios from 'axios';
 import path from 'path';
-import moment from 'moment';
 
 import * as keys from '../../keys/uxlabbt.json';
 

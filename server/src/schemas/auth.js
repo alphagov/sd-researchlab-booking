@@ -6,6 +6,16 @@ export const typeDef = gql`
     firstName: String
     lastName: String
     email: String
-    password: String
+    phone: String
+    verified: Boolean
+  }
+
+  extend type Mutation {
+    registerNewUser(
+      firstName: String!
+      lastName: String!
+      email: String!
+      phone: String!
+    ): User
   }
 `;

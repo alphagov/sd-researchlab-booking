@@ -101,7 +101,7 @@ export const typeDef = gql`
     buildings: [ResourceBuilding]
   }
 
-  type Query {
+  extend type Query {
     getResourceCalendarList: ResourceCalendarList
     getResourceBuildingList: ResourceBuildingList
     getResourceBuilding(buildingId: String!): ResourceBuilding
@@ -112,7 +112,8 @@ export const typeDef = gql`
       items: [String!]
     ): CalendarFreeBusyList
   }
-  type Mutation {
+
+  extend type Mutation {
     addResearchLabEvent(
       calendarId: String!
       start: String!
