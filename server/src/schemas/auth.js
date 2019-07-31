@@ -13,7 +13,7 @@ export const typeDef = gql`
   type NewUser {
     success: Boolean
     token: String
-    user: [User]
+    user: User
   }
 
   extend type Mutation {

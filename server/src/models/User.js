@@ -29,10 +29,10 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  regToken: {
-    type: String,
-    required: true
-  },
+  // regToken: {
+  //   type: String,
+  //   required: true
+  // },
 
   mfaCode: {
     type: Number,
