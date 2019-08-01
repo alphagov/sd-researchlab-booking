@@ -44,6 +44,36 @@ const authResolvers = {
       } catch (error) {
         console.log(error);
       }
+    },
+    registerLinkResend: async (_, { id }) => {
+      // get the user
+      try {
+        const user = await User.findById(id);
+        if (!user) {
+          throw new Error('User does not exist');
+        }
+
+        // generate a new token
+        const regToken = await createRegToken({
+          id: user._id,
+          email: user.email
+        });
+        // send email
+        const regMail = await sendRegMail(
+          user.firstName,
+          user.lastName,
+          regToken
+        );
+
+        return {
+          success: true,
+          token: regToken,
+          user
+        };
+      } catch (error) {
+        console.log(error);
+        return error;
+      }
     }
   }
 };

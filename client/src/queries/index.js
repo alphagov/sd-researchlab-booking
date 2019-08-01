@@ -81,10 +81,10 @@ export const CHECK_USER_VERIFIED = gql`
 `;
 
 export const RESEND_REG_LINK = gql`
-  mutation($_id: ID!) {
-    resendRegLink(id: $_id) {
-      ok
-      error
+  mutation($id: ID!) {
+    registerLinkResend(id: $id) {
+      success
+      token
     }
   }
 `;

@@ -24,5 +24,6 @@ export const typeDef = gql`
       phone: String!
       password: String!
     ): NewUser
+    registerLinkResend(id: ID!): NewUser
   }
 `;
