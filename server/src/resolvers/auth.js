@@ -3,7 +3,8 @@ import User from '../models/User';
 import {
   createRegToken,
   verifyRegToken,
-  verifyUserToken
+  verifyUserToken,
+  createUserToken
 } from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
 
@@ -18,6 +19,39 @@ export const getUser = async (token) => {
 };
 
 const authResolvers = {
+  Query: {
+    registerTokenCheck: async (_, { token }) => {
+      try {
+        // decrypt the token
+        const plainToken = await verifyRegToken(token);
+        // get the user
+        // update the user? do it in one? findByIdAndUpdate
+        const veriUser = await User.findByIdAndUpdate(
+          plainToken.id,
+          { isVerified: true },
+          { new: true }
+        );
+        // create a new token (with longer expiry.....do wee need this??)
+        const veriToken = await createUserToken({
+          id: veriUser._id,
+          email: veriUser.email
+        });
+        // return
+        return {
+          success: true,
+          token: veriToken,
+          user: veriUser
+        };
+      } catch (error) {
+        return {
+          success: false,
+          // error: error,
+          token: '',
+          user: null
+        };
+      }
+    }
+  },
   Mutation: {
     registerNewUser: async (
       _,

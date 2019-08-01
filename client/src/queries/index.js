@@ -61,7 +61,7 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export const CHECK_REG_TOKEN = gql`
-  query($regToken: String!) {
+  query($token: String!) {
     registerTokenCheck(token: $token) {
       success
       token

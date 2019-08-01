@@ -85,6 +85,7 @@ export const verifyUserToken = async (token) => {
     return legitToken;
   } catch (error) {
     console.log(error);
+    return;
   }
 };
 
@@ -103,5 +104,6 @@ export const verifyRegToken = async (token) => {
     return legitToken;
   } catch (error) {
     console.log(error);
+    return;
   }
 };

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 
 import { ENTER_2FA_CODE } from '../../queries';
@@ -73,4 +72,4 @@ class Login2FAForm extends Component {
   }
 }
 
-export default withRouter(Login2FAForm);
+export default Login2FAForm;
