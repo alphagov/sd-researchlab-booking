@@ -8,12 +8,14 @@ const RegisterLinkResend = ({ userId }) => {
   const [resendLink, { loading }] = useMutation(RESEND_REG_LINK);
 
   const sendLink = async () => {
-    let newLink;
-
     try {
-      newLink = await resendLink({
+      const newLink = await resendLink({
         variables: { id: userId }
       });
+
+      const { registerLinkResend } = newLink.data;
+      // reset the jwt
+      localStorage.setItem('labtoken', registerLinkResend.token);
     } catch (error) {
       console.log(error);
     }
