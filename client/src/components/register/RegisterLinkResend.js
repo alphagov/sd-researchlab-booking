@@ -1,41 +1,35 @@
-import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
+import React from 'react';
+import { useMutation } from 'react-apollo-hooks';
+import Spinner from '../shared/Spinner';
 
 import { RESEND_REG_LINK } from '../../queries';
 
-class RegLinkResend extends Component {
-  state = {
-    userId: this.props.userId
+const RegisterLinkResend = ({ userId }) => {
+  const [resendLink, { loading }] = useMutation(RESEND_REG_LINK);
+
+  const sendLink = async () => {
+    let newLink;
+
+    try {
+      newLink = await resendLink({
+        variables: { id: userId }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  sendLink = (resendRegLink) => {
-    resendRegLink()
-      .then(async ({ data }) => {
-        console.log(data.resendRegLink);
-        const { ok, _id } = data.resendRegLink;
-        if (ok) {
-          this.props.history.push(`/register/confirm/${_id}`);
-        }
-      })
-      .catch((error) => console.log(error));
-  };
+  return (
+    <>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <button className="govuk-button" onClick={sendLink} disabled={loading}>
+          Resend confirmation link
+        </button>
+      )}
+    </>
+  );
+};
 
-  render() {
-    return (
-      <Mutation mutation={RESEND_REG_LINK} variables={this.state.userId}>
-        {(resendRegLink, { data, loading, error }) => {
-          return (
-            <button
-              className="button-primary"
-              onClick={() => this.sendLink(resendRegLink)}
-            >
-              Send again
-            </button>
-          );
-        }}
-      </Mutation>
-    );
-  }
-}
-
-export default RegLinkResend;
+export default RegisterLinkResend;

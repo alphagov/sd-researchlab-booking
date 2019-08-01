@@ -1,16 +1,24 @@
 import React from 'react';
-import RegLinkResend from './RegisterLinkResend';
+import RegisterLinkResend from './RegisterLinkResend';
 
 const RegisterConfirm = ({ id }) => {
   return (
-    <div className="App">
-      <h2>Registration Confirmation</h2>
-      <p>
-        A confirmation link has been sent to your email account please click on
-        this link to complete your registration
-      </p>
-      <p>Didn't receive the email?</p>
-      <RegLinkResend userId={id} />
+    <div className="govuk-grid-row">
+      <div className="govuk-grid-column-full">
+        <div className="govuk-panel govuk-panel--confirmation">
+          <h1 className="govuk-panel__title">Registration complete</h1>
+          <div className="govuk-panel__body">
+            A confirmation link has been sent to your email account please click
+            on this link to complete your registration
+            <br />
+            <br />
+            <strong>Didn't receive the email?</strong>
+            <br />
+            <br />
+            <RegisterLinkResend userId={id} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

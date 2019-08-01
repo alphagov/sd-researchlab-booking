@@ -82,8 +82,7 @@ export const CHECK_USER_VERIFIED = gql`
 
 export const RESEND_REG_LINK = gql`
   mutation($_id: ID!) {
-    resendRegLink(_id: $_id) {
-      _id
+    resendRegLink(id: $_id) {
       ok
       error
     }
