@@ -13,13 +13,7 @@ const privateKey = fs.readFileSync(
   'utf-8'
 );
 
-const {
-  TOKEN_ISSUER,
-  TOKEN_AUDIENCE,
-  REG_TOKEN_EXPIRES,
-  USER_TOKEN_EXPIRES,
-  TOKEN_ALGORITHM
-} = process.env;
+const { TOKEN_ISSUER, TOKEN_AUDIENCE, TOKEN_ALGORITHM } = process.env;
 
 const numberRange = '123456789';
 
@@ -43,67 +37,51 @@ export const hashCreator = async (term) => {
   }
 };
 
-export const createRegToken = async ({ id, email }) => {
+export const createUserToken = async ({ id, email }, expiresIn) => {
   const payload = { id };
   const signOptions = {
     issuer: TOKEN_ISSUER,
     subject: email,
     audience: TOKEN_AUDIENCE,
-    expiresIn: REG_TOKEN_EXPIRES,
-    // temp only works with 256?
+    expiresIn: expiresIn,
     algorithm: TOKEN_ALGORITHM
   };
 
-  const token = await sign(payload, privateKey, signOptions);
-  return token;
-};
-
-export const createUserToken = async ({ id, email }) => {
-  const payload = { id };
-  const signOptions = {
-    issuer: TOKEN_ISSUER,
-    subject: email,
-    audience: TOKEN_AUDIENCE,
-    expiresIn: USER_TOKEN_EXPIRES,
-    algorithm: TOKEN_ALGORITHM
-  };
-
-  const token = await sign(payload, privateKey, signOptions);
-  return token;
-};
-
-export const verifyUserToken = async (token) => {
-  const verifyOptions = {
-    issuer: TOKEN_ISSUER,
-    audience: TOKEN_AUDIENCE,
-    expiresIn: USER_TOKEN_EXPIRES,
-    algorithm: [TOKEN_ALGORITHM]
-  };
   try {
-    const legitToken = await verify(token, publicKey, verifyOptions);
-    // console.log('legit user', legitToken);
-    return legitToken;
+    const newToken = await sign(payload, privateKey, signOptions);
+    return {
+      createSuccess: true,
+      newToken,
+      error: null
+    };
   } catch (error) {
-    console.log(error);
-    return;
+    return {
+      createSuccess: false,
+      newToken: null,
+      error
+    };
   }
 };
 
-export const verifyRegToken = async (token) => {
+export const verifyUserToken = async (token, expiresIn) => {
   const verifyOptions = {
     issuer: TOKEN_ISSUER,
-    // subject: email,
     audience: TOKEN_AUDIENCE,
-    expiresIn: REG_TOKEN_EXPIRES,
+    expiresIn: expiresIn,
     algorithm: [TOKEN_ALGORITHM]
   };
-
   try {
     const legitToken = await verify(token, publicKey, verifyOptions);
-    // console.log('legit reg', legitToken);
-    return legitToken;
+    return {
+      verifySuccess: true,
+      clearToken: legitToken,
+      error: null
+    };
   } catch (error) {
-    console.log(error);
-    return;
+    return {
+      verifySuccess: false,
+      clearToken: null,
+      error
+    };
   }
 };

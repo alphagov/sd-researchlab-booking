@@ -15,7 +15,11 @@ const RegisterLink = ({ location }) => {
   return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-full">
-        <Query query={CHECK_REG_TOKEN} variables={{ token: regToken }}>
+        <Query
+          query={CHECK_REG_TOKEN}
+          variables={{ token: regToken }}
+          fetchPolicy="no-cache"
+        >
           {({ loading, data, error }) => {
             if (loading) return <Spinner />;
             if (error) return <Error error={error} />;

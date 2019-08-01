@@ -1,52 +1,66 @@
 import User from '../models/User';
 
-import {
-  createRegToken,
-  verifyRegToken,
-  verifyUserToken,
-  createUserToken
-} from '../utils/cryptoUtils';
+import { verifyUserToken, createUserToken } from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
 
 export const getUser = async (token) => {
   // temp just return a user object until we add
-  if (!token) {
+
+  const chkToken = token.split(' ')[1];
+
+  // console.log('chkYoken', chkToken);
+
+  if (!chkToken || chkToken === 'null') {
+    console.log('nope');
     return { user: { loggedIn: false } };
   }
-  const plainToken = await verifyUserToken(token.split(' ')[1]);
-  console.log(plainToken);
+  const plainToken = await verifyUserToken(chkToken, '1h');
+  console.log('get user', plainToken);
   // return { user: { loggedIn: true } };
 };
 
 const authResolvers = {
   Query: {
     registerTokenCheck: async (_, { token }) => {
+      console.log('we are here');
       try {
         // decrypt the token
-        const plainToken = await verifyRegToken(token);
+        const regToken = await verifyUserToken(token, 6000000);
+        const { verifySuccess, clearToken, error } = regToken;
+
+        if (!verifySuccess) {
+          throw new Error(error);
+        }
         // get the user
         // update the user? do it in one? findByIdAndUpdate
         const veriUser = await User.findByIdAndUpdate(
-          plainToken.id,
+          clearToken.id,
           { isVerified: true },
           { new: true }
         );
+
+        const { _id, email } = veriUser;
+
         // create a new token (with longer expiry.....do wee need this??)
-        const veriToken = await createUserToken({
-          id: veriUser._id,
-          email: veriUser.email
-        });
+        const veriToken = await createUserToken(
+          {
+            id: _id,
+            email
+          },
+          '1h'
+        );
+
+        console.log('veritoken', veriToken);
         // return
         return {
           success: true,
-          token: veriToken,
+          token: veriToken.newToken,
           user: veriUser
         };
       } catch (error) {
         return {
           success: false,
-          // error: error,
-          token: '',
+          token: null,
           user: null
         };
       }
@@ -67,22 +81,27 @@ const authResolvers = {
           password
         });
         // generate auth (jwt) token for link
-        const regToken = await createRegToken({
-          id: newUser._id,
-          email: newUser.email
-        });
+        const regToken = await createUserToken(
+          {
+            id: newUser._id,
+            email: newUser.email
+          },
+          6000000
+        );
+
+        const { createSuccess, newToken, error } = regToken;
 
         // email link to user
         const regMail = await sendRegMail(
           newUser.firstName,
           newUser.lastName,
-          regToken
+          newToken
         );
 
         return {
           success: true,
           user: newUser,
-          token: regToken
+          token: newToken
         };
       } catch (error) {
         console.log(error);
@@ -97,20 +116,25 @@ const authResolvers = {
         }
 
         // generate a new token
-        const regToken = await createRegToken({
-          id: user._id,
-          email: user.email
-        });
+        const regToken = await createUserToken(
+          {
+            id: user._id,
+            email: user.email
+          },
+          6000000
+        );
+        const { createSuccess, newToken, error } = regToken;
+
         // send email
         const regMail = await sendRegMail(
           user.firstName,
           user.lastName,
-          regToken
+          newToken
         );
 
         return {
           success: true,
-          token: regToken,
+          token: newToken,
           user
         };
       } catch (error) {
