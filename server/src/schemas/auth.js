@@ -16,6 +16,16 @@ export const typeDef = gql`
     user: User
   }
 
+  type VerifiedUser {
+    success: Boolean
+    token: String
+    user: User
+  }
+
+  extend type Query {
+    registerTokenCheck(token: String!): VerifiedUser
+  }
+
   extend type Mutation {
     registerNewUser(
       firstName: String!

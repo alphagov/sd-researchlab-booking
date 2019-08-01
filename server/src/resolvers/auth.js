@@ -1,11 +1,20 @@
 import User from '../models/User';
 
-import { createRegToken } from '../utils/cryptoUtils';
+import {
+  createRegToken,
+  verifyRegToken,
+  verifyUserToken
+} from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
 
-export const getUser = (token) => {
+export const getUser = async (token) => {
   // temp just return a user object until we add
-  return { user: { loggedIn: true } };
+  if (!token) {
+    return { user: { loggedIn: false } };
+  }
+  const plainToken = await verifyUserToken(token.split(' ')[1]);
+  console.log(plainToken);
+  // return { user: { loggedIn: true } };
 };
 
 const authResolvers = {

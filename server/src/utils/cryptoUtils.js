@@ -51,11 +51,10 @@ export const createRegToken = async ({ id, email }) => {
     audience: TOKEN_AUDIENCE,
     expiresIn: REG_TOKEN_EXPIRES,
     // temp only works with 256?
-    algorithm: 'RS256'
+    algorithm: TOKEN_ALGORITHM
   };
 
   const token = await sign(payload, privateKey, signOptions);
-  console.log('reg token', token);
   return token;
 };
 
@@ -66,11 +65,10 @@ export const createUserToken = async ({ id, email }) => {
     subject: email,
     audience: TOKEN_AUDIENCE,
     expiresIn: USER_TOKEN_EXPIRES,
-    algorithm: 'RS256'
+    algorithm: TOKEN_ALGORITHM
   };
 
   const token = await sign(payload, privateKey, signOptions);
-  console.log('user token', token);
   return token;
 };
 
@@ -79,11 +77,15 @@ export const verifyUserToken = async (token) => {
     issuer: TOKEN_ISSUER,
     audience: TOKEN_AUDIENCE,
     expiresIn: USER_TOKEN_EXPIRES,
-    algorithm: ['RS256']
+    algorithm: [TOKEN_ALGORITHM]
   };
-  const legitToken = await verify(token, publicKey, verifyOptions);
-  console.log('legit user', legitToken);
-  return legitToken;
+  try {
+    const legitToken = await verify(token, publicKey, verifyOptions);
+    // console.log('legit user', legitToken);
+    return legitToken;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const verifyRegToken = async (token) => {
@@ -92,9 +94,14 @@ export const verifyRegToken = async (token) => {
     // subject: email,
     audience: TOKEN_AUDIENCE,
     expiresIn: REG_TOKEN_EXPIRES,
-    algorithm: ['RS256']
+    algorithm: [TOKEN_ALGORITHM]
   };
-  const legitToken = await verify(token, publicKey, verifyOptions);
-  console.log('legit reg', legitToken);
-  return legitToken;
+
+  try {
+    const legitToken = await verify(token, publicKey, verifyOptions);
+    // console.log('legit reg', legitToken);
+    return legitToken;
+  } catch (error) {
+    console.log(error);
+  }
 };

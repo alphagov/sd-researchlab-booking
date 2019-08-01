@@ -62,10 +62,14 @@ export const GET_CURRENT_USER = gql`
 
 export const CHECK_REG_TOKEN = gql`
   query($regToken: String!) {
-    checkRegToken(regToken: $regToken) {
-      _id
-      ok
-      error
+    registerTokenCheck(token: $token) {
+      success
+      token
+      user {
+        id
+        firstName
+        lastName
+      }
     }
   }
 `;
