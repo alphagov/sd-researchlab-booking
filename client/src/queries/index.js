@@ -60,6 +60,19 @@ export const GET_CURRENT_USER = gql`
   }
 `;
 
+export const USER_SIGN_IN = gql`
+  mutation($email: String!, $password: String) {
+    signInUser(email: $email, password: $password) {
+      success
+      token
+      user {
+        id
+        isVerified
+      }
+    }
+  }
+`;
+
 export const CHECK_REG_TOKEN = gql`
   query($token: String!) {
     registerTokenCheck(token: $token) {

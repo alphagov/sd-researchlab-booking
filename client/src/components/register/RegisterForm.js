@@ -23,7 +23,7 @@ const initialErrorState = {
 
 const RegisterForm = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
-  const [addNewUser] = useMutation(REGISTER_USER);
+  const [addNewUser, { loading, error }] = useMutation(REGISTER_USER);
   const [regState, setRegState] = useState({
     loading: false,
     registered: false
@@ -150,7 +150,7 @@ const RegisterForm = () => {
                 `govuk-form-group--error`}`}
             >
               <label htmlFor="email" className="govuk-label">
-                Email
+                Email address
               </label>
               <span id="email-hint" className="govuk-hint">
                 This must be a Government or Local Government address.
@@ -225,7 +225,7 @@ const RegisterForm = () => {
                 value={values.password.value}
               />
             </div>
-            {regState.loading ? (
+            {loading ? (
               <Spinner />
             ) : (
               <button
