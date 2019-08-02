@@ -32,7 +32,9 @@ const SignInEmailPassword = () => {
     let newSignIn;
 
     try {
-      newSignIn = await userSignIn(email, password);
+      newSignIn = await userSignIn({
+        variables: { email: email.value, password: password.value }
+      });
 
       if (error) {
         setErrorState({ status: true, error });
@@ -57,7 +59,7 @@ const SignInEmailPassword = () => {
 
     // if the user is not valid (not completed registration)
     // navigate them back to the resend link
-    if (!signInUser.user.isValid) {
+    if (!signInUser.user.isVerified) {
       setErrorState({
         status: true,
         error: {
@@ -71,8 +73,7 @@ const SignInEmailPassword = () => {
     }
 
     // if all is good set token and then navigate to 2fa
-    localStorage.setItem('labtoken', signInUser.token);
-
+    await localStorage.setItem('labtoken', signInUser.token);
     navigate('/sign-in/2fa');
   };
 

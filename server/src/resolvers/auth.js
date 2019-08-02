@@ -76,6 +76,8 @@ const authResolvers = {
       try {
         const signin = await User.findOne({ email });
 
+        console.log('user', signin);
+
         // if they don't exist....need to change this to a generic
         if (!signin) {
           throw new Error('User not found');
@@ -87,14 +89,19 @@ const authResolvers = {
           throw new Error('Password does not match');
         }
 
-        let signInToken = await createUserToken({
-          id: signin._id,
-          email: signin.email
-        });
+        let signInToken = await createUserToken(
+          {
+            id: signin._id,
+            email: signin.email
+          },
+          '1h'
+        );
+
+        console.log('siggy', signInToken);
 
         return {
           success: true,
-          token: signInToken,
+          token: signInToken.newToken,
           user: signin
         };
       } catch (error) {

@@ -23,7 +23,7 @@ const initialErrorState = {
 
 const RegisterForm = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
-  const [addNewUser, { loading, error }] = useMutation(REGISTER_USER);
+  const [addNewUser, { loading }] = useMutation(REGISTER_USER);
   const [regState, setRegState] = useState({
     loading: false,
     registered: false
