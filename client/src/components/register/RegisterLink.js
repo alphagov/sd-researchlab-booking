@@ -41,7 +41,7 @@ const RegisterLink = ({ location }) => {
                       <br />
                       <button
                         className="govuk-button"
-                        onClick={() => navigate('/login/2fa')}
+                        onClick={() => navigate('/sign-in/2fa')}
                       >
                         Finish signing in
                       </button>

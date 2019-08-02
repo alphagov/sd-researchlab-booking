@@ -22,7 +22,10 @@ const RegisterConfirm = lazy(() =>
   import('../components/register/RegisterConfirm')
 );
 
-const Login2FAForm = lazy(() => import('../components/auth/Login2FAForm'));
+const SignInEmailPassword = lazy(() =>
+  import('../components/auth/SignInEmailPassword')
+);
+const SignIn2FAForm = lazy(() => import('../components/auth/SignIn2FAForm'));
 
 const Labs = lazy(() => import('./Labs'));
 const LabBookingForm = lazy(() => import('./LabBookingForm'));
@@ -57,7 +60,8 @@ const Layout = () => {
               <RegisterConfirm path="/register/confirm/:id" />
               <RegisterLink path="/register/verify" />
               <RegisterLinkResend path="/register/link-resend" />
-              <Login2FAForm path="/login/2fa" />
+              <SignInEmailPassword path="/sign-in/email-password" />
+              <SignIn2FAForm path="/sign-in/2fa" />
               <Labs path="/gds-research-labs" />
               <LabBookingForm path="/book-a-research-lab">
                 <BookingFormDateCal path="/booking-date" />
