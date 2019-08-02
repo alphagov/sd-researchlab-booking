@@ -1,6 +1,10 @@
 import User from '../models/User';
 
-import { verifyUserToken, createUserToken } from '../utils/cryptoUtils';
+import {
+  verifyUserToken,
+  createUserToken,
+  hashCompare
+} from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
 
 export const getUser = async (token) => {
@@ -67,6 +71,36 @@ const authResolvers = {
     }
   },
   Mutation: {
+    signInUser: async (_, { email, password }) => {
+      // get the user from the db
+      try {
+        const signin = await User.findOne({ email });
+
+        // if they don't exist....need to change this to a generic
+        if (!signin) {
+          throw new Error('User not found');
+        }
+        // compare password with hashed password
+        // need to change error
+        const comparePass = await hashCompare(password, signin.password);
+        if (!comparePass) {
+          throw new Error('Password does not match');
+        }
+
+        let signInToken = await createUserToken({
+          id: signin._id,
+          email: signin.email
+        });
+
+        return {
+          success: true,
+          token: signInToken,
+          user: signin
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    },
     registerNewUser: async (
       _,
       { firstName, lastName, email, phone, password }

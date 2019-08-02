@@ -1,4 +1,4 @@
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
@@ -34,6 +34,15 @@ export const hashCreator = async (term) => {
     return hashTerm;
   } catch (error) {
     return { error };
+  }
+};
+
+export const hashCompare = async (plain, hash) => {
+  try {
+    const comparePassword = await compare(plain, hash);
+    return comparePassword;
+  } catch (error) {
+    return false;
   }
 };
 

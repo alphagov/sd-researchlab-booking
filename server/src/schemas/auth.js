@@ -7,23 +7,18 @@ export const typeDef = gql`
     lastName: String
     email: String
     phone: String
-    verified: Boolean
+    isVerified: Boolean
+    mfaCode: Int
   }
 
-  type NewUser {
-    success: Boolean
-    token: String
-    user: User
-  }
-
-  type VerifiedUser {
+  type LabUser {
     success: Boolean
     token: String
     user: User
   }
 
   extend type Query {
-    registerTokenCheck(token: String!): VerifiedUser
+    registerTokenCheck(token: String!): LabUser
   }
 
   extend type Mutation {
@@ -33,7 +28,8 @@ export const typeDef = gql`
       email: String!
       phone: String!
       password: String!
-    ): NewUser
-    registerLinkResend(id: ID!): NewUser
+    ): LabUser
+    registerLinkResend(id: ID!): LabUser
+    signInUser(email: String!, password: String): LabUser
   }
 `;
