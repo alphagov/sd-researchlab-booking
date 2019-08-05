@@ -238,6 +238,17 @@ export const useForm = (initialValues) => {
           });
         }
 
+        if (name === 'mfaCode') {
+          setValues({
+            ...values,
+            [name]: {
+              value,
+              valid: checkLength(value),
+              reason: ''
+            }
+          });
+        }
+
         break;
 
       case 'text':

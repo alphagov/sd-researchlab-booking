@@ -111,6 +111,7 @@ const authResolvers = {
     enter2FACode: async (_, { mfaCode }, { userContext }) => {
       // first check to see if there is a jwt and it is valid
       const { user, error } = userContext;
+      console.log('enter', user);
       // if the token is not valid....for any reason
       if (user === '' || user === 'null') {
         return {

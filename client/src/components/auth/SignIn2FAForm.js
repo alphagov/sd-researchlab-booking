@@ -9,7 +9,7 @@ import Error from '../../containers/Error';
 import Spinner from '../shared/Spinner';
 
 const initialState = {
-  mfacode: { value: '', valid: true, reason: '' }
+  mfaCode: { value: '', valid: true, reason: '' }
 };
 
 const initialErrorState = {
@@ -21,36 +21,71 @@ const Login2FAForm = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [errorState, setErrorState] = useState(initialErrorState);
   const [enterMFACode, { loading }] = useMutation(ENTER_2FA_CODE);
+  const [codeAttempts, setCodeAttempts] = useState(0);
 
-  // clearState = () => {
-  //   this.setState({ ...initialState });
-  // };
-
-  // handleChange = (event) => {
-  //   const { name, value } = event.target;
-  //   this.setState({ [name]: value });
-  // };
-
-  // validateForm = () => {
-  //   const { mfaCode } = this.state;
-  //   const isInValid = !mfaCode || mfaCode.length < 5;
-  //   return isInValid;
-  // };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const { mfaCode } = values;
 
-    // enter2FACode()
-    //   .then(async ({ data }) => {
-    //     const { ok, _id } = data.enter2FACode;
-    //     if (ok) {
-    //       console.log(_id);
-    //       // if ok then redirect to calendar page
-    //     } else {
-    //       console.log('not ok');
-    //     }
-    //   })
-    //   .catch((error) => console.log(error));
+    console.log(values);
+
+    // if what is entered it not a number
+    if (isNaN(mfaCode.value)) {
+      setErrorState({
+        status: true,
+        error: { message: 'You must enter a number' }
+      });
+      return;
+    }
+
+    try {
+      let checkCode = await enterMFACode({
+        variables: { mfaCode: mfaCode.value }
+      });
+
+      const { enter2FACode } = checkCode.data;
+
+      // if no success
+      if (!enter2FACode.success) {
+        switch (enter2FACode.reason) {
+          case 'TokenNotPresent':
+            setErrorState({
+              status: true,
+              error: { message: 'Unable to verify user' }
+            });
+            setTimeout(() => {
+              navigate('/sign-in/email-password');
+            }, 10000);
+            break;
+          case 'TokenExpiredError':
+            setErrorState({
+              status: true,
+              error: { message: 'Your token has expired please sign in again' }
+            });
+            setTimeout(() => {
+              navigate('/sign-in/email-password');
+            }, 10000);
+            break;
+          case 'IncorrectMFACode':
+            setCodeAttempts(codeAttempts + 1);
+            if (codeAttempts > 3) {
+              navigate('/sign-in/resend-code');
+            }
+            break;
+          default:
+            navigate('/sign-in/email-password');
+            break;
+        }
+      }
+
+      // if no user object redirect to register
+    } catch (error) {
+      console.log(error);
+      setErrorState({
+        status: true,
+        error
+      });
+    }
   };
 
   return (
@@ -65,14 +100,14 @@ const Login2FAForm = () => {
           </legend>
           <form onSubmit={(event) => handleSubmit(event)}>
             <div
-              className={`govuk-form-group ${!values.mfacode.valid &&
+              className={`govuk-form-group ${!values.mfaCode.valid &&
                 `govuk-form-group--error`}`}
             >
-              <label htmlFor="mfacode" className="govuk-label">
+              <label htmlFor="mfaCode" className="govuk-label">
                 Text message code
               </label>
 
-              {!values.mfacode.valid && (
+              {!values.mfaCode.valid && (
                 <span id="event-name-error" className="govuk-error-message">
                   <span className="govuk-visually-hidden">Error:</span> Enter
                   the text message code
@@ -80,18 +115,22 @@ const Login2FAForm = () => {
               )}
               <input
                 type="number"
-                className={`govuk-input govuk-input--width-5 ${!values.mfacode
+                className={`govuk-input govuk-input--width-5 ${!values.mfaCode
                   .valid && `govuk-input--error`}`}
-                name="mfacode"
-                id="mfacode"
+                name="mfaCode"
+                id="mfaCode"
                 onChange={handleChange}
-                value={values.mfacode.value}
+                value={values.mfaCode.value}
               />
             </div>
             {loading ? (
               <Spinner />
             ) : (
-              <button type="submit" className="govuk-button">
+              <button
+                type="submit"
+                className="govuk-button"
+                disabled={values.mfaCode.value.length < 5}
+              >
                 Continue
               </button>
             )}

@@ -121,6 +121,10 @@ export const ENTER_2FA_CODE = gql`
     enter2FACode(mfaCode: $mfaCode) {
       success
       reason
+      user {
+        id
+        isVerified
+      }
     }
   }
 `;
