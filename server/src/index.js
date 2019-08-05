@@ -20,10 +20,10 @@ const apollo = new ApolloServer({
   dataSources: () => ({
     googleResourcesAPI: new GoogleResourcesAPI()
   }),
-  context: ({ req }) => {
+  context: async ({ req }) => {
     const token = req.headers.authorization || '';
-    const user = getUser(token);
-    return { user };
+    const userContext = await getUser(token);
+    return { userContext };
   },
   playground: {
     settings: {

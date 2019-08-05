@@ -17,23 +17,39 @@ export const getUser = async (token) => {
   const chkToken = token.split(' ')[1];
 
   // console.log('chkYoken', chkToken);
+  let userContext = {};
 
   if (!chkToken || chkToken === 'null') {
-    console.log('nope');
-    return { user: { loggedIn: false } };
+    // console.log('nope');
+    userContext = { user: null, error: 'No token' };
+    return userContext;
   }
-  // const plainToken = await verifyUserToken(chkToken, '1h');
-  // console.log('get user', plainToken);
-  return { user: { loggedIn: false } };
+
+  try {
+    const plainToken = await verifyUserToken(chkToken, '1h');
+    console.log('get user', plainToken);
+    const { verifySuccess, clearToken, error } = plainToken;
+    // if unable to verify the token expired etc....
+    if (!verifySuccess) {
+      userContext = { user: null, error };
+      return userContext;
+    } else {
+      userContext = { user: clearToken.id, error: null };
+      return userContext;
+    }
+  } catch (error) {
+    console.log('[userContext]', error);
+  }
 };
 
 const mfaCodeHelper = async (user) => {
   // userId
   let mfa = await MFACreator();
+  // this is temp. notify does not allow to send texts in demo mode
+  console.log('[mfaCode]', mfa);
   try {
     // send the code
     let sendText = await sendMFACode(user.phone, mfa);
-    console.log(sendText);
     // add to user account
     await User.findByIdAndUpdate(user._id, { mfaCode: mfa });
     return true;
@@ -92,11 +108,16 @@ const authResolvers = {
   },
 
   Mutation: {
-    enter2FACode: async (_, { mfaCode }) => {
-      // need to get the user context here
+    enter2FACode: async (_, { mfaCode }, { userContext }) => {
+      // first check to see if there is a jwt and it is valid
+      const { user, error } = userContext;
+
+      if (user === '' || user === 'null') {
+      }
     },
-    signInUser: async (_, { email, password }) => {
+    signInUser: async (_, { email, password }, { userContext }) => {
       // get the user from the db
+      console.log('[context]', userContext);
       try {
         const signin = await User.findOne({ email });
 

@@ -120,6 +120,7 @@ export const ENTER_2FA_CODE = gql`
   mutation($mfaCode: Int!) {
     enter2FACode(mfaCode: $mfaCode) {
       success
+      reason
     }
   }
 `;

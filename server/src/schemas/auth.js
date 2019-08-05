@@ -19,6 +19,8 @@ export const typeDef = gql`
 
   type Success {
     success: Boolean
+    reason: String
+    user: User
   }
 
   extend type Query {
