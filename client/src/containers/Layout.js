@@ -26,6 +26,9 @@ const SignInEmailPassword = lazy(() =>
   import('../components/auth/SignInEmailPassword')
 );
 const SignIn2FAForm = lazy(() => import('../components/auth/SignIn2FAForm'));
+const SignIn2FAResend = lazy(() =>
+  import('../components/auth/Signin2FAResend')
+);
 
 const Labs = lazy(() => import('./Labs'));
 const LabBookingForm = lazy(() => import('./LabBookingForm'));
@@ -62,6 +65,7 @@ const Layout = () => {
               <RegisterLinkResend path="/register/link-resend" />
               <SignInEmailPassword path="/sign-in/email-password" />
               <SignIn2FAForm path="/sign-in/2fa" />
+              <SignIn2FAResend path="/sign-in/resend-code" />
               <Labs path="/gds-research-labs" />
               <LabBookingForm path="/book-a-research-lab">
                 <BookingFormDateCal path="/booking-date" />

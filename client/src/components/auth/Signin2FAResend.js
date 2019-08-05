@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Login2FAResend = () => {
+const signIn2FAResend = () => {
   return <div>2fa resend</div>;
 };
 
-export default Login2FAResend;
+export default signIn2FAResend;
