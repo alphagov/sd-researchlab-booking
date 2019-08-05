@@ -9,6 +9,8 @@ import { sendRegMail } from '../services/NotifyMail';
 
 export const getUser = async (token) => {
   // temp just return a user object until we add
+  // log in and proper checks
+  // this will add the user to the graphql context
 
   const chkToken = token.split(' ')[1];
 
@@ -18,9 +20,9 @@ export const getUser = async (token) => {
     console.log('nope');
     return { user: { loggedIn: false } };
   }
-  const plainToken = await verifyUserToken(chkToken, '1h');
-  console.log('get user', plainToken);
-  // return { user: { loggedIn: true } };
+  // const plainToken = await verifyUserToken(chkToken, '1h');
+  // console.log('get user', plainToken);
+  return { user: { loggedIn: false } };
 };
 
 const authResolvers = {
