@@ -17,6 +17,10 @@ export const typeDef = gql`
     user: User
   }
 
+  type Success {
+    success: Boolean
+  }
+
   extend type Query {
     registerTokenCheck(token: String!): LabUser
   }
@@ -31,5 +35,6 @@ export const typeDef = gql`
     ): LabUser
     registerLinkResend(id: ID!): LabUser
     signInUser(email: String!, password: String): LabUser
+    enter2FACode(mfaCode: Int!): Success
   }
 `;

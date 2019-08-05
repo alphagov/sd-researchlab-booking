@@ -17,7 +17,7 @@ const { TOKEN_ISSUER, TOKEN_AUDIENCE, TOKEN_ALGORITHM } = process.env;
 
 const numberRange = '123456789';
 
-export const MFACreator = () => {
+export const MFACreator = async () => {
   let tempMFA = '';
   for (let i = 0; i < 5; i++) {
     tempMFA += numberRange.charAt(

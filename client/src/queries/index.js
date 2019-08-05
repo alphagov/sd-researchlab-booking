@@ -106,22 +106,20 @@ export const RESEND_REG_LINK = gql`
   }
 `;
 
-export const SEND_2FA_CODE = gql`
-  mutation($_id: ID!) {
-    send2FACode(_id: $_id) {
-      _id
-      ok
-      error
-    }
-  }
-`;
+// export const SEND_2FA_CODE = gql`
+//   mutation($_id: ID!) {
+//     send2FACode(_id: $_id) {
+//       _id
+//       ok
+//       error
+//     }
+//   }
+// `;
 
 export const ENTER_2FA_CODE = gql`
-  mutation($_id: ID!, $mfaCode: String!) {
-    enter2FACode(_id: $_id, mfaCode: $mfaCode) {
-      _id
-      ok
-      error
+  mutation($mfaCode: Int!) {
+    enter2FACode(mfaCode: $mfaCode) {
+      success
     }
   }
 `;

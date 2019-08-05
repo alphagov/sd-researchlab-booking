@@ -3,9 +3,11 @@ import User from '../models/User';
 import {
   verifyUserToken,
   createUserToken,
-  hashCompare
+  hashCompare,
+  MFACreator
 } from '../utils/cryptoUtils';
 import { sendRegMail } from '../services/NotifyMail';
+import { sendMFACode } from '../services/NotifyText';
 
 export const getUser = async (token) => {
   // temp just return a user object until we add
@@ -23,6 +25,22 @@ export const getUser = async (token) => {
   // const plainToken = await verifyUserToken(chkToken, '1h');
   // console.log('get user', plainToken);
   return { user: { loggedIn: false } };
+};
+
+const mfaCodeHelper = async (user) => {
+  // userId
+  let mfa = await MFACreator();
+  try {
+    // send the code
+    let sendText = await sendMFACode(user.phone, mfa);
+    console.log(sendText);
+    // add to user account
+    await User.findByIdAndUpdate(user._id, { mfaCode: mfa });
+    return true;
+  } catch (error) {
+    console.log('[mfaCodeHelper]', error);
+    return false;
+  }
 };
 
 const authResolvers = {
@@ -72,7 +90,11 @@ const authResolvers = {
       }
     }
   },
+
   Mutation: {
+    enter2FACode: async (_, { mfaCode }) => {
+      // need to get the user context here
+    },
     signInUser: async (_, { email, password }) => {
       // get the user from the db
       try {
@@ -100,6 +122,9 @@ const authResolvers = {
         );
 
         console.log('siggy', signInToken);
+
+        // need to send 2fa code here
+        await mfaCodeHelper(signin);
 
         return {
           success: true,
