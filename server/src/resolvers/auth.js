@@ -21,7 +21,7 @@ export const getUser = async (token) => {
 
   if (!chkToken || chkToken === 'null') {
     // console.log('nope');
-    userContext = { user: null, error: 'No token' };
+    userContext = { user: null, error: { name: 'TokenNotPresent' } };
     return userContext;
   }
 
@@ -31,7 +31,7 @@ export const getUser = async (token) => {
     const { verifySuccess, clearToken, error } = plainToken;
     // if unable to verify the token expired etc....
     if (!verifySuccess) {
-      userContext = { user: null, error };
+      userContext = { user: null, error: { name: error.name } };
       return userContext;
     } else {
       userContext = { user: clearToken.id, error: null };
@@ -49,7 +49,7 @@ const mfaCodeHelper = async (user) => {
   console.log('[mfaCode]', mfa);
   try {
     // send the code
-    let sendText = await sendMFACode(user.phone, mfa);
+    await sendMFACode(user.phone, mfa);
     // add to user account
     await User.findByIdAndUpdate(user._id, { mfaCode: mfa });
     return true;
@@ -111,13 +111,33 @@ const authResolvers = {
     enter2FACode: async (_, { mfaCode }, { userContext }) => {
       // first check to see if there is a jwt and it is valid
       const { user, error } = userContext;
-
+      // if the token is not valid....for any reason
       if (user === '' || user === 'null') {
+        return {
+          success: false,
+          reason: error.name,
+          user: null
+        };
       }
+
+      const mfaUser = User.findById(user);
+      // if the codes do not match
+      if (mfaUser.mfaCode !== mfaCode) {
+        return {
+          success: false,
+          reason: 'IncorrectMFACode',
+          user: null
+        };
+      }
+
+      return {
+        success: true,
+        reason: '',
+        user: mfaUser
+      };
     },
     signInUser: async (_, { email, password }, { userContext }) => {
       // get the user from the db
-      console.log('[context]', userContext);
       try {
         const signin = await User.findOne({ email });
 
@@ -142,7 +162,7 @@ const authResolvers = {
           '1h'
         );
 
-        console.log('siggy', signInToken);
+        // console.log('siggy', signInToken);
 
         // need to send 2fa code here
         await mfaCodeHelper(signin);
