@@ -30,7 +30,7 @@ const Login2FAForm = () => {
     console.log(values);
 
     // if what is entered it not a number
-    if (isNaN(mfaCode.value)) {
+    if (isNaN(parseInt(mfaCode.value))) {
       setErrorState({
         status: true,
         error: { message: 'You must enter a number' }
@@ -40,7 +40,7 @@ const Login2FAForm = () => {
 
     try {
       let checkCode = await enterMFACode({
-        variables: { mfaCode: mfaCode.value }
+        variables: { mfaCode: parseInt(mfaCode.value) }
       });
 
       const { enter2FACode } = checkCode.data;
@@ -78,7 +78,19 @@ const Login2FAForm = () => {
         }
       }
 
-      // if no user object redirect to register
+      // if the user has not completed registration
+      if (!checkCode.user.isVerified) {
+        setErrorState({
+          status: true,
+          error: { message: 'Please complete registration' }
+        });
+        setTimeout(() => {
+          navigate(`/register/confirm/${checkCode.user.id}`);
+        }, 10000);
+      }
+
+      // if everything is ok navigate to user area
+      navigate('/user/user-home');
     } catch (error) {
       console.log(error);
       setErrorState({

@@ -12,7 +12,7 @@ import Header from '../components/navigation/Header';
 import Proto from '../components/banners/proto';
 import Landing from './Landing';
 
-// lazy laoding components
+// lazy loading components
 const Register = lazy(() => import('./Register'));
 const RegisterLink = lazy(() => import('../components/register/RegisterLink'));
 const RegisterLinkResend = lazy(() =>
@@ -48,6 +48,8 @@ const BookingFormSummary = lazy(() =>
   import('../components/booking/BookingFormSummary')
 );
 
+const UserHome = lazy(() => import('./User'));
+
 const Layout = () => {
   initAll();
   return (
@@ -66,6 +68,7 @@ const Layout = () => {
               <SignInEmailPassword path="/sign-in/email-password" />
               <SignIn2FAForm path="/sign-in/2fa" />
               <SignIn2FAResend path="/sign-in/resend-code" />
+              <UserHome path="/user/user-home" />
               <Labs path="/gds-research-labs" />
               <LabBookingForm path="/book-a-research-lab">
                 <BookingFormDateCal path="/booking-date" />

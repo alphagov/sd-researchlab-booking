@@ -113,16 +113,20 @@ const authResolvers = {
       const { user, error } = userContext;
       console.log('enter', user);
       // if the token is not valid....for any reason
-      if (user === '' || user === 'null') {
+      if (!user) {
         return {
           success: false,
           reason: error.name,
           user: null
         };
       }
+      console.log('code', mfaCode);
 
-      const mfaUser = User.findById(user);
+      const mfaUser = await User.findById(user);
       // if the codes do not match
+
+      console.log('mfauser', mfaUser);
+
       if (mfaUser.mfaCode !== mfaCode) {
         return {
           success: false,
