@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import { Link, navigate } from '@reach/router';
 
@@ -7,6 +7,8 @@ import { useForm } from '../../hooks/useForm';
 
 import Error from '../../containers/Error';
 import Spinner from '../shared/Spinner';
+
+import { UserContext } from '../../contexts/UserContext';
 
 const initialState = {
   mfaCode: { value: '', valid: true, reason: '' }
@@ -22,6 +24,7 @@ const Login2FAForm = () => {
   const [errorState, setErrorState] = useState(initialErrorState);
   const [enterMFACode, { loading }] = useMutation(ENTER_2FA_CODE);
   const [codeAttempts, setCodeAttempts] = useState(0);
+  const [userValues, setUserValues] = useContext(UserContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -79,16 +82,23 @@ const Login2FAForm = () => {
       }
 
       // if the user has not completed registration
-      if (!checkCode.user.isVerified) {
+      if (!enter2FACode.user.isVerified) {
         setErrorState({
           status: true,
           error: { message: 'Please complete registration' }
         });
         setTimeout(() => {
-          navigate(`/register/confirm/${checkCode.user.id}`);
+          navigate(`/register/confirm/${enter2FACode.user.id}`);
         }, 10000);
       }
 
+      // need to update a user context here.....so pull more information from the query
+      setUserValues({
+        isLoggedIn: true,
+        id: enter2FACode.user.id,
+        firstName: enter2FACode.user.firstName,
+        lastName: enter2FACode.user.lastName
+      });
       // if everything is ok navigate to user area
       navigate('/user/user-home');
     } catch (error) {

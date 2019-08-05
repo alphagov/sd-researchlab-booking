@@ -1,12 +1,15 @@
 import React from 'react';
 import { BookingContextProvider } from './contexts/BookingContext';
+import { UserContextProvider } from './contexts/UserContext';
 import Layout from './containers/Layout';
 
 const App = () => {
   return (
-    <BookingContextProvider>
-      <Layout />
-    </BookingContextProvider>
+    <UserContextProvider>
+      <BookingContextProvider>
+        <Layout />
+      </BookingContextProvider>
+    </UserContextProvider>
   );
 };
 

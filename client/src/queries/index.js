@@ -124,6 +124,8 @@ export const ENTER_2FA_CODE = gql`
       user {
         id
         isVerified
+        firstName
+        lastName
       }
     }
   }
