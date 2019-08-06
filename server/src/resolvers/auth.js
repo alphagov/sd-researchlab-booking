@@ -46,12 +46,12 @@ const mfaCodeHelper = async (user) => {
   // userId
   let mfa = await MFACreator();
   // this is temp. notify does not allow to send texts in demo mode
-  console.log('[mfaCode]', mfa);
+  // console.log('[mfaCode]', mfa);
   try {
     // send the code
     await sendMFACode(user.phone, mfa);
     // add to user account
-    await User.findByIdAndUpdate(user._id, { mfaCode: mfa });
+    await User.findByIdAndUpdate(user._id, { mfaCode: mfa }, { new: true });
     return true;
   } catch (error) {
     console.log('[mfaCodeHelper]', error);
@@ -62,7 +62,6 @@ const mfaCodeHelper = async (user) => {
 const authResolvers = {
   Query: {
     registerTokenCheck: async (_, { token }) => {
-      console.log('we are here');
       try {
         // decrypt the token
         const regToken = await verifyUserToken(token, 6000000);
@@ -111,7 +110,6 @@ const authResolvers = {
     enter2FACode: async (_, { mfaCode }, { userContext }) => {
       // first check to see if there is a jwt and it is valid
       const { user, error } = userContext;
-      console.log('enter', user);
       // if the token is not valid....for any reason
       if (!user) {
         return {
@@ -145,8 +143,6 @@ const authResolvers = {
       // get the user from the db
       try {
         const signin = await User.findOne({ email });
-
-        console.log('user', signin);
 
         // if they don't exist....need to change this to a generic
         if (!signin) {

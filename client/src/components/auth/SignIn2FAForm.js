@@ -30,8 +30,6 @@ const Login2FAForm = () => {
     event.preventDefault();
     const { mfaCode } = values;
 
-    console.log(values);
-
     // if what is entered it not a number
     if (isNaN(parseInt(mfaCode.value))) {
       setErrorState({
@@ -47,6 +45,8 @@ const Login2FAForm = () => {
       });
 
       const { enter2FACode } = checkCode.data;
+
+      console.log(enter2FACode);
 
       // if no success
       if (!enter2FACode.success) {
@@ -71,6 +71,10 @@ const Login2FAForm = () => {
             break;
           case 'IncorrectMFACode':
             setCodeAttempts(codeAttempts + 1);
+            setErrorState({
+              status: true,
+              error: { message: 'Incorrect code' }
+            });
             if (codeAttempts > 3) {
               navigate('/sign-in/resend-code');
             }
