@@ -44,6 +44,59 @@ const calendarResolvers = {
         success: true,
         calendars: resFreeBusy
       };
+    },
+    getBookedEventsUser: async (_, args, { dataSources, userContext }) => {
+      const { user } = userContext;
+
+      if (!user) {
+        return {
+          success: false,
+          reason: userContext.error.name,
+          events: []
+        };
+      }
+
+      try {
+        //  get all the events for the user
+        const userEvents = await Events.findById(user);
+        console.log(userEvents);
+
+        const userEventList = userEvents.map((userEvent) => {
+          return { eventId, calendarId };
+        });
+
+        const listLength = userEventList.length;
+
+        if (listLength === 0) {
+          return {
+            success: true,
+            reason: '',
+            events: []
+          };
+        }
+
+        // loop through the userEventList and push the result into an array of events
+        let eventList = [];
+        for (let i = 0; i < listLength; i++) {
+          // get all the events out of google api
+          let uEvents = await dataSources.googleResourcesAPI.getResourceCalendarEvents(
+            userEventList[i]
+          );
+          eventList.push(uEvents);
+        }
+
+        return {
+          success: true,
+          reason: '',
+          events: eventList
+        };
+      } catch (error) {
+        return {
+          success: false,
+          reason: error.message,
+          events: []
+        };
+      }
     }
   },
   Mutation: {
@@ -64,9 +117,11 @@ const calendarResolvers = {
         );
         // console.log(addEvent);
         // once added to the event add to the db
-        const newEvent = await Events.create({
+        const { eventId, calendarId } = addEvent;
+        await Events.create({
           userId: user,
-          eventId: addEvent.eventId
+          eventId,
+          calendarId
         });
 
         return { success: true, reason: '', event: addEvent };

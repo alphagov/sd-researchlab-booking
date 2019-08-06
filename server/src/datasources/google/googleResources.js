@@ -121,6 +121,25 @@ class GoogleResourcesAPI extends RESTDataSource {
     }
   }
 
+  async getResourceCalendarEvents({ eventId, calendarId }) {
+    try {
+      const token = await this.getOauthToken(options);
+      const userEvent = await axios(
+        `${this.resourceURL}/calendars/${calendarId}/events/${eventId}`,
+        {
+          headers: {
+            Authorization: 'OAuth ' + token
+          }
+        }
+      );
+      return userEvent.data
+        ? this.calendarEventReducer({ ...userEvent.data, calendarId })
+        : {};
+    } catch (error) {
+      console.log('[getResourceCalendarEvents]', error);
+    }
+  }
+
   async addCalendarEvent(event) {
     const {
       calendarId,
@@ -160,16 +179,26 @@ class GoogleResourcesAPI extends RESTDataSource {
         params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
         data: eventBody
       });
-      return this.calendarEventReducer(res.data);
+      return this.calendarEventReducer({ ...res.data, calendarId });
     } catch (error) {
       console.log('Error:', error);
     }
   }
 
   calendarEventReducer(event) {
-    const { id, status, summary, description, start, end, creator } = event;
+    const {
+      id,
+      status,
+      summary,
+      description,
+      start,
+      end,
+      creator,
+      calendarId
+    } = event;
 
     return {
+      calendarId,
       eventId: id,
       eventTitle: summary,
       eventDescription: description,

@@ -39,6 +39,10 @@ export const typeDef = gql`
     eventOwner: EventCreator
   }
 
+  type BookedEventsUser {
+    events: [BookedEvent]
+  }
+
   type ResearchLabEvent {
     success: Boolean
     reason: String
@@ -112,6 +116,7 @@ export const typeDef = gql`
       end: String!
       items: [String!]
     ): CalendarFreeBusyList
+    getBookedEventsUser: BookedEventsUser
   }
 
   extend type Mutation {

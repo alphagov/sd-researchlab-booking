@@ -50,6 +50,34 @@ export const GET_CALENDAR_FREE_BUSY = gql`
   }
 `;
 
+export const GET_BOOKED_EVENTS_BY_USER = gql`
+  query {
+    getBookedEventsUser {
+      success
+      reason
+      events {
+        eventId
+        eventTitle
+        eventDescription
+        eventStatus
+        eventStart
+        eventEnd
+        eventOwner {
+          displayName
+          email
+        }
+        resource {
+          resourceName
+          building {
+            buildingName
+            description
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   query {
     getCurrentUser {
