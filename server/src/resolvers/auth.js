@@ -10,8 +10,6 @@ import { sendRegMail } from '../services/NotifyMail';
 import { sendMFACode } from '../services/NotifyText';
 
 export const getUser = async (token) => {
-  // temp just return a user object until we add
-  // log in and proper checks
   // this will add the user to the graphql context
 
   const chkToken = token.split(' ')[1];

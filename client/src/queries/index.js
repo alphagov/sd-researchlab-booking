@@ -176,6 +176,7 @@ export const BOOK_LAB_SLOT = gql`
       email: $email
     ) {
       success
+      reason
       event {
         eventId
         eventTitle

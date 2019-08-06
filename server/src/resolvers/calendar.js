@@ -1,4 +1,5 @@
 import { startOfDay, endOfDay, addMonths } from 'date-fns';
+import Events from '../models/Events';
 
 const calendarResolvers = {
   Query: {
@@ -46,12 +47,36 @@ const calendarResolvers = {
     }
   },
   Mutation: {
-    addResearchLabEvent: async (_, args, { dataSources }) => {
-      const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
-        args
-      );
-      // console.log(addEvent);
-      return { success: true, event: addEvent };
+    addResearchLabEvent: async (_, args, { dataSources }, { userContext }) => {
+      const { user, error } = userContext;
+
+      if (!user) {
+        return {
+          success: false,
+          reason: error.name,
+          event: {}
+        };
+      }
+
+      try {
+        const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
+          args
+        );
+        // console.log(addEvent);
+        // once added to the event add to the db
+        const newEvent = await Events.create({
+          userId: user,
+          eventId: addEvent.eventId
+        });
+
+        return { success: true, reason: '', event: addEvent };
+      } catch (error) {
+        return {
+          success: false,
+          reason: error.message,
+          event: {}
+        };
+      }
     }
   },
   ResourceCalendar: {

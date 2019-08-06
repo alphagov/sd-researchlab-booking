@@ -41,6 +41,7 @@ export const typeDef = gql`
 
   type ResearchLabEvent {
     success: Boolean
+    reason: String
     event: BookedEvent
   }
 
