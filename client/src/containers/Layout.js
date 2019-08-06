@@ -1,5 +1,7 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
 import { Router } from '@reach/router';
+
+import { UserContext } from '../contexts/UserContext';
 
 import '../css/layout.scss';
 
@@ -50,7 +52,48 @@ const BookingFormSummary = lazy(() =>
 
 const UserHome = lazy(() => import('./User'));
 
+const PublicRoutes = () => {
+  return (
+    <Router>
+      <Landing path="/" />
+      <Register path="/register-to-book-the-lab" />
+      <RegisterConfirm path="/register/confirm/:id" />
+      <RegisterLink path="/register/verify" />
+      <RegisterLinkResend path="/register/link-resend" />
+      <SignInEmailPassword path="/sign-in/email-password" />
+      <SignIn2FAForm path="/sign-in/2fa" />
+      <SignIn2FAResend path="/sign-in/resend-code" />
+      <Labs path="/gds-research-labs" />
+    </Router>
+  );
+};
+
+const PrivateRoutes = () => {
+  return (
+    <Router>
+      <Landing path="/" />
+      <Register path="/register-to-book-the-lab" />
+      <RegisterConfirm path="/register/confirm/:id" />
+      <RegisterLink path="/register/verify" />
+      <RegisterLinkResend path="/register/link-resend" />
+      <SignInEmailPassword path="/sign-in/email-password" />
+      <SignIn2FAForm path="/sign-in/2fa" />
+      <SignIn2FAResend path="/sign-in/resend-code" />
+      <UserHome path="/user/user-home" />
+      <Labs path="/gds-research-labs" />
+      <LabBookingForm path="/book-a-research-lab">
+        <BookingFormDateCal path="/booking-date" />
+        <BookingFormName path="/booking-name" />
+        <BookingFormDetails path="/booking-details" />
+        <BookingFormEquipment path="/booking-equipment" />
+        <BookingFormSummary path="/booking-summary" />
+      </LabBookingForm>
+    </Router>
+  );
+};
+
 const Layout = () => {
+  const [userValues] = useContext(UserContext);
   initAll();
   return (
     <div className="govuk-template__body govuk-rlab_body">
@@ -59,25 +102,7 @@ const Layout = () => {
         <Proto />
         <main className="govuk-main-wrapper " id="main-content" role="main">
           <Suspense fallback={<Spinner />}>
-            <Router>
-              <Landing path="/" />
-              <Register path="/register-to-book-the-lab" />
-              <RegisterConfirm path="/register/confirm/:id" />
-              <RegisterLink path="/register/verify" />
-              <RegisterLinkResend path="/register/link-resend" />
-              <SignInEmailPassword path="/sign-in/email-password" />
-              <SignIn2FAForm path="/sign-in/2fa" />
-              <SignIn2FAResend path="/sign-in/resend-code" />
-              <UserHome path="/user/user-home" />
-              <Labs path="/gds-research-labs" />
-              <LabBookingForm path="/book-a-research-lab">
-                <BookingFormDateCal path="/booking-date" />
-                <BookingFormName path="/booking-name" />
-                <BookingFormDetails path="/booking-details" />
-                <BookingFormEquipment path="/booking-equipment" />
-                <BookingFormSummary path="/booking-summary" />
-              </LabBookingForm>
-            </Router>
+            {userValues.isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}
           </Suspense>
         </main>
       </div>
