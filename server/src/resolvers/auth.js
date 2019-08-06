@@ -107,6 +107,45 @@ const authResolvers = {
   },
 
   Mutation: {
+    resend2FACode: async (_, args, { userContext }) => {
+      // first check to see if there is a jwt and it is valid
+      const { user, error } = userContext;
+      // if the jwt is not valid....for any reason
+      if (!user) {
+        return {
+          success: false,
+          reason: error.name,
+          user: null
+        };
+      }
+
+      // get user object
+      try {
+        const resendMFA = await User.findById(user);
+
+        const okCode = await mfaCodeHelper(resendMFA);
+        if (!okCode) {
+          return {
+            success: false,
+            reason: error.name,
+            user: null
+          };
+        }
+
+        return {
+          success: true,
+          reason: '',
+          user: resendMFA
+        };
+      } catch (error) {
+        return {
+          success: false,
+          reason: error.name,
+          user: null
+        };
+      }
+    },
+
     enter2FACode: async (_, { mfaCode }, { userContext }) => {
       // first check to see if there is a jwt and it is valid
       const { user, error } = userContext;
@@ -146,13 +185,21 @@ const authResolvers = {
 
         // if they don't exist....need to change this to a generic
         if (!signin) {
-          throw new Error('User not found');
+          return {
+            success: false,
+            token: '',
+            user: null
+          };
         }
         // compare password with hashed password
         // need to change error
         const comparePass = await hashCompare(password, signin.password);
         if (!comparePass) {
-          throw new Error('Password does not match');
+          return {
+            success: false,
+            token: '',
+            user: null
+          };
         }
 
         let signInToken = await createUserToken(

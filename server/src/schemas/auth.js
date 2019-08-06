@@ -38,5 +38,6 @@ export const typeDef = gql`
     registerLinkResend(id: ID!): LabUser
     signInUser(email: String!, password: String): LabUser
     enter2FACode(mfaCode: Int!): Success
+    resend2FACode: Success
   }
 `;

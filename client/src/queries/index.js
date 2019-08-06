@@ -106,15 +106,14 @@ export const RESEND_REG_LINK = gql`
   }
 `;
 
-// export const SEND_2FA_CODE = gql`
-//   mutation($_id: ID!) {
-//     send2FACode(_id: $_id) {
-//       _id
-//       ok
-//       error
-//     }
-//   }
-// `;
+export const RESEND_2FA_CODE = gql`
+  mutation {
+    resend2FACode {
+      success
+      reason
+    }
+  }
+`;
 
 export const ENTER_2FA_CODE = gql`
   mutation($mfaCode: Int!) {

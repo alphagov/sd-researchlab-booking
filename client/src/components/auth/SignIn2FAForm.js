@@ -46,7 +46,7 @@ const Login2FAForm = () => {
 
       const { enter2FACode } = checkCode.data;
 
-      console.log(enter2FACode);
+      // console.log(enter2FACode);
 
       // if no success
       if (!enter2FACode.success) {

@@ -52,7 +52,7 @@ const SignInEmailPassword = () => {
     if (!signInUser.success) {
       setErrorState({
         status: true,
-        error: { message: 'Unable to sign in' }
+        error: { message: 'Unable to sign in - Incorrect credentials' }
       });
       return;
     }
