@@ -11,16 +11,14 @@ const initialErrorState = {
 };
 
 const SignIn2FAResend = () => {
-  const [resendMFA, { loading }] = useLazyQuery(RESEND_2FA_CODE);
+  const [resendMFA, { loading, data }] = useLazyQuery(RESEND_2FA_CODE);
   const [errorState, setErrorState] = useState(initialErrorState);
 
-  const resendMFACode = async () => {
-    // resend the code....
-
+  // const resendMFACode = async () => {
+  //   // resend the code....
+  if (data && data.resend2FACode) {
     try {
-      const newMFA = await resendMFA();
-
-      const { resend2FACode } = newMFA.data;
+      const { resend2FACode } = data;
 
       if (!resend2FACode.success) {
         console.log(resend2FACode.reason);
@@ -35,7 +33,7 @@ const SignIn2FAResend = () => {
       setErrorState({ status: true, error });
       return;
     }
-  };
+  }
 
   return (
     <div className="govuk-grid-row">
@@ -59,7 +57,7 @@ const SignIn2FAResend = () => {
             <button
               type="submit"
               className="govuk-button"
-              onClick={resendMFACode}
+              onClick={() => resendMFA()}
             >
               Resend security code
             </button>

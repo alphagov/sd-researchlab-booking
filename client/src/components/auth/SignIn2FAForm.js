@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 import { Link, navigate } from '@reach/router';
 
 import { ENTER_2FA_CODE } from '../../queries';
@@ -24,35 +24,13 @@ const Login2FAForm = () => {
   const [errorState, setErrorState] = useState(initialErrorState);
   const [codeAttempts, setCodeAttempts] = useState(0);
   const [userValues, setUserValues] = useContext(UserContext);
-  const client = useApolloClient();
+  const [enterMFACode, { data, loading }] = useLazyQuery(ENTER_2FA_CODE);
 
-  let loading = false;
-
-  const handleSubmit = async (event) => {
-    loading = true;
-
-    event.preventDefault();
-    const { mfaCode } = values;
-
-    // if what is entered it not a number
-    if (isNaN(parseInt(mfaCode.value))) {
-      setErrorState({
-        status: true,
-        error: { message: 'You must enter a number' }
-      });
-      loading = false;
-      return;
-    }
-
+  if (data && data.enter2FACode) {
     try {
-      const { data } = await client.query({
-        query: ENTER_2FA_CODE,
-        variables: { mfaCode: parseInt(mfaCode.value) }
-      });
-
       const { enter2FACode } = data;
 
-      // console.log(enter2FACode);
+      console.log(enter2FACode);
 
       // if no success
       if (!enter2FACode.success) {
@@ -112,14 +90,13 @@ const Login2FAForm = () => {
       // if everything is ok navigate to user area
       navigate('/user/user-home');
     } catch (error) {
-      loading = false;
       console.log(error);
       setErrorState({
         status: true,
         error
       });
     }
-  };
+  }
 
   return (
     <div className="govuk-grid-row">
@@ -131,7 +108,7 @@ const Login2FAForm = () => {
               We’ve sent you a text message with a security code.
             </p>
           </legend>
-          <form onSubmit={(event) => handleSubmit(event)}>
+          <form>
             <div
               className={`govuk-form-group ${!values.mfaCode.valid &&
                 `govuk-form-group--error`}`}
@@ -160,7 +137,11 @@ const Login2FAForm = () => {
               <Spinner />
             ) : (
               <button
-                type="submit"
+                onClick={() =>
+                  enterMFACode({
+                    variables: { mfaCode: parseInt(values.mfaCode.value) }
+                  })
+                }
                 className="govuk-button"
                 disabled={values.mfaCode.value.length < 5}
               >
