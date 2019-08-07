@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
-
 import dateFns from 'date-fns';
 import { navigate } from '@reach/router';
-import { withApollo } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 
 import { yearBuilder } from '../../utils/dateUtils';
 import { checkClashDates, checkBookingSlots } from '../../utils/bookingUtils';
@@ -34,9 +33,15 @@ const initialState = {
   bookAMPM: { value: false, valid: true, reason: '' }
 };
 
-const BookingFormDate = ({ client }) => {
+const BookingFormDate = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
+  const {
+    data: { getResourceResearchLab },
+    client
+  } = useQuery(GET_RESEARCH_LABS_FREEBUSY, {
+    fetchPolicy: 'cache-and-network'
+  });
 
   const checkAvail = async (details) => {
     let researchLabs = [];
@@ -45,11 +50,10 @@ const BookingFormDate = ({ client }) => {
       // get the free busy dates from cache
       // potentially risky but the polling should take care of things?
       // may switch to getting from db.......
-      const { getResourceResearchLab } = await client.readQuery({
-        query: GET_RESEARCH_LABS_FREEBUSY,
-        fetchPolicy: 'cache-and-network'
-      });
-      researchLabs = getResourceResearchLab.labs;
+      const {
+        getResourceResearchLab: { labs }
+      } = await client.readQuery();
+      researchLabs = labs;
     } catch (error) {
       console.log(error);
       return;
@@ -345,4 +349,4 @@ const BookingFormDate = ({ client }) => {
   );
 };
 
-export default withApollo(BookingFormDate);
+export default BookingFormDate;

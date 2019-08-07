@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from '../../hooks/useForm';
-import { useMutation } from 'react-apollo-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { navigate } from '@reach/router';
 
 import Error from '../../containers/Error';

@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react';
 import dateFns from 'date-fns';
 import { Link, navigate } from '@reach/router';
-import { withApollo } from 'react-apollo';
-import { useMutation } from 'react-apollo-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 
 import { BookingContext } from '../../contexts/BookingContext';
 import Spinner from '../shared/Spinner';
@@ -18,7 +17,7 @@ const initialErrorState = {
   error: ''
 };
 
-const BookinFormSummary = ({ client }) => {
+const BookinFormSummary = () => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
   const [bookingState, setBookingState] = useState({
     loading: false,
@@ -27,6 +26,12 @@ const BookinFormSummary = ({ client }) => {
   });
   const [errorState, setErrorState] = useState(initialErrorState);
   const [addBooking] = useMutation(BOOK_LAB_SLOT);
+  const {
+    data: { getResourceResearchLab },
+    client
+  } = useQuery(GET_RESEARCH_LABS_FREEBUSY, {
+    fetchPolicy: 'network-only'
+  });
 
   const {
     bookedDate,
@@ -49,15 +54,15 @@ const BookinFormSummary = ({ client }) => {
     });
 
     try {
-      const { data, error } = await client.query({
-        query: GET_RESEARCH_LABS_FREEBUSY,
-        fetchPolicy: 'network-only'
-      });
+      const {
+        getResourceResearchLab: { labs },
+        error
+      } = await client.query();
 
       if (error) {
         return setErrorState({ status: true, error });
       }
-      researchLabs = data.getResourceResearchLab.labs;
+      researchLabs = labs;
     } catch (error) {
       console.log(error);
       setErrorState({ status: true, error });
@@ -282,4 +287,4 @@ const BookinFormSummary = ({ client }) => {
   );
 };
 
-export default withApollo(BookinFormSummary);
+export default BookinFormSummary;

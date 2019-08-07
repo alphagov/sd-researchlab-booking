@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMutation } from 'react-apollo-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 import { navigate } from '@reach/router';
 import { RESEND_2FA_CODE } from '../../queries';
 import Spinner from '../shared/Spinner';
@@ -11,7 +11,7 @@ const initialErrorState = {
 };
 
 const SignIn2FAResend = () => {
-  const [resendMFA, { loading }] = useMutation(RESEND_2FA_CODE);
+  const [resendMFA, { loading }] = useLazyQuery(RESEND_2FA_CODE);
   const [errorState, setErrorState] = useState(initialErrorState);
 
   const resendMFACode = async () => {

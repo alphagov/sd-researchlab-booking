@@ -59,6 +59,123 @@ const mfaCodeHelper = async (user) => {
 
 const authResolvers = {
   Query: {
+    enter2FACode: async (_, { mfaCode }, { userContext }) => {
+      // first check to see if there is a jwt and it is valid
+      const { user, error } = userContext;
+      // if the token is not valid....for any reason
+      if (!user) {
+        return {
+          success: false,
+          reason: error.name,
+          user: null
+        };
+      }
+      console.log('code', mfaCode);
+
+      const mfaUser = await User.findById(user);
+      // if the codes do not match
+
+      // console.log('mfauser', mfaUser);
+
+      if (mfaUser.mfaCode !== mfaCode) {
+        return {
+          success: false,
+          reason: 'IncorrectMFACode',
+          user: null
+        };
+      }
+
+      return {
+        success: true,
+        reason: '',
+        user: mfaUser
+      };
+    },
+    resend2FACode: async (_, args, { userContext }) => {
+      // first check to see if there is a jwt and it is valid
+      const { user, error } = userContext;
+      // if the jwt is not valid....for any reason
+      if (!user) {
+        return {
+          success: false,
+          reason: error.name,
+          user: null
+        };
+      }
+
+      // get user object
+      try {
+        const resendMFA = await User.findById(user);
+
+        const okCode = await mfaCodeHelper(resendMFA);
+        if (!okCode) {
+          return {
+            success: false,
+            reason: error.name,
+            user: null
+          };
+        }
+
+        return {
+          success: true,
+          reason: '',
+          user: resendMFA
+        };
+      } catch (error) {
+        return {
+          success: false,
+          reason: error.name,
+          user: null
+        };
+      }
+    },
+    signInUser: async (_, { email, password }, { userContext }) => {
+      // get the user from the db
+      try {
+        const signin = await User.findOne({ email });
+
+        // if they don't exist....need to change this to a generic
+        if (!signin) {
+          return {
+            success: false,
+            token: '',
+            user: null
+          };
+        }
+
+        // compare password with hashed password
+        // need to change error
+        const comparePass = await hashCompare(password, signin.password);
+        if (!comparePass) {
+          return {
+            success: false,
+            token: '',
+            user: null
+          };
+        }
+
+        let signInToken = await createUserToken(
+          {
+            id: signin._id,
+            email: signin.email
+          },
+          '1h'
+        );
+
+        // console.log('siggy', signInToken);
+
+        // need to send 2fa code here
+        await mfaCodeHelper(signin);
+
+        return {
+          success: true,
+          token: signInToken.newToken,
+          user: signin
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    },
     registerTokenCheck: async (_, { token }) => {
       try {
         // decrypt the token
@@ -101,127 +218,45 @@ const authResolvers = {
           user: null
         };
       }
+    },
+    registerLinkResend: async (_, { id }) => {
+      // get the user
+      try {
+        const user = await User.findById(id);
+        if (!user) {
+          throw new Error('User does not exist');
+        }
+
+        // generate a new token
+        const regToken = await createUserToken(
+          {
+            id: user._id,
+            email: user.email
+          },
+          6000000
+        );
+        const { createSuccess, newToken, error } = regToken;
+
+        // send email
+        const regMail = await sendRegMail(
+          user.firstName,
+          user.lastName,
+          newToken
+        );
+
+        return {
+          success: true,
+          token: newToken,
+          user
+        };
+      } catch (error) {
+        console.log(error);
+        return error;
+      }
     }
   },
 
   Mutation: {
-    resend2FACode: async (_, args, { userContext }) => {
-      // first check to see if there is a jwt and it is valid
-      const { user, error } = userContext;
-      // if the jwt is not valid....for any reason
-      if (!user) {
-        return {
-          success: false,
-          reason: error.name,
-          user: null
-        };
-      }
-
-      // get user object
-      try {
-        const resendMFA = await User.findById(user);
-
-        const okCode = await mfaCodeHelper(resendMFA);
-        if (!okCode) {
-          return {
-            success: false,
-            reason: error.name,
-            user: null
-          };
-        }
-
-        return {
-          success: true,
-          reason: '',
-          user: resendMFA
-        };
-      } catch (error) {
-        return {
-          success: false,
-          reason: error.name,
-          user: null
-        };
-      }
-    },
-
-    enter2FACode: async (_, { mfaCode }, { userContext }) => {
-      // first check to see if there is a jwt and it is valid
-      const { user, error } = userContext;
-      // if the token is not valid....for any reason
-      if (!user) {
-        return {
-          success: false,
-          reason: error.name,
-          user: null
-        };
-      }
-      console.log('code', mfaCode);
-
-      const mfaUser = await User.findById(user);
-      // if the codes do not match
-
-      // console.log('mfauser', mfaUser);
-
-      if (mfaUser.mfaCode !== mfaCode) {
-        return {
-          success: false,
-          reason: 'IncorrectMFACode',
-          user: null
-        };
-      }
-
-      return {
-        success: true,
-        reason: '',
-        user: mfaUser
-      };
-    },
-    signInUser: async (_, { email, password }, { userContext }) => {
-      // get the user from the db
-      try {
-        const signin = await User.findOne({ email });
-
-        // if they don't exist....need to change this to a generic
-        if (!signin) {
-          return {
-            success: false,
-            token: '',
-            user: null
-          };
-        }
-        // compare password with hashed password
-        // need to change error
-        const comparePass = await hashCompare(password, signin.password);
-        if (!comparePass) {
-          return {
-            success: false,
-            token: '',
-            user: null
-          };
-        }
-
-        let signInToken = await createUserToken(
-          {
-            id: signin._id,
-            email: signin.email
-          },
-          '1h'
-        );
-
-        // console.log('siggy', signInToken);
-
-        // need to send 2fa code here
-        await mfaCodeHelper(signin);
-
-        return {
-          success: true,
-          token: signInToken.newToken,
-          user: signin
-        };
-      } catch (error) {
-        console.log(error);
-      }
-    },
     registerNewUser: async (
       _,
       { firstName, lastName, email, phone, password }
@@ -260,41 +295,6 @@ const authResolvers = {
         };
       } catch (error) {
         console.log(error);
-      }
-    },
-    registerLinkResend: async (_, { id }) => {
-      // get the user
-      try {
-        const user = await User.findById(id);
-        if (!user) {
-          throw new Error('User does not exist');
-        }
-
-        // generate a new token
-        const regToken = await createUserToken(
-          {
-            id: user._id,
-            email: user.email
-          },
-          6000000
-        );
-        const { createSuccess, newToken, error } = regToken;
-
-        // send email
-        const regMail = await sendRegMail(
-          user.firstName,
-          user.lastName,
-          newToken
-        );
-
-        return {
-          success: true,
-          token: newToken,
-          user
-        };
-      } catch (error) {
-        console.log(error);
-        return error;
       }
     }
   }

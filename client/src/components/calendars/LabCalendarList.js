@@ -1,5 +1,5 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 
 import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';

@@ -88,19 +88,6 @@ export const GET_CURRENT_USER = gql`
   }
 `;
 
-export const USER_SIGN_IN = gql`
-  mutation($email: String!, $password: String) {
-    signInUser(email: $email, password: $password) {
-      success
-      token
-      user {
-        id
-        isVerified
-      }
-    }
-  }
-`;
-
 export const CHECK_REG_TOKEN = gql`
   query($token: String!) {
     registerTokenCheck(token: $token) {
@@ -125,26 +112,8 @@ export const CHECK_USER_VERIFIED = gql`
   }
 `;
 
-export const RESEND_REG_LINK = gql`
-  mutation($id: ID!) {
-    registerLinkResend(id: $id) {
-      success
-      token
-    }
-  }
-`;
-
-export const RESEND_2FA_CODE = gql`
-  mutation {
-    resend2FACode {
-      success
-      reason
-    }
-  }
-`;
-
 export const ENTER_2FA_CODE = gql`
-  mutation($mfaCode: Int!) {
+  query($mfaCode: Int!) {
     enter2FACode(mfaCode: $mfaCode) {
       success
       reason
@@ -154,6 +123,37 @@ export const ENTER_2FA_CODE = gql`
         firstName
         lastName
       }
+    }
+  }
+`;
+
+export const RESEND_2FA_CODE = gql`
+  query {
+    resend2FACode {
+      success
+      reason
+    }
+  }
+`;
+
+export const USER_SIGN_IN = gql`
+  query($email: String!, $password: String) {
+    signInUser(email: $email, password: $password) {
+      success
+      token
+      user {
+        id
+        isVerified
+      }
+    }
+  }
+`;
+
+export const RESEND_REG_LINK = gql`
+  query($id: ID!) {
+    registerLinkResend(id: $id) {
+      success
+      token
     }
   }
 `;

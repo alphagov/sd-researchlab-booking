@@ -1,11 +1,11 @@
 import React from 'react';
-import { useMutation } from 'react-apollo-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 import Spinner from '../shared/Spinner';
 
 import { RESEND_REG_LINK } from '../../queries';
 
 const RegisterLinkResend = ({ userId }) => {
-  const [resendLink, { loading }] = useMutation(RESEND_REG_LINK);
+  const [resendLink, { loading }] = useLazyQuery(RESEND_REG_LINK);
 
   const sendLink = async () => {
     try {

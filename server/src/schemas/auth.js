@@ -25,6 +25,10 @@ export const typeDef = gql`
 
   extend type Query {
     registerTokenCheck(token: String!): LabUser
+    enter2FACode(mfaCode: Int!): Success
+    resend2FACode: Success
+    signInUser(email: String!, password: String): LabUser
+    registerLinkResend(id: ID!): LabUser
   }
 
   extend type Mutation {
@@ -35,9 +39,5 @@ export const typeDef = gql`
       phone: String!
       password: String!
     ): LabUser
-    registerLinkResend(id: ID!): LabUser
-    signInUser(email: String!, password: String): LabUser
-    enter2FACode(mfaCode: Int!): Success
-    resend2FACode: Success
   }
 `;

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useMutation } from 'react-apollo-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 import { Link, navigate } from '@reach/router';
 
 import { ENTER_2FA_CODE } from '../../queries';
@@ -22,11 +22,15 @@ const initialErrorState = {
 const Login2FAForm = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [errorState, setErrorState] = useState(initialErrorState);
-  const [enterMFACode, { loading }] = useMutation(ENTER_2FA_CODE);
   const [codeAttempts, setCodeAttempts] = useState(0);
   const [userValues, setUserValues] = useContext(UserContext);
+  const client = useApolloClient();
+
+  let loading = false;
 
   const handleSubmit = async (event) => {
+    loading = true;
+
     event.preventDefault();
     const { mfaCode } = values;
 
@@ -36,15 +40,17 @@ const Login2FAForm = () => {
         status: true,
         error: { message: 'You must enter a number' }
       });
+      loading = false;
       return;
     }
 
     try {
-      let checkCode = await enterMFACode({
+      const { data } = await client.query({
+        query: ENTER_2FA_CODE,
         variables: { mfaCode: parseInt(mfaCode.value) }
       });
 
-      const { enter2FACode } = checkCode.data;
+      const { enter2FACode } = data;
 
       // console.log(enter2FACode);
 
@@ -106,6 +112,7 @@ const Login2FAForm = () => {
       // if everything is ok navigate to user area
       navigate('/user/user-home');
     } catch (error) {
+      loading = false;
       console.log(error);
       setErrorState({
         status: true,

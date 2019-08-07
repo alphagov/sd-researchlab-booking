@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQuery } from 'react-apollo-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { GET_BOOKED_EVENTS_BY_USER } from '../../queries';
 
 import Spinner from '../shared/Spinner';
