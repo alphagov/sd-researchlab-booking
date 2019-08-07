@@ -59,7 +59,7 @@ const calendarResolvers = {
       try {
         //  get all the events for the user
         const userEvents = await Events.find({ userId: user });
-        console.log('[user events]', userEvents);
+        // console.log('[user events]', userEvents);
 
         const userEventList = userEvents.map((userEvent) => {
           return {
@@ -120,7 +120,7 @@ const calendarResolvers = {
         const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
           args
         );
-        console.log('add event', addEvent);
+        // console.log('add event', addEvent);
         // once added to the event add to the db
         const { eventId, calendarId } = addEvent;
         await Events.create({
