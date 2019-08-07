@@ -160,7 +160,7 @@ const authResolvers = {
       const mfaUser = await User.findById(user);
       // if the codes do not match
 
-      console.log('mfauser', mfaUser);
+      // console.log('mfauser', mfaUser);
 
       if (mfaUser.mfaCode !== mfaCode) {
         return {
