@@ -1,6 +1,7 @@
-import moment from 'moment';
+import { startOfDay, endOfDay, addMonths } from 'date-fns';
+import Events from '../models/Events';
 
-const resolvers = {
+const calendarResolvers = {
   Query: {
     getResourceCalendarList: async (_, args, { dataSources }) => {
       const resCals = await dataSources.googleResourcesAPI.getResourceCalendarByType();
@@ -43,15 +44,99 @@ const resolvers = {
         success: true,
         calendars: resFreeBusy
       };
+    },
+    getBookedEventsUser: async (_, args, { dataSources, userContext }) => {
+      const { user } = userContext;
+
+      if (!user) {
+        return {
+          success: false,
+          reason: userContext.error.name,
+          events: []
+        };
+      }
+
+      try {
+        //  get all the events for the user
+        const userEvents = await Events.find({ userId: user });
+        console.log('[user events]', userEvents);
+
+        const userEventList = userEvents.map((userEvent) => {
+          return {
+            eventId: userEvent.eventId,
+            calendarId: userEvent.calendarId
+          };
+        });
+
+        const listLength = userEventList.length;
+
+        if (listLength === 0) {
+          return {
+            success: true,
+            reason: '',
+            events: []
+          };
+        }
+
+        // loop through the userEventList and push the result into an array of events
+        let eventList = [];
+        for (let i = 0; i < listLength; i++) {
+          // get all the events out of google api
+          let uEvents = await dataSources.googleResourcesAPI.getResourceCalendarEvents(
+            userEventList[i]
+          );
+          eventList.push(uEvents);
+        }
+
+        return {
+          success: true,
+          reason: '',
+          events: eventList
+        };
+      } catch (error) {
+        return {
+          success: false,
+          reason: error.message,
+          events: []
+        };
+      }
     }
   },
   Mutation: {
-    addResearchLabEvent: async (_, args, { dataSources }) => {
-      const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
-        args
-      );
-      // console.log(addEvent);
-      return { success: true, event: addEvent };
+    addResearchLabEvent: async (_, args, { dataSources, userContext }) => {
+      const { user, error } = userContext;
+
+      // console.log(user);
+
+      if (!user) {
+        return {
+          success: false,
+          reason: error.name,
+          event: {}
+        };
+      }
+
+      try {
+        const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
+          args
+        );
+        console.log('add event', addEvent);
+        // once added to the event add to the db
+        const { eventId, calendarId } = addEvent;
+        await Events.create({
+          userId: user,
+          eventId,
+          calendarId
+        });
+
+        return { success: true, reason: '', event: addEvent };
+      } catch (error) {
+        return {
+          success: false,
+          reason: error.message,
+          event: {}
+        };
+      }
     }
   },
   ResourceCalendar: {
@@ -80,13 +165,11 @@ const resolvers = {
       const calId = parent.resourceEmail;
       if (calId) {
         // get the current day, time
-        const startDate = moment(Date.now()).startOf('day');
-        // just get until the end of the next month...this way we can alsways display one
+        const startDate = startOfDay(Date.now());
+        // just get until the end of the next month...this way we can always display 2
         // months worth of data.
         // reason we do this is because Google Cal API will only pull 2 months worth of data
-        const endDate = moment(Date.now())
-          .add(1, 'months')
-          .endOf('month');
+        const endDate = addMonths(endOfDay(startDate), 1);
         const resFreeBusy = await dataSources.googleResourcesAPI.getCalendarFreeBusyList(
           startDate,
           endDate,
@@ -98,4 +181,4 @@ const resolvers = {
   }
 };
 
-export default resolvers;
+export default calendarResolvers;

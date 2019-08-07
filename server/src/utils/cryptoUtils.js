@@ -1,9 +1,23 @@
-import { hash } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { hash, compare } from 'bcrypt';
+import { sign, verify } from 'jsonwebtoken';
+import fs from 'fs';
+import path from 'path';
+
+const publicKey = fs.readFileSync(
+  path.join(__dirname, '../keys/tokenPublic.key'),
+  'utf-8'
+);
+
+const privateKey = fs.readFileSync(
+  path.join(__dirname, '../keys/tokenPrivate.key'),
+  'utf-8'
+);
+
+const { TOKEN_ISSUER, TOKEN_AUDIENCE, TOKEN_ALGORITHM } = process.env;
 
 const numberRange = '123456789';
 
-export const MFACreator = () => {
+export const MFACreator = async () => {
   let tempMFA = '';
   for (let i = 0; i < 5; i++) {
     tempMFA += numberRange.charAt(
@@ -23,9 +37,60 @@ export const hashCreator = async (term) => {
   }
 };
 
-export const createToken = (user, expiresIn) => {
-  const { firstName, lastName, email } = user;
-  return sign({ firstName, lastName, email }, process.env.SECRET, {
-    expiresIn
-  });
+export const hashCompare = async (plain, hash) => {
+  try {
+    const comparePassword = await compare(plain, hash);
+    return comparePassword;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const createUserToken = async ({ id, email }, expiresIn) => {
+  const payload = { id };
+  const signOptions = {
+    issuer: TOKEN_ISSUER,
+    subject: email,
+    audience: TOKEN_AUDIENCE,
+    expiresIn: expiresIn,
+    algorithm: TOKEN_ALGORITHM
+  };
+
+  try {
+    const newToken = await sign(payload, privateKey, signOptions);
+    return {
+      createSuccess: true,
+      newToken,
+      error: null
+    };
+  } catch (error) {
+    return {
+      createSuccess: false,
+      newToken: null,
+      error
+    };
+  }
+};
+
+export const verifyUserToken = async (token, expiresIn) => {
+  const verifyOptions = {
+    issuer: TOKEN_ISSUER,
+    audience: TOKEN_AUDIENCE,
+    expiresIn: expiresIn,
+    algorithm: [TOKEN_ALGORITHM]
+  };
+  try {
+    const legitToken = await verify(token, publicKey, verifyOptions);
+    return {
+      verifySuccess: true,
+      clearToken: legitToken,
+      error: null
+    };
+  } catch (error) {
+    return {
+      verifySuccess: false,
+      clearToken: null,
+      error
+    };
+  }
 };

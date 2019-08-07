@@ -1,4 +1,5 @@
 import React from 'react';
+import HeaderNav from './HeaderNav';
 import { Link } from '@reach/router';
 
 const Header = () => {
@@ -42,6 +43,7 @@ const Header = () => {
           >
             Book the GDS user research lab
           </Link>
+          <HeaderNav />
         </div>
       </div>
     </header>

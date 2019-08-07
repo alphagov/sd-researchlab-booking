@@ -2,16 +2,15 @@ import { RESTDataSource } from 'apollo-datasource-rest';
 import * as googleAuth from 'google-oauth-jwt';
 import axios from 'axios';
 import path from 'path';
-import moment from 'moment';
 
-import * as keys from '../../keys/key-rlabs.json';
+import * as keys from '../../keys/uxlabbt.json';
 
 const tokens = new googleAuth.TokenCache();
 
 const options = {
   email: keys.client_email,
-  keyFile: path.join(__dirname, '../../keys/rlabs.pem'),
-  delegationEmail: 'adrian@intellidroid.eu',
+  keyFile: path.join(__dirname, '../../keys/uxlabbt.pem'),
+  delegationEmail: 'admin@digital.cabinet-office.gov.uk',
   scopes: [
     'https://www.googleapis.com/auth/admin.directory.resource.calendar',
     'https://www.googleapis.com/auth/calendar'
@@ -122,6 +121,25 @@ class GoogleResourcesAPI extends RESTDataSource {
     }
   }
 
+  async getResourceCalendarEvents({ eventId, calendarId }) {
+    try {
+      const token = await this.getOauthToken(options);
+      const userEvent = await axios(
+        `${this.calendarURL}/calendars/${calendarId}/events/${eventId}`,
+        {
+          headers: {
+            Authorization: 'OAuth ' + token
+          }
+        }
+      );
+      return userEvent.data
+        ? this.calendarEventReducer({ ...userEvent.data, calendarId })
+        : {};
+    } catch (error) {
+      console.log('[getResourceCalendarEvents]', error.data);
+    }
+  }
+
   async addCalendarEvent(event) {
     const {
       calendarId,
@@ -141,7 +159,8 @@ class GoogleResourcesAPI extends RESTDataSource {
           displayName: creator,
           email,
           additionalGuests: attendees,
-          organizer: true
+          organizer: true,
+          status: 'tentative'
         }
       ],
       summary: title,
@@ -160,16 +179,26 @@ class GoogleResourcesAPI extends RESTDataSource {
         params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
         data: eventBody
       });
-      return this.calendarEventReducer(res.data);
+      return this.calendarEventReducer({ ...res.data, calendarId });
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error:', error.data);
     }
   }
 
   calendarEventReducer(event) {
-    const { id, status, summary, description, start, end, creator } = event;
+    const {
+      id,
+      status,
+      summary,
+      description,
+      start,
+      end,
+      creator,
+      calendarId
+    } = event;
 
     return {
+      calendarId,
       eventId: id,
       eventTitle: summary,
       eventDescription: description,

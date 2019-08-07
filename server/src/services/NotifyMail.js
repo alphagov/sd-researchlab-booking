@@ -5,7 +5,9 @@ const notifyClient = new NotifyClient(process.env.NOTIFY_API_KEY);
 // tmp email
 const tempEmail = 'adrian.durran@digital.cabinet-office.gov.uk';
 
-export const sendRegMail = async (firstName, lastName, email, hashLink) => {
+export const sendRegMail = async (firstName, lastName, regLink) => {
+  const hashLink = `${process.env.REGISTER_LINK}?token=${regLink}`;
+
   try {
     const regMail = await notifyClient.sendEmail(
       process.env.NOTIFY_REG_TEMPLATE_ID,

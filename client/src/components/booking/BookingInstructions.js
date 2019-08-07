@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from '@reach/router';
 
+import { UserContext } from '../../contexts/UserContext';
+
 const BookingInstructions = () => {
+  const [userValues] = useContext(UserContext);
+
   return (
     <div className="govuk-grid-column-full">
       <span className="govuk-caption-xl">Booking instructions</span>
@@ -31,7 +35,11 @@ const BookingInstructions = () => {
         and have access to a mobile phone to complete two factor authentication.
       </p>
       <Link
-        to="/book-a-research-lab/booking-date"
+        to={
+          userValues.isLoggedIn
+            ? '/book-a-research-lab/booking-date'
+            : '/sign-in/email-password'
+        }
         role="button"
         draggable="false"
         className="govuk-button govuk-button--start"

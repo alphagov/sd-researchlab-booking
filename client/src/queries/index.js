@@ -50,6 +50,34 @@ export const GET_CALENDAR_FREE_BUSY = gql`
   }
 `;
 
+export const GET_BOOKED_EVENTS_BY_USER = gql`
+  query {
+    getBookedEventsUser {
+      success
+      reason
+      events {
+        eventId
+        eventTitle
+        eventDescription
+        eventStatus
+        eventStart
+        eventEnd
+        eventOwner {
+          displayName
+          email
+        }
+        resource {
+          resourceName
+          building {
+            buildingName
+            description
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   query {
     getCurrentUser {
@@ -60,12 +88,29 @@ export const GET_CURRENT_USER = gql`
   }
 `;
 
+export const USER_SIGN_IN = gql`
+  mutation($email: String!, $password: String) {
+    signInUser(email: $email, password: $password) {
+      success
+      token
+      user {
+        id
+        isVerified
+      }
+    }
+  }
+`;
+
 export const CHECK_REG_TOKEN = gql`
-  query($regToken: String!) {
-    checkRegToken(regToken: $regToken) {
-      _id
-      ok
-      error
+  query($token: String!) {
+    registerTokenCheck(token: $token) {
+      success
+      token
+      user {
+        id
+        firstName
+        lastName
+      }
     }
   }
 `;
@@ -81,31 +126,34 @@ export const CHECK_USER_VERIFIED = gql`
 `;
 
 export const RESEND_REG_LINK = gql`
-  mutation($_id: ID!) {
-    resendRegLink(_id: $_id) {
-      _id
-      ok
-      error
+  mutation($id: ID!) {
+    registerLinkResend(id: $id) {
+      success
+      token
     }
   }
 `;
 
-export const SEND_2FA_CODE = gql`
-  mutation($_id: ID!) {
-    send2FACode(_id: $_id) {
-      _id
-      ok
-      error
+export const RESEND_2FA_CODE = gql`
+  mutation {
+    resend2FACode {
+      success
+      reason
     }
   }
 `;
 
 export const ENTER_2FA_CODE = gql`
-  mutation($_id: ID!, $mfaCode: String!) {
-    enter2FACode(_id: $_id, mfaCode: $mfaCode) {
-      _id
-      ok
-      error
+  mutation($mfaCode: Int!) {
+    enter2FACode(mfaCode: $mfaCode) {
+      success
+      reason
+      user {
+        id
+        isVerified
+        firstName
+        lastName
+      }
     }
   }
 `;
@@ -118,16 +166,18 @@ export const REGISTER_USER = gql`
     $mobilePhone: String!
     $password: String!
   ) {
-    registerUser(
+    registerNewUser(
       firstName: $firstName
       lastName: $lastName
       email: $email
       phone: $mobilePhone
       password: $password
     ) {
-      _id
-      ok
-      error
+      success
+      user {
+        id
+      }
+      token
     }
   }
 `;
@@ -154,6 +204,7 @@ export const BOOK_LAB_SLOT = gql`
       email: $email
     ) {
       success
+      reason
       event {
         eventId
         eventTitle

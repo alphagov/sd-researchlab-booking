@@ -4,13 +4,11 @@ import { ApolloServer } from 'apollo-server-express';
 import Helmet from 'helmet';
 import Morgan from 'morgan';
 
-import User from './models/User';
-import RegToken from './models/RegToken';
-
 import GoogleResourcesAPI from './datasources/google/googleResources';
 
-import typeDefs from './schema';
-import resolvers from './resolvers';
+import { getUser } from './resolvers/auth';
+
+import rlabsSchema from './schema';
 
 const { ObjectId } = Types;
 ObjectId.prototype.valueOf = function() {
@@ -18,12 +16,15 @@ ObjectId.prototype.valueOf = function() {
 };
 
 const apollo = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema: rlabsSchema,
   dataSources: () => ({
     googleResourcesAPI: new GoogleResourcesAPI()
   }),
-  context: ({ req, res }) => ({ User, RegToken, currentUser: req.currentUser }),
+  context: async ({ req }) => {
+    const token = req.headers.authorization || '';
+    const userContext = await getUser(token);
+    return { userContext };
+  },
   playground: {
     settings: {
       'editor.theme': 'light'
