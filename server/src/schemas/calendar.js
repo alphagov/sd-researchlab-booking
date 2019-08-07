@@ -40,6 +40,8 @@ export const typeDef = gql`
   }
 
   type BookedEventsUser {
+    success: Boolean
+    reason: String
     events: [BookedEvent]
   }
 

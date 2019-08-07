@@ -58,11 +58,14 @@ const calendarResolvers = {
 
       try {
         //  get all the events for the user
-        const userEvents = await Events.findById(user);
-        console.log(userEvents);
+        const userEvents = await Events.find({ userId: user });
+        console.log('[user events]', userEvents);
 
         const userEventList = userEvents.map((userEvent) => {
-          return { eventId, calendarId };
+          return {
+            eventId: userEvent.eventId,
+            calendarId: userEvent.calendarId
+          };
         });
 
         const listLength = userEventList.length;
@@ -100,8 +103,10 @@ const calendarResolvers = {
     }
   },
   Mutation: {
-    addResearchLabEvent: async (_, args, { dataSources }, { userContext }) => {
+    addResearchLabEvent: async (_, args, { dataSources, userContext }) => {
       const { user, error } = userContext;
+
+      // console.log(user);
 
       if (!user) {
         return {
@@ -115,7 +120,7 @@ const calendarResolvers = {
         const addEvent = await dataSources.googleResourcesAPI.addCalendarEvent(
           args
         );
-        // console.log(addEvent);
+        console.log('add event', addEvent);
         // once added to the event add to the db
         const { eventId, calendarId } = addEvent;
         await Events.create({

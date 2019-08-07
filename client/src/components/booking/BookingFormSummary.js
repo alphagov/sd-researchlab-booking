@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import dateFns from 'date-fns';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import { withApollo } from 'react-apollo';
 import { useMutation } from 'react-apollo-hooks';
 
@@ -151,6 +151,9 @@ const BookinFormSummary = ({ client }) => {
         event: data.addResearchLabEvent.event
       });
       // then navigate to user area
+      setTimeout(() => {
+        navigate('/user/user-home');
+      }, 10000);
     }
   };
 

@@ -9,6 +9,10 @@ const EventSchema = new Schema({
     type: String,
     required: true
   },
+  calendarId: {
+    type: String,
+    required: true
+  },
   eventBooked: {
     type: Date,
     default: Date.now

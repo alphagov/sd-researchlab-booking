@@ -125,7 +125,7 @@ class GoogleResourcesAPI extends RESTDataSource {
     try {
       const token = await this.getOauthToken(options);
       const userEvent = await axios(
-        `${this.resourceURL}/calendars/${calendarId}/events/${eventId}`,
+        `${this.calendarURL}/calendars/${calendarId}/events/${eventId}`,
         {
           headers: {
             Authorization: 'OAuth ' + token
@@ -136,7 +136,7 @@ class GoogleResourcesAPI extends RESTDataSource {
         ? this.calendarEventReducer({ ...userEvent.data, calendarId })
         : {};
     } catch (error) {
-      console.log('[getResourceCalendarEvents]', error);
+      console.log('[getResourceCalendarEvents]', error.data);
     }
   }
 
@@ -181,7 +181,7 @@ class GoogleResourcesAPI extends RESTDataSource {
       });
       return this.calendarEventReducer({ ...res.data, calendarId });
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error:', error.data);
     }
   }
 

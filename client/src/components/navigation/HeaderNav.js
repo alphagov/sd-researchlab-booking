@@ -48,6 +48,11 @@ const HeaderNav = () => {
               </Link>
             </li>
             <li className="govuk-header__navigation-item">
+              <Link className="govuk-header__link" to="/user/user-home">
+                My bookings
+              </Link>
+            </li>
+            <li className="govuk-header__navigation-item">
               <Link className="govuk-header__link" to="/" onClick={signOutUser}>
                 Sign out
               </Link>
