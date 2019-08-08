@@ -50,8 +50,8 @@ export const checkBookingSlots = async (booking) => {
 
 const checkAllDayBookings = async (booking) => {
   // all day bookings
-  const { researchLabs, bookedLabs } = booking;
-  const resLabsArray = researchLabs.map((lab) => lab.resourceEmail);
+  const { labs, bookedLabs } = booking;
+  const resLabsArray = labs.map((lab) => lab.resourceEmail);
   // this needs to be a distinct list/array as we are not interested in am/pm
   // just how many labs have a booking because regardless of whether it is a
   // full/partial day it cannot accomodate a full day booking
@@ -75,9 +75,9 @@ const checkAllDayBookings = async (booking) => {
 
 const checkPartDayBookings = async (booking) => {
   // part day bookings
-  const { bookedAM, bookedLabs, researchLabs } = booking;
+  const { bookedAM, bookedLabs, labs } = booking;
 
-  const resLabsArray = researchLabs.map((lab) => lab.resourceEmail);
+  const resLabsArray = labs.map((lab) => lab.resourceEmail);
   const bookedLabsArray = bookedLabs.map((lab) => lab.resourceEmail);
   const numLabs = resLabsArray.length;
   const numBookedLabs = bookedLabsArray.length;

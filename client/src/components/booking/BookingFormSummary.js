@@ -20,16 +20,12 @@ const initialErrorState = {
 const BookinFormSummary = () => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
   const [bookingState, setBookingState] = useState({
-    loading: false,
     booked: false,
     event: {}
   });
   const [errorState, setErrorState] = useState(initialErrorState);
-  const [addBooking] = useMutation(BOOK_LAB_SLOT);
-  const {
-    data: { getResourceResearchLab },
-    client
-  } = useQuery(GET_RESEARCH_LABS_FREEBUSY, {
+  const [addBooking, { loading }] = useMutation(BOOK_LAB_SLOT);
+  const { data } = useQuery(GET_RESEARCH_LABS_FREEBUSY, {
     fetchPolicy: 'network-only'
   });
 
@@ -46,43 +42,19 @@ const BookinFormSummary = () => {
   } = bookingValues;
 
   const bookLab = async () => {
-    let researchLabs = [];
+    const { labs } = data.getResourceResearchLab;
 
-    setBookingState({
-      ...bookingState,
-      loading: true
-    });
-
-    try {
-      const {
-        getResourceResearchLab: { labs },
-        error
-      } = await client.query();
-
-      if (error) {
-        return setErrorState({ status: true, error });
-      }
-      researchLabs = labs;
-    } catch (error) {
-      console.log(error);
-      setErrorState({ status: true, error });
-      setBookingState({
-        ...bookingState,
-        loading: false
-      });
-
-      return;
-    }
+    console.log(labs);
 
     // this is really a duplicate of what we should be looking at in booking dates
     //  but we should check again just in case someone else has booked
-    const bookedLabs = await checkClashDates(researchLabs, bookingValues);
+    const bookedLabs = await checkClashDates(labs, bookingValues);
 
     const checkBooking = {
       bookedAM,
       bookedPM,
       bookedDate,
-      researchLabs,
+      labs,
       bookedLabs
     };
 
@@ -96,8 +68,7 @@ const BookinFormSummary = () => {
       console.log(error);
       setErrorState({ status: true, error });
       setBookingState({
-        ...bookingState,
-        loading: false
+        ...bookingState
       });
       return;
     }
@@ -136,24 +107,22 @@ const BookinFormSummary = () => {
       console.log(error);
       setErrorState({ status: true, error });
       setBookingState({
-        ...bookingState,
-        loading: false
+        ...bookingState
       });
     }
 
-    const { data } = bookingResult;
+    const { success, event } = bookingResult.data.addResearchLabEvent;
 
-    if (data.addResearchLabEvent.success) {
-      console.log(data);
+    if (success) {
+      console.log(event);
       // add to the booking context setBookingValues
       setBookingValues({
         ...bookingValues,
-        bookedEvent: data.addResearchLabEvent.event
+        bookedEvent: event
       });
       setBookingState({
         booked: true,
-        loading: false,
-        event: data.addResearchLabEvent.event
+        event: event
       });
       // then navigate to user area
       setTimeout(() => {
@@ -269,7 +238,7 @@ const BookinFormSummary = () => {
               </div>
             </div>
           )}
-          {bookingState.loading ? (
+          {loading ? (
             <Spinner />
           ) : (
             <button

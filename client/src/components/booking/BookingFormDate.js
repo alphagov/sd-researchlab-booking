@@ -36,36 +36,20 @@ const initialState = {
 const BookingFormDate = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
-  const {
-    data: { getResourceResearchLab },
-    client
-  } = useQuery(GET_RESEARCH_LABS_FREEBUSY, {
+  const { data } = useQuery(GET_RESEARCH_LABS_FREEBUSY, {
     fetchPolicy: 'cache-and-network'
   });
 
   const checkAvail = async (details) => {
-    let researchLabs = [];
+    const { labs } = data.getResourceResearchLab;
 
-    try {
-      // get the free busy dates from cache
-      // potentially risky but the polling should take care of things?
-      // may switch to getting from db.......
-      const {
-        getResourceResearchLab: { labs }
-      } = await client.readQuery();
-      researchLabs = labs;
-    } catch (error) {
-      console.log(error);
-      return;
-    }
-
-    const bookedLabs = await checkClashDates(researchLabs, details);
+    const bookedLabs = await checkClashDates(labs, details);
 
     // send it off to validate inputs
 
     const checkBooking = {
       ...details,
-      researchLabs,
+      labs,
       bookedLabs
     };
 

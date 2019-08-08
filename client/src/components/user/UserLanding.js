@@ -6,7 +6,11 @@ import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
 
 const UserLanding = () => {
-  const { data, loading, error } = useQuery(GET_BOOKED_EVENTS_BY_USER);
+  const { data, loading, error } = useQuery(GET_BOOKED_EVENTS_BY_USER, {
+    fetchPolicy: 'cache-and-network'
+  });
+
+  if (loading) return <Spinner />;
 
   console.log(data);
 
