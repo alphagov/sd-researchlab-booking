@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { Link, navigate } from '@reach/router';
 
 import { ENTER_2FA_CODE } from '../../queries';
 import { useForm } from '../../hooks/useForm';
+import { checkUser } from '../../utils/authUtils';
 
 import Error from '../../containers/Error';
 import Spinner from '../shared/Spinner';
@@ -14,88 +15,43 @@ const initialState = {
   mfaCode: { value: '', valid: true, reason: '' }
 };
 
-const initialErrorState = {
-  status: false,
-  error: ''
-};
-
 const Login2FAForm = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
-  const [errorState, setErrorState] = useState(initialErrorState);
-  const [codeAttempts, setCodeAttempts] = useState(0);
+  const [errorState, setErrorState] = useState(null);
   const [userValues, setUserValues] = useContext(UserContext);
   const [enterMFACode, { data, loading }] = useLazyQuery(ENTER_2FA_CODE);
+  const [isUser, setIsUser] = useState(null);
 
-  if (data && data.enter2FACode) {
-    try {
-      const { enter2FACode } = data;
-
-      console.log(enter2FACode);
-
-      // if no success
-      if (!enter2FACode.success) {
-        switch (enter2FACode.reason) {
-          case 'TokenNotPresent':
-            setErrorState({
-              status: true,
-              error: { message: 'Unable to verify user' }
-            });
-            setTimeout(() => {
-              navigate('/sign-in/email-password');
-            }, 10000);
-            break;
-          case 'TokenExpiredError':
-            setErrorState({
-              status: true,
-              error: { message: 'Your token has expired please sign in again' }
-            });
-            setTimeout(() => {
-              navigate('/sign-in/email-password');
-            }, 10000);
-            break;
-          case 'IncorrectMFACode':
-            setCodeAttempts(codeAttempts + 1);
-            setErrorState({
-              status: true,
-              error: { message: 'Incorrect code' }
-            });
-            if (codeAttempts > 3) {
-              navigate('/sign-in/resend-code');
-            }
-            break;
-          default:
-            navigate('/sign-in/email-password');
-            break;
-        }
-      }
-
-      // if the user has not completed registration
-      if (!enter2FACode.user.isVerified) {
-        setErrorState({
-          status: true,
-          error: { message: 'Please complete registration' }
-        });
-        setTimeout(() => {
-          navigate(`/register/confirm/${enter2FACode.user.id}`);
-        }, 10000);
-      }
-
-      // need to update a user context here.....so pull more information from the query
-      setUserValues({
-        isLoggedIn: true,
-        id: enter2FACode.user.id,
-        firstName: enter2FACode.user.firstName,
-        lastName: enter2FACode.user.lastName
-      });
-      // if everything is ok navigate to user area
-      navigate('/user/user-home');
-    } catch (error) {
-      console.log(error);
-      setErrorState({
-        status: true,
-        error
-      });
+  // this isn't really working here either
+  // but it is the best I can do
+  useEffect(() => {
+    if (data && data.enter2FACode) {
+      setIsUser(data.enter2FACode);
     }
+  }, [data, isUser, errorState]);
+
+  useEffect(() => {
+    if (isUser) {
+      setErrorState(checkUser(isUser));
+    }
+  }, [isUser]);
+
+  if (errorState && errorState.error.status && errorState.navigate) {
+    setTimeout(() => {
+      navigate(errorState.navigate.url);
+    }, 6000);
+  }
+
+  if (errorState && !errorState.error.status) {
+    // need to update a user context here.....so pull more information from the query
+    setUserValues({
+      isLoggedIn: true,
+      id: isUser.user.id,
+      firstName: isUser.user.firstName,
+      lastName: isUser.user.lastName
+    });
+    // if everything is ok navigate to user area
+    navigate('/user/user-home');
   }
 
   return (
@@ -153,7 +109,7 @@ const Login2FAForm = () => {
         <Link className="govuk-link" to="/sign-in/resend-code">
           Not received a text message?
         </Link>
-        {errorState.status && (
+        {errorState && errorState.error.status && (
           <div className="govuk-grid column-full">
             <Error error={errorState.error} />
           </div>

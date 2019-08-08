@@ -1,21 +1,79 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+export const checkUser = (labUser) => {
+  if (!labUser) {
+    return {
+      error: {
+        status: true,
+        message: 'Unknown error'
+      }
+    };
+  }
 
-export const signOutUser = async () => {
-  const [userValues, setUserValues] = useContext(UserContext);
+  if (labUser) {
+    const { success, user, reason } = labUser;
 
-  try {
-    setUserValues({
-      isLoggedIn: false,
-      id: '',
-      firstName: '',
-      lastName: ''
-    });
+    const tokenError = {
+      navigate: { url: '/sign-in/email-password' }
+    };
 
-    localStorage.removeItem('labtoken');
+    // if the query was not successful
+    if (!success) {
+      switch (reason) {
+        case 'TokenNotPresent':
+          return {
+            ...tokenError,
+            error: {
+              status: true,
+              message: 'Unable to verify user'
+            }
+          };
 
-    return true;
-  } catch (error) {
-    return false;
+        case 'TokenExpiredError':
+          return {
+            ...tokenError,
+            error: {
+              status: true,
+              message: 'Your token has expired please sign in again'
+            }
+          };
+
+        case 'IncorrectMFACode':
+          return {
+            error: {
+              status: true,
+              message: 'Incorrect code'
+            },
+            navigate: { url: '/sign-in/resend-code' }
+          };
+
+        default:
+          return {
+            ...tokenError,
+            error: {
+              status: true,
+              message: 'Unknown error'
+            }
+          };
+      }
+    }
+
+    // if the token is ok but they have not completed registration
+    if (!user.isVerified) {
+      return {
+        error: {
+          status: true,
+          message: 'Please complete registration'
+        },
+        navigate: { url: `/register/confirm/${user.id}` }
+      };
+    }
+
+    // if all is ok return an empty error object
+    return {
+      error: {
+        status: false,
+        message: ''
+      },
+      navigate: { url: `` }
+    };
   }
 };
