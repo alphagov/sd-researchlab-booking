@@ -36,7 +36,9 @@ export const typeDef = gql`
     eventStatus: String
     eventStart: String
     eventEnd: String
-    eventOwner: EventCreator
+    eventCreator: EventCreator
+    equipment: String
+    guests: String
   }
 
   type BookedEventsUser {
@@ -54,6 +56,7 @@ export const typeDef = gql`
   type EventCreator {
     displayName: String
     email: String
+    additionalGuests: Int
   }
 
   type ResearchLabList {
@@ -126,11 +129,13 @@ export const typeDef = gql`
       calendarId: String!
       start: String!
       end: String!
-      attendees: Int
+      numAttendees: Int
       title: String!
       description: String
       creator: String!
       email: String!
+      equipment: [String]
+      guests: String
     ): ResearchLabEvent
   }
 `;

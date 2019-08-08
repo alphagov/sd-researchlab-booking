@@ -90,17 +90,21 @@ const BookinFormSummary = () => {
     // book the lab
     let bookingResult;
 
+    console.log('bookedAttend', bookedAttend);
+
     try {
       bookingResult = await addBooking({
         variables: {
           calendarId: availability.resourceEmail,
           start: slots.start,
           end: slots.end,
-          attendees: parseInt(bookedAttend),
+          numAttendees: parseInt(bookedAttend),
           title: `Research Lab Booking for ${bookedFirstName} ${bookedLastName}`,
-          description: `${bookedDetail} equipment required ${bookedEquipment}`,
+          description: bookedDetail,
           creator: `${bookedFirstName} ${bookedLastName}`,
-          email: bookedEmail
+          email: bookedEmail,
+          equipment: bookedEquipment,
+          guests: bookedAttend
         }
       });
     } catch (error) {

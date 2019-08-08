@@ -62,9 +62,12 @@ export const GET_BOOKED_EVENTS_BY_USER = gql`
         eventStatus
         eventStart
         eventEnd
-        eventOwner {
+        equipment
+        guests
+        eventCreator {
           displayName
           email
+          additionalGuests
         }
         resource {
           resourceName
@@ -185,21 +188,25 @@ export const BOOK_LAB_SLOT = gql`
     $calendarId: String!
     $start: String!
     $end: String!
-    $attendees: Int
+    $numAttendees: Int
     $title: String!
     $description: String!
     $creator: String!
     $email: String!
+    $equipment: [String]
+    $guests: String
   ) {
     addResearchLabEvent(
       calendarId: $calendarId
       start: $start
       end: $end
-      attendees: $attendees
+      numAttendees: $numAttendees
       title: $title
       description: $description
       creator: $creator
       email: $email
+      equipment: $equipment
+      guests: $guests
     ) {
       success
       reason
@@ -210,9 +217,12 @@ export const BOOK_LAB_SLOT = gql`
         eventStatus
         eventStart
         eventEnd
-        eventOwner {
+        equipment
+        guests
+        eventCreator {
           displayName
           email
+          additionalGuests
         }
       }
     }

@@ -145,12 +145,15 @@ class GoogleResourcesAPI extends RESTDataSource {
       calendarId,
       start,
       end,
-      attendees,
+      numAttendees,
       title,
       description,
       creator,
-      email
+      email,
+      equipment,
+      guests
     } = event;
+    const equipmentList = equipment.toString();
     const eventBody = {
       end: { dateTime: end },
       start: { dateTime: start },
@@ -158,14 +161,23 @@ class GoogleResourcesAPI extends RESTDataSource {
         {
           displayName: creator,
           email,
-          additionalGuests: attendees,
+          additionalGuests: numAttendees,
           organizer: true,
           status: 'tentative'
         }
       ],
       summary: title,
       description,
-      status: process.env.BOOKING_DEFAULT_STATUS
+      status: process.env.BOOKING_DEFAULT_STATUS,
+      transparency: 'transparent',
+      extendedProperties: {
+        private: {
+          equipment: equipmentList
+        },
+        shared: {
+          guests: guests
+        }
+      }
     };
     try {
       const token = await this.getOauthToken(options);
@@ -179,6 +191,7 @@ class GoogleResourcesAPI extends RESTDataSource {
         params: { sendUpdates: process.env.BOOKING_SEND_UPDATES },
         data: eventBody
       });
+      console.log('[event]', res.data);
       return this.calendarEventReducer({ ...res.data, calendarId });
     } catch (error) {
       console.log('Error:', error.data);
@@ -193,7 +206,8 @@ class GoogleResourcesAPI extends RESTDataSource {
       description,
       start,
       end,
-      creator,
+      attendees,
+      extendedProperties,
       calendarId
     } = event;
 
@@ -205,10 +219,9 @@ class GoogleResourcesAPI extends RESTDataSource {
       eventStatus: status,
       eventStart: start.dateTime,
       eventEnd: end.dateTime,
-      eventOwner: {
-        displayName: creator.displayName,
-        email: creator.email
-      }
+      eventCreator: attendees[0],
+      equipment: extendedProperties.private.equipment,
+      guests: extendedProperties.shared.guests
     };
   }
 
