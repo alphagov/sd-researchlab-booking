@@ -96,6 +96,7 @@ const PrivateRoutes = () => {
 
 const Layout = () => {
   const [userValues] = useContext(UserContext);
+
   initAll();
   return (
     <div className="govuk-template__body govuk-rlab_body">

@@ -16,8 +16,10 @@ const initialState = {
 };
 
 const Login2FAForm = () => {
+  // eslint-disable-next-line no-unused-vars
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [errorState, setErrorState] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [userValues, setUserValues] = useContext(UserContext);
   const [enterMFACode, { data, loading }] = useLazyQuery(ENTER_2FA_CODE);
   const [isUser, setIsUser] = useState(null);

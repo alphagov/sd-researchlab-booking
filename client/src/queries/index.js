@@ -103,11 +103,9 @@ export const CHECK_REG_TOKEN = gql`
 `;
 
 export const CHECK_USER_VERIFIED = gql`
-  query($_id: ID!) {
-    checkUserVerified(_id: $_id) {
-      _id
-      ok
-      error
+  query {
+    checkUserVerified {
+      success
     }
   }
 `;

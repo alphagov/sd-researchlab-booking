@@ -29,6 +29,7 @@ export const typeDef = gql`
     resend2FACode: Success
     signInUser(email: String!, password: String): LabUser
     registerLinkResend(id: ID!): LabUser
+    checkUserVerified: Success
   }
 
   extend type Mutation {

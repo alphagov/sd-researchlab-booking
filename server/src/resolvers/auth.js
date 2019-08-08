@@ -59,6 +59,33 @@ const mfaCodeHelper = async (user) => {
 
 const authResolvers = {
   Query: {
+    checkUserVerified: async (_, args, { userContext }) => {
+      const { user, error } = userContext;
+
+      console.log('[check user verified]', user);
+
+      if (!user) {
+        return {
+          success: false,
+          reason: error.name,
+          user: null
+        };
+      }
+
+      if (!user.isVerified) {
+        return {
+          success: false,
+          reason: 'Not confirmed registration',
+          user: null
+        };
+      }
+
+      return {
+        success: true,
+        reason: '',
+        user
+      };
+    },
     enter2FACode: async (_, { mfaCode }, { userContext }) => {
       // first check to see if there is a jwt and it is valid
       const { user, error } = userContext;
