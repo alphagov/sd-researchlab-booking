@@ -41,6 +41,15 @@ export const yearBuilder = (day, month, year) => {
 };
 
 // date functions
+
+export const timeInWords = (date) => {
+  return dateFns.distanceInWords(date, new Date());
+};
+
+export const readableDate = (date) => {
+  return dateFns.format(date, 'HH:mm Do MMM YYYY');
+};
+
 export const dateIsPast = (date) => {
   return dateFns.isPast(date);
 };
