@@ -14,7 +14,7 @@ const UserBookings = ({ booking }) => {
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">Starts</dt>
           <dd className="govuk-summary-list__value">
-            {readableDate(eventStart)} {timeInWords(eventStart)}
+            {`${readableDate(eventStart)} (${timeInWords(eventStart)})`}
           </dd>
         </div>
       </dl>
