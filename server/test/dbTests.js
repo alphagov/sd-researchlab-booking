@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import User from '../models/User';
-import Token from '../models/Token';
-import AllowedDomains from '../models/AllowedDomains';
+import Events from '../models/Events';
 
 const DBTests = () => {
   describe('Database Models testing', () => {
@@ -15,20 +14,10 @@ const DBTests = () => {
       });
     });
 
-    describe('Token model', () => {
+    describe('Events model', () => {
       it('Expect errors if Required fields are empty', (done) => {
-        const T = new Token();
-        T.validate((err) => {
-          expect(err.errors).to.exist;
-          done();
-        });
-      });
-    });
-
-    describe('Allowed Domains model', () => {
-      it('Expect errors if Required fields are empty', (done) => {
-        const ALD = new AllowedDomains();
-        ALD.validate((err) => {
+        const E = new Events();
+        E.validate((err) => {
           expect(err.errors).to.exist;
           done();
         });
