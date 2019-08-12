@@ -6,6 +6,8 @@ import UserBookings from './UserBookings';
 import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
 
+import { bookingInfoLayout } from '../../utils/layoutUtils';
+
 const UserLanding = () => {
   const { data, loading, error } = useQuery(GET_BOOKED_EVENTS_BY_USER, {
     fetchPolicy: 'cache-and-network'
@@ -15,75 +17,57 @@ const UserLanding = () => {
 
   if (error) return <Error error={error} />;
 
-  const bookingLoader = () => {
-    const { success, events, reason } = data.getBookedEventsUser;
+  const { success, events, reason } = data.getBookedEventsUser;
 
-    if (!success) {
-      const errMsg = {
-        error: {
-          message: reason
-        }
-      };
-      return <Error error={errMsg} />;
-    }
+  if (!success) {
+    const errMsg = {
+      error: {
+        message: reason
+      }
+    };
+    return <Error error={errMsg} />;
+  }
 
-    // need to filter out any null values
-    // this may not happen in the future
-    let allEvents = events.filter(Boolean);
+  // need to filter out any null values
+  // this may not happen in the future
+  const allEvents = events.filter(Boolean);
 
-    const numBookings = allEvents.length;
+  const bookingLoader = (status) => {
+    const statusEvents = allEvents.filter(
+      (event) => event.eventStatus === status
+    );
 
-    if (numBookings === 0) {
-      return <div>No booked events</div>;
+    if (statusEvents.length === 0) {
+      return (
+        <div className="govuk-warning-text">
+          <span className="govuk-warning-text__icon" aria-hidden="true">
+            !
+          </span>
+          <strong className="govuk-warning-text__text">
+            <span className="govuk-warning-text__assistive">Information</span>
+            {`No ${status} bookings`}
+          </strong>
+        </div>
+      );
     }
 
     // need to sort the bookings
-    //  also need to sort the layout here 2 columns in each row
+    statusEvents.sort((a, b) => b.eventStart.localeCompare(a.eventStart));
 
-    const numRows = Math.ceil(numBookings / 2);
+    const eventsArray = bookingInfoLayout(statusEvents);
 
-    let rowArray = new Array(numRows);
-
-    for (let i = 0; i < numRows; i++) {
-      rowArray[i] = [];
-    }
-
-    let h = 0;
-
-    for (let i = 0; i < numRows; i++) {
-      for (let j = 0; j < numRows; j++) {
-        rowArray[i][j] = allEvents[h++];
-      }
-    }
-
-    console.log('[rowArray]', rowArray);
-
-    // for (let i = 0; i < numRows; i++) {
-    //   console.log(rowArray[i]);
-    //   return (
-    //     <div className="govuk-grid-row">
-    //       Hello {i}
-    //       {/* {rowArray[i].map((booking) => (
-
-    //       ))} */}
-    //     </div>
-    //   );
-    // }
-
-    return rowArray.map((row, i) => {
+    return eventsArray.map((row, i) => {
       return (
         <div className="govuk-grid-row" key={i}>
           {row.map((booking) => {
+            if (booking === undefined) {
+              return '';
+            }
             return <UserBookings booking={booking} key={booking.eventId} />;
           })}
-          <hr className="govuk-section-break govuk-section-break--visible" />
         </div>
       );
     });
-
-    // return allEvents.map((booking, i) => {
-    //   return <UserBookings booking={booking} key={booking.eventId} />;
-    // });
   };
 
   console.log(data);
@@ -95,7 +79,24 @@ const UserLanding = () => {
           <h2 className="govuk-heading-l">Booking information</h2>
         </div>
       </div>
-      {bookingLoader()}
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          <h3 className="govuk-heading-m">Confirmed Bookings</h3>
+        </div>
+      </div>
+      {bookingLoader('confirmed')}
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          <h3 className="govuk-heading-m">Tentative Bookings</h3>
+        </div>
+      </div>
+      {bookingLoader('tentative')}
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          <h3 className="govuk-heading-m">Cancelled Bookings</h3>
+        </div>
+      </div>
+      {bookingLoader('cancelled')}
     </>
   );
 };
