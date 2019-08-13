@@ -1,11 +1,13 @@
 import React from 'react';
 
 const LabDetails = ({ lab }) => {
+  console.log(lab);
   const {
     resourceName,
     building: { buildingName },
     capacity,
-    floorName
+    floorName,
+    usage
   } = lab;
   return (
     <div>
@@ -30,7 +32,7 @@ const LabDetails = ({ lab }) => {
           <div className="govuk-summary-list__row">
             <dt className="govuk-summary-list__key">Details</dt>
             <dd className="govuk-summary-list__value">
-              Typically booked for 80% of the week.
+              {`Typically booked for ${usage}% of the time`}
             </dd>
           </div>
         </dl>

@@ -9,6 +9,7 @@ export const typeDef = gql`
     resourceEmail: String
     resourceCategory: String
     capacity: Int
+    usage: Int
     buildingId: String
     building: ResourceBuilding
     floorName: String
