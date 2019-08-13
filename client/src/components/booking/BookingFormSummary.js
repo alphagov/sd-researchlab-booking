@@ -4,6 +4,7 @@ import { Link, navigate } from '@reach/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 
 import { BookingContext } from '../../contexts/BookingContext';
+import { UserContext } from '../../contexts/UserContext';
 import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
 
@@ -19,6 +20,8 @@ const initialErrorState = {
 
 const BookinFormSummary = () => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
+  // eslint-disable-next-line no-unused-vars
+  const [userValues, setUserValues] = useContext(UserContext);
   const [bookingState, setBookingState] = useState({
     booked: false,
     event: {}
@@ -40,6 +43,12 @@ const BookinFormSummary = () => {
     bookedAttend,
     bookedEquipment
   } = bookingValues;
+
+  if (data && data.getResourceResearchLab) {
+    if (!data.getResourceResearchLab.success) {
+      setUserValues({ isLoggedIn: false });
+    }
+  }
 
   const bookLab = async () => {
     const { labs } = data.getResourceResearchLab;
