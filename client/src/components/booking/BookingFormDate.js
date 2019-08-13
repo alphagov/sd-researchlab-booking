@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
 import dateFns from 'date-fns';
 import { navigate } from '@reach/router';
@@ -7,6 +8,7 @@ import { yearBuilder } from '../../utils/dateUtils';
 import { checkClashDates, checkBookingSlots } from '../../utils/bookingUtils';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
+import { UserContext } from '../../contexts/UserContext';
 import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
 
 let initDate = dateFns.addDays(new Date(), 2);
@@ -36,9 +38,16 @@ const initialState = {
 const BookingFormDate = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
+  const [userValues, setUserValues] = useContext(UserContext);
   const { data } = useQuery(GET_RESEARCH_LABS_FREEBUSY, {
     fetchPolicy: 'cache-and-network'
   });
+
+  if (data && data.getResourceResearchLab) {
+    if (!data.getResourceResearchLab.success) {
+      setUserValues({ isLoggedIn: false });
+    }
+  }
 
   const checkAvail = async (details) => {
     const { labs } = data.getResourceResearchLab;

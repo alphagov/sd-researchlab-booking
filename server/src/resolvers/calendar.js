@@ -22,7 +22,14 @@ const calendarResolvers = {
       return resBuilding;
     },
 
-    getResourceResearchLab: async (_, args, { dataSources }) => {
+    getResourceResearchLab: async (_, args, { dataSources, userContext }) => {
+      const { user } = userContext;
+      if (!user) {
+        return {
+          success: false,
+          calendars: null
+        };
+      }
       const resLabs = await dataSources.googleResourcesAPI.getResourceCalendarByType();
       const orderedLabs = resLabs.sort((a, b) =>
         a.resourceName.localeCompare(b.resourceName)
