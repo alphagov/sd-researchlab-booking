@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_BOOKED_EVENTS_BY_USER } from '../../queries';
 import UserBookings from './UserBookings';
+
+import { UserContext } from '../../contexts/UserContext';
 
 import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
@@ -12,25 +14,23 @@ const UserLanding = () => {
   const { data, loading, error } = useQuery(GET_BOOKED_EVENTS_BY_USER, {
     fetchPolicy: 'cache-and-network'
   });
+  // eslint-disable-next-line no-unused-vars
+  const [userValues, setUserValues] = useContext(UserContext);
 
   if (loading) return <Spinner />;
 
   if (error) return <Error error={error} />;
 
-  const { success, events, reason } = data.getBookedEventsUser;
+  let allEvents;
 
-  if (!success) {
-    const errMsg = {
-      error: {
-        message: reason
-      }
-    };
-    return <Error error={errMsg} />;
+  if (data && data.getBookedEventsUser) {
+    const { success, events } = data.getBookedEventsUser;
+    if (!success) {
+      setUserValues({ isLoggedIn: false });
+    }
+
+    allEvents = events.filter(Boolean);
   }
-
-  // need to filter out any null values
-  // this may not happen in the future
-  const allEvents = events.filter(Boolean);
 
   const bookingLoader = (status) => {
     const statusEvents = allEvents.filter(

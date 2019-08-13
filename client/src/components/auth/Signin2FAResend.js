@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { navigate } from '@reach/router';
 import { RESEND_2FA_CODE } from '../../queries';
@@ -16,24 +16,26 @@ const SignIn2FAResend = () => {
 
   // const resendMFACode = async () => {
   //   // resend the code....
-  if (data && data.resend2FACode) {
-    try {
-      const { resend2FACode } = data;
+  useEffect(() => {
+    if (data && data.resend2FACode) {
+      try {
+        const { resend2FACode } = data;
 
-      if (!resend2FACode.success) {
-        console.log(resend2FACode.reason);
-        setErrorState({ status: true, error: resend2FACode.reason });
+        if (!resend2FACode.success) {
+          console.log(resend2FACode.reason);
+          setErrorState({ status: true, error: resend2FACode.reason });
+          return;
+        }
+
+        // if successful then navigate back to enter code
+        navigate('/sign-in/2fa');
+      } catch (error) {
+        console.log(error);
+        setErrorState({ status: true, error });
         return;
       }
-
-      // if successful then navigate back to enter code
-      navigate('/sign-in/2fa');
-    } catch (error) {
-      console.log(error);
-      setErrorState({ status: true, error });
-      return;
     }
-  }
+  }, [data, errorState]);
 
   return (
     <div className="govuk-grid-row">
