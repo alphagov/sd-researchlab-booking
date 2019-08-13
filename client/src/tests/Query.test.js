@@ -1,6 +1,6 @@
 // test the Apollo query on our components
 import React from 'react';
-import renderer from 'react-test-renderer';
+import renderer, { act } from 'react-test-renderer';
 import { MockedProvider } from '@apollo/react-testing';
 
 import { GET_RESEARCH_LABS } from '../queries';
@@ -37,16 +37,6 @@ describe('React Apollo Query component tests', () => {
           <LabList />
         </MockedProvider>
       );
-    });
-    it('should render loading state initially', () => {
-      const component = renderer.create(
-        <MockedProvider mocks={[]}>
-          <LabList />
-        </MockedProvider>
-      );
-
-      const tree = component.toJSON();
-      expect(tree.children).toContain('Loading...');
     });
   });
 });

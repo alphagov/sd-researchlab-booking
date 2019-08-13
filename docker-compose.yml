@@ -22,4 +22,5 @@ services:
       - booking_db
     container_name: booking_server
     restart: unless-stopped
-    command: ['yarn', 'start']
+    environment:
+      WAIT_HOSTS: booking_db:27017
