@@ -1,5 +1,6 @@
 // test the Apollo query on our components
-import React, { renderer } from 'react';
+import React from 'react';
+import renderer from 'react-test-renderer';
 import { MockedProvider } from '@apollo/react-testing';
 
 import { GET_RESEARCH_LABS } from '../queries';

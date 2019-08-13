@@ -41,8 +41,8 @@
   "devDependencies": {
     "@apollo/react-testing": "^3.0.0",
     "http-proxy-middleware": "^0.19.1",
-    "jest": "^24.8.0",
     "node-sass": "^4.12.0",
+    "react-test-renderer": "^16.9.0",
     "waait": "^1.0.5"
   }
 }
