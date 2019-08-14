@@ -5,6 +5,8 @@ import { RESEND_2FA_CODE } from '../../queries';
 import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
 
+import styles from '../../css/Auth.module.css';
+
 const initialErrorState = {
   status: false,
   error: ''
@@ -38,7 +40,7 @@ const SignIn2FAResend = () => {
   }, [data, errorState]);
 
   return (
-    <div className="govuk-grid-row">
+    <div className={`govuk-grid-row ${styles.fullHeight}`}>
       <div className="govuk-grid-column-two-thirds">
         <fieldset className="govuk-fieldset">
           <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">

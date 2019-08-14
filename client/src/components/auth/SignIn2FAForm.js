@@ -11,6 +11,8 @@ import Spinner from '../shared/Spinner';
 
 import { UserContext } from '../../contexts/UserContext';
 
+import styles from '../../css/Auth.module.css';
+
 const initialState = {
   mfaCode: { value: '', valid: true, reason: '' }
 };
@@ -57,7 +59,7 @@ const Login2FAForm = () => {
   }
 
   return (
-    <div className="govuk-grid-row">
+    <div className={`govuk-grid-row ${styles.fullHeight}`}>
       <div className="govuk-grid-column-two-thirds">
         <fieldset className="govuk-fieldset">
           <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">

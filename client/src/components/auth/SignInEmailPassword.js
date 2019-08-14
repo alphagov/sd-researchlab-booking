@@ -9,6 +9,8 @@ import Spinner from '../shared/Spinner';
 
 import { USER_SIGN_IN } from '../../queries';
 
+import styles from '../../css/Auth.module.css';
+
 const initialState = {
   email: { value: '', valid: true, reason: '' },
   password: { value: '', valid: true, reason: '' }
@@ -80,7 +82,7 @@ const SignInEmailPassword = () => {
   };
 
   return (
-    <div className="govuk-grid-row">
+    <div className={`govuk-grid-row ${styles.fullHeight}`}>
       <div className="govuk-grid-column-two-thirds">
         <fieldset className="govuk-fieldset">
           <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
