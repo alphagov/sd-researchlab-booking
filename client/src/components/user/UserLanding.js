@@ -41,7 +41,7 @@ const UserLanding = () => {
 
   const bookingDelete = async (calendarId, eventId) => {
     try {
-      const deleteResult = await deleteBookedEvent({
+      await deleteBookedEvent({
         variables: { calendarId, eventId }
       });
 
