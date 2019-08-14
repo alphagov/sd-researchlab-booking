@@ -40,6 +40,7 @@ export const typeDef = gql`
     eventCreator: EventCreator
     equipment: String
     guests: String
+    calendarId: String
   }
 
   type BookedEventsUser {

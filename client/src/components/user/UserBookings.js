@@ -4,7 +4,8 @@ import { isPast } from 'date-fns';
 import { timeInWords, readableDate, dateIsPast } from '../../utils/dateUtils';
 import styles from '../../css/UserBooking.module.css';
 
-const UserBookings = ({ booking }) => {
+const UserBookings = ({ booking, bookingDelete }) => {
+  console.log(booking);
   const {
     eventTitle,
     eventStatus,
@@ -12,7 +13,9 @@ const UserBookings = ({ booking }) => {
     eventEnd,
     eventDescription,
     guests,
-    equipment
+    equipment,
+    eventId,
+    calendarId
   } = booking;
   return (
     <div className="govuk-grid-column-one-half">
@@ -68,6 +71,7 @@ const UserBookings = ({ booking }) => {
             type="submit"
             className="govuk-button govuk-button--warning"
             data-module="govuk-button"
+            onClick={() => bookingDelete(calendarId, eventId)}
           >
             Delete booking
           </button>

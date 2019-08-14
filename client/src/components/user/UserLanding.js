@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { GET_BOOKED_EVENTS_BY_USER } from '../../queries';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import {
+  GET_BOOKED_EVENTS_BY_USER,
+  DELETE_BOOKED_EVENTS_BY_USER
+} from '../../queries';
 import UserBookings from './UserBookings';
 
 import { UserContext } from '../../contexts/UserContext';
@@ -16,6 +19,7 @@ const UserLanding = () => {
   });
   // eslint-disable-next-line no-unused-vars
   const [userValues, setUserValues] = useContext(UserContext);
+  const [deleteBookedEvent] = useMutation(DELETE_BOOKED_EVENTS_BY_USER);
 
   if (loading) return <Spinner />;
 
@@ -31,6 +35,17 @@ const UserLanding = () => {
 
     allEvents = events.filter(Boolean);
   }
+
+  const bookingDelete = async (calendarId, eventId) => {
+    try {
+      const deleteResult = await deleteBookedEvent({
+        variables: { calendarId, eventId }
+      });
+      console.log(deleteResult);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const bookingLoader = (status) => {
     const statusEvents = allEvents.filter(
@@ -63,7 +78,13 @@ const UserLanding = () => {
             if (booking === undefined) {
               return '';
             }
-            return <UserBookings booking={booking} key={booking.eventId} />;
+            return (
+              <UserBookings
+                booking={booking}
+                key={booking.eventId}
+                bookingDelete={bookingDelete}
+              />
+            );
           })}
         </div>
       );

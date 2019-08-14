@@ -70,14 +70,17 @@ export const GET_BOOKED_EVENTS_BY_USER = gql`
           email
           additionalGuests
         }
-        resource {
-          resourceName
-          building {
-            buildingName
-            description
-          }
-        }
+        calendarId
       }
+    }
+  }
+`;
+
+export const DELETE_BOOKED_EVENTS_BY_USER = gql`
+  mutation($calendarId: String!, $eventId: String!) {
+    deleteResearchLabEvent(calendarId: $calendarId, eventId: $eventId) {
+      success
+      reason
     }
   }
 `;

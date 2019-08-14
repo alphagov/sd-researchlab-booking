@@ -162,7 +162,7 @@ const calendarResolvers = {
 
       // delete the event should get back an empty response
       try {
-        const deleteEvent = await dataSources.googleResourcesAPI.deleteResearchLabEvent(
+        const deleteEvent = await dataSources.googleResourcesAPI.deleteCalendarEvent(
           calendarId,
           eventId
         );
