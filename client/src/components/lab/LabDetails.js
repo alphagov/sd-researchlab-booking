@@ -1,7 +1,6 @@
 import React from 'react';
 
 const LabDetails = ({ lab }) => {
-  console.log(lab);
   const {
     resourceName,
     building: { buildingName },

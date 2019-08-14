@@ -70,8 +70,6 @@ const UserLanding = () => {
     });
   };
 
-  console.log(data);
-
   return (
     <>
       <div className="govuk-grid-row">

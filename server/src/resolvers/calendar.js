@@ -174,7 +174,6 @@ const calendarResolvers = {
           return 0;
         }
         const busyPer = await calcBusyPercent(startDate, endDate, numBusy);
-        console.log(busyPer);
         return parseInt(busyPer);
       }
     }
