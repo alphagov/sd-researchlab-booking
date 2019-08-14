@@ -53,7 +53,7 @@ const BookinFormSummary = () => {
   const bookLab = async () => {
     const { labs } = data.getResourceResearchLab;
 
-    console.log(labs);
+    // console.log(labs);
 
     // this is really a duplicate of what we should be looking at in booking dates
     //  but we should check again just in case someone else has booked
@@ -99,7 +99,7 @@ const BookinFormSummary = () => {
     // book the lab
     let bookingResult;
 
-    console.log('bookedAttend', bookedAttend);
+    // console.log('bookedAttend', bookedAttend);
 
     try {
       bookingResult = await addBooking({
@@ -127,7 +127,7 @@ const BookinFormSummary = () => {
     const { success, event } = bookingResult.data.addResearchLabEvent;
 
     if (success) {
-      console.log(event);
+      // console.log(event);
       // add to the booking context setBookingValues
       setBookingValues({
         ...bookingValues,

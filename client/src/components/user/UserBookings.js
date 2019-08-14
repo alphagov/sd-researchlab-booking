@@ -5,7 +5,6 @@ import { timeInWords, readableDate, dateIsPast } from '../../utils/dateUtils';
 import styles from '../../css/UserBooking.module.css';
 
 const UserBookings = ({ booking, bookingDelete }) => {
-  console.log(booking);
   const {
     eventTitle,
     eventStatus,

@@ -14,9 +14,12 @@ import Error from '../../containers/Error';
 import { bookingInfoLayout } from '../../utils/layoutUtils';
 
 const UserLanding = () => {
-  const { data, loading, error } = useQuery(GET_BOOKED_EVENTS_BY_USER, {
-    fetchPolicy: 'cache-and-network'
-  });
+  const { data, loading, error, refetch } = useQuery(
+    GET_BOOKED_EVENTS_BY_USER,
+    {
+      fetchPolicy: 'cache-and-network'
+    }
+  );
   // eslint-disable-next-line no-unused-vars
   const [userValues, setUserValues] = useContext(UserContext);
   const [deleteBookedEvent] = useMutation(DELETE_BOOKED_EVENTS_BY_USER);
@@ -41,7 +44,9 @@ const UserLanding = () => {
       const deleteResult = await deleteBookedEvent({
         variables: { calendarId, eventId }
       });
-      console.log(deleteResult);
+
+      refetch();
+      // console.log(deleteResult);
     } catch (error) {
       console.log(error);
     }
