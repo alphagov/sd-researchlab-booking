@@ -145,6 +145,44 @@ const calendarResolvers = {
           event: {}
         };
       }
+    },
+    deleteResearchLabEvent: async (
+      _,
+      { calendarId, eventId },
+      { dataSources, userContext }
+    ) => {
+      const { user, error } = userContext;
+
+      if (!user) {
+        return {
+          success: false,
+          reason: error.name
+        };
+      }
+
+      // delete the event should get back an empty response
+      try {
+        const deleteEvent = await dataSources.googleResourcesAPI.deleteResearchLabEvent(
+          calendarId,
+          eventId
+        );
+        if (deleteEvent) {
+          return {
+            success: true,
+            reason: ''
+          };
+        }
+
+        return {
+          success: false,
+          reason: deleteEvent
+        };
+      } catch (error) {
+        return {
+          success: false,
+          reason: error.message
+        };
+      }
     }
   },
   ResourceCalendar: {

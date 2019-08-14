@@ -198,6 +198,28 @@ class GoogleResourcesAPI extends RESTDataSource {
     }
   }
 
+  async deleteCalendarEvent(calendarId, eventId) {
+    try {
+      const token = await this.getOauthToken(options);
+      const res = await axios({
+        method: 'delete',
+        url: `${this.calendarURL}/calendars/${calendarId}/events/${eventId}`,
+        headers: {
+          Authorization: 'OAuth ' + token,
+          'content-type': 'application/json'
+        },
+        params: { sendUpdates: process.env.BOOKING_SEND_UPDATES }
+      });
+      console.log('[delete user event]', res.data);
+      if (!res.data) {
+        return true;
+      }
+    } catch (error) {
+      console.log('Error:', error.data);
+      return error.data;
+    }
+  }
+
   calendarEventReducer(event) {
     const {
       id,

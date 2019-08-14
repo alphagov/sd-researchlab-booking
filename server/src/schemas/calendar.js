@@ -112,6 +112,11 @@ export const typeDef = gql`
     buildings: [ResourceBuilding]
   }
 
+  type MutationSuccess {
+    success: Boolean
+    reason: String
+  }
+
   extend type Query {
     getResourceCalendarList: ResourceCalendarList
     getResourceBuildingList: ResourceBuildingList
@@ -138,5 +143,9 @@ export const typeDef = gql`
       equipment: [String]
       guests: String
     ): ResearchLabEvent
+    deleteResearchLabEvent(
+      calendarId: String!
+      eventId: String!
+    ): MutationSuccess
   }
 `;
