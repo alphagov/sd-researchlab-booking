@@ -53,7 +53,7 @@ const mfaCodeHelper = async (user) => {
     //  add token to token model
     const newToken = await TwoFactor.create({ token: mfa });
     // add token id to user
-    console.log('newToken', newToken);
+    // console.log('newToken', newToken);
 
     await User.findByIdAndUpdate(
       user._id,
@@ -107,11 +107,11 @@ const authResolvers = {
           user: null
         };
       }
-      console.log('[code]', mfaCode);
+      // console.log('[code]', mfaCode);
 
       const mfaUser = await User.findById(user).populate('mfaCode');
       // if the codes do not match
-      console.log('[mfauser]', mfaUser.mfaCode.token);
+      // console.log('[mfauser]', mfaUser.mfaCode.token);
       // console.log('mfauser', mfaUser);
 
       const { token } = mfaUser.mfaCode;

@@ -4,7 +4,7 @@ const TwoFactorSchema = new Schema({
   date: {
     type: Date,
     default: Date.now(),
-    expires: 120
+    expires: 120000
   },
   token: Number
 });

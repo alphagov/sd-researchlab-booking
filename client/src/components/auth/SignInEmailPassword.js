@@ -39,7 +39,8 @@ const SignInEmailPassword = () => {
     try {
       const { data } = await client.query({
         query: USER_SIGN_IN,
-        variables: { email: email.value, password: password.value }
+        variables: { email: email.value, password: password.value },
+        fetchPolicy: 'network-only'
       });
 
       const { signInUser } = data;

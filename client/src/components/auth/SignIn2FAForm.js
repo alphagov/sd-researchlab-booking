@@ -23,7 +23,10 @@ const Login2FAForm = () => {
   const [errorState, setErrorState] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const [userValues, setUserValues] = useContext(UserContext);
-  const [enterMFACode, { data, loading, error }] = useLazyQuery(ENTER_2FA_CODE);
+  const [enterMFACode, { data, loading, error }] = useLazyQuery(
+    ENTER_2FA_CODE,
+    { fetchPolicy: 'network-only' }
+  );
   const [isUser, setIsUser] = useState(null);
 
   // this isn't really working here either

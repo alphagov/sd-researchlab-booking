@@ -13,7 +13,9 @@ const initialErrorState = {
 };
 
 const SignIn2FAResend = () => {
-  const [resendMFA, { loading, data }] = useLazyQuery(RESEND_2FA_CODE);
+  const [resendMFA, { loading, data }] = useLazyQuery(RESEND_2FA_CODE, {
+    fetchPolicy: 'network-only'
+  });
   const [errorState, setErrorState] = useState(initialErrorState);
 
   // const resendMFACode = async () => {
