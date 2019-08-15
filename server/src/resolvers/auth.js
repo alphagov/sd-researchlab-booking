@@ -1,4 +1,5 @@
 import User from '../models/User';
+import TwoFactor from '../models/Twofactor';
 
 import {
   verifyUserToken,
@@ -49,7 +50,16 @@ const mfaCodeHelper = async (user) => {
     // send the code
     await sendMFACode(user.phone, mfa);
     // add to user account
-    await User.findByIdAndUpdate(user._id, { mfaCode: mfa }, { new: true });
+    //  add token to token model
+    const newToken = await TwoFactor.create({ token: mfa });
+    // add token id to user
+    console.log('newToken', newToken);
+
+    await User.findByIdAndUpdate(
+      user._id,
+      { $set: { mfaCode: newToken._id } },
+      { new: true }
+    );
     return true;
   } catch (error) {
     console.log('[mfaCodeHelper]', error);
@@ -97,14 +107,16 @@ const authResolvers = {
           user: null
         };
       }
-      console.log('code', mfaCode);
+      console.log('[code]', mfaCode);
 
-      const mfaUser = await User.findById(user);
+      const mfaUser = await User.findById(user).populate('mfaCode');
       // if the codes do not match
-
+      console.log('[mfauser]', mfaUser.mfaCode.token);
       // console.log('mfauser', mfaUser);
 
-      if (mfaUser.mfaCode !== mfaCode) {
+      const { token } = mfaUser.mfaCode;
+
+      if (token !== mfaCode) {
         return {
           success: false,
           reason: 'IncorrectMFACode',
