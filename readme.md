@@ -33,3 +33,22 @@ The application (server) uses an environment variable file `server.env` that wil
 The application (server) also uses a `keys` folder to store a `*.pem` file for Google access as well as RSA private and public keys for encrypting the `jwt`. You will need to create your own keys (or use environment variables).
 Client access is controlled via a `jwt` stored in the browser `localStorage`.
 Initial emails (for registration verification) and texts (security codes) are using the [GDS Notify api](https://www.notifications.service.gov.uk).
+
+The following environment variables will be needed in your `server.env`:
+
+```
+MONGODB_URI=
+REGISTER_LINK=
+NOTIFY_REG_TEMPLATE_ID=
+NOTIFY_LOGIN_MFA_TEMPLATE_ID=
+NOTIFY_API_KEY=
+GOOGLE_CUSTOMER_ID=
+RESOURCE_TYPE=
+BOOKING_DEFAULT_STATUS=
+BOOKING_SEND_UPDATES=
+TOKEN_ISSUER=
+TOKEN_AUDIENCE=
+TOKEN_ALGORITHM=
+REG_TOKEN_EXPIRES=
+USER_TOKEN_EXPIRES=
+```
