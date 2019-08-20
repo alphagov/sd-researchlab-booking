@@ -34,7 +34,7 @@ The application (server) also uses a `keys` folder to store a `*.pem` file for G
 Client access is controlled via a `jwt` stored in the browser `localStorage`.
 Initial emails (for registration verification) and texts (security codes) are using the [GDS Notify api](https://www.notifications.service.gov.uk).
 
-The following environment variables will be needed in your `server.env`:
+The following environment variables will be needed:
 
 ```
 MONGODB_URI=
