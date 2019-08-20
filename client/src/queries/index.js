@@ -9,6 +9,7 @@ export const GET_RESEARCH_LABS = gql`
         resourceName
         resourceEmail
         capacity
+        usage
         floorName
         building {
           buildingName
@@ -62,18 +63,24 @@ export const GET_BOOKED_EVENTS_BY_USER = gql`
         eventStatus
         eventStart
         eventEnd
-        eventOwner {
+        equipment
+        guests
+        eventCreator {
           displayName
           email
+          additionalGuests
         }
-        resource {
-          resourceName
-          building {
-            buildingName
-            description
-          }
-        }
+        calendarId
       }
+    }
+  }
+`;
+
+export const DELETE_BOOKED_EVENTS_BY_USER = gql`
+  mutation($calendarId: String!, $eventId: String!) {
+    deleteResearchLabEvent(calendarId: $calendarId, eventId: $eventId) {
+      success
+      reason
     }
   }
 `;
@@ -84,19 +91,6 @@ export const GET_CURRENT_USER = gql`
       firstName
       lastName
       email
-    }
-  }
-`;
-
-export const USER_SIGN_IN = gql`
-  mutation($email: String!, $password: String) {
-    signInUser(email: $email, password: $password) {
-      success
-      token
-      user {
-        id
-        isVerified
-      }
     }
   }
 `;
@@ -116,35 +110,15 @@ export const CHECK_REG_TOKEN = gql`
 `;
 
 export const CHECK_USER_VERIFIED = gql`
-  query($_id: ID!) {
-    checkUserVerified(_id: $_id) {
-      _id
-      ok
-      error
-    }
-  }
-`;
-
-export const RESEND_REG_LINK = gql`
-  mutation($id: ID!) {
-    registerLinkResend(id: $id) {
+  query {
+    checkUserVerified {
       success
-      token
-    }
-  }
-`;
-
-export const RESEND_2FA_CODE = gql`
-  mutation {
-    resend2FACode {
-      success
-      reason
     }
   }
 `;
 
 export const ENTER_2FA_CODE = gql`
-  mutation($mfaCode: Int!) {
+  query($mfaCode: Int!) {
     enter2FACode(mfaCode: $mfaCode) {
       success
       reason
@@ -154,6 +128,37 @@ export const ENTER_2FA_CODE = gql`
         firstName
         lastName
       }
+    }
+  }
+`;
+
+export const RESEND_2FA_CODE = gql`
+  query {
+    resend2FACode {
+      success
+      reason
+    }
+  }
+`;
+
+export const USER_SIGN_IN = gql`
+  query($email: String!, $password: String) {
+    signInUser(email: $email, password: $password) {
+      success
+      token
+      user {
+        id
+        isVerified
+      }
+    }
+  }
+`;
+
+export const RESEND_REG_LINK = gql`
+  query($id: ID!) {
+    registerLinkResend(id: $id) {
+      success
+      token
     }
   }
 `;
@@ -187,21 +192,25 @@ export const BOOK_LAB_SLOT = gql`
     $calendarId: String!
     $start: String!
     $end: String!
-    $attendees: Int
+    $numAttendees: Int
     $title: String!
     $description: String!
     $creator: String!
     $email: String!
+    $equipment: [String]
+    $guests: String
   ) {
     addResearchLabEvent(
       calendarId: $calendarId
       start: $start
       end: $end
-      attendees: $attendees
+      numAttendees: $numAttendees
       title: $title
       description: $description
       creator: $creator
       email: $email
+      equipment: $equipment
+      guests: $guests
     ) {
       success
       reason
@@ -212,9 +221,12 @@ export const BOOK_LAB_SLOT = gql`
         eventStatus
         eventStart
         eventEnd
-        eventOwner {
+        equipment
+        guests
+        eventCreator {
           displayName
           email
+          additionalGuests
         }
       }
     }

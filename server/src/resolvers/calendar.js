@@ -1,4 +1,5 @@
-import { startOfDay, endOfDay, addMonths } from 'date-fns';
+import { startOfDay, endOfDay, addMonths, subDays, subMonths } from 'date-fns';
+import { calcBusyPercent } from '../utils/dateUtils';
 import Events from '../models/Events';
 
 const calendarResolvers = {
@@ -22,7 +23,14 @@ const calendarResolvers = {
       return resBuilding;
     },
 
-    getResourceResearchLab: async (_, args, { dataSources }) => {
+    getResourceResearchLab: async (_, args, { dataSources, userContext }) => {
+      const { user } = userContext;
+      if (!user) {
+        return {
+          success: false,
+          calendars: null
+        };
+      }
       const resLabs = await dataSources.googleResourcesAPI.getResourceCalendarByType();
       const orderedLabs = resLabs.sort((a, b) =>
         a.resourceName.localeCompare(b.resourceName)
@@ -137,6 +145,44 @@ const calendarResolvers = {
           event: {}
         };
       }
+    },
+    deleteResearchLabEvent: async (
+      _,
+      { calendarId, eventId },
+      { dataSources, userContext }
+    ) => {
+      const { user, error } = userContext;
+
+      if (!user) {
+        return {
+          success: false,
+          reason: error.name
+        };
+      }
+
+      // delete the event should get back an empty response
+      try {
+        const deleteEvent = await dataSources.googleResourcesAPI.deleteCalendarEvent(
+          calendarId,
+          eventId
+        );
+        if (deleteEvent) {
+          return {
+            success: true,
+            reason: ''
+          };
+        }
+
+        return {
+          success: false,
+          reason: deleteEvent
+        };
+      } catch (error) {
+        return {
+          success: false,
+          reason: error.message
+        };
+      }
     }
   },
   ResourceCalendar: {
@@ -147,6 +193,26 @@ const calendarResolvers = {
           building_id
         );
         return resBuilding;
+      }
+    },
+    usage: async (parent, args, { dataSources }) => {
+      const calId = parent.resourceEmail;
+      if (calId) {
+        const endDate = endOfDay(subDays(Date.now(), 1));
+        const startDate = startOfDay(subMonths(endDate, 2));
+        const percFreeBusy = await dataSources.googleResourcesAPI.getCalendarFreeBusyList(
+          startDate,
+          endDate,
+          [calId]
+        );
+        const { busy } = percFreeBusy[0];
+        const numBusy = busy.length;
+        // if no booked events
+        if (numBusy === 0) {
+          return 0;
+        }
+        const busyPer = await calcBusyPercent(startDate, endDate, numBusy);
+        return parseInt(busyPer);
       }
     }
   },
@@ -169,7 +235,7 @@ const calendarResolvers = {
         // just get until the end of the next month...this way we can always display 2
         // months worth of data.
         // reason we do this is because Google Cal API will only pull 2 months worth of data
-        const endDate = addMonths(endOfDay(startDate), 1);
+        const endDate = addMonths(endOfDay(startDate), 2);
         const resFreeBusy = await dataSources.googleResourcesAPI.getCalendarFreeBusyList(
           startDate,
           endDate,

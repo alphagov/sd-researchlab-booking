@@ -1,5 +1,5 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 
 import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
@@ -11,7 +11,7 @@ import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
 const LabCalendarList = () => {
   return (
     <div className="govuk-grid-row">
-      <Query query={GET_RESEARCH_LABS_FREEBUSY} pollInterval={60000}>
+      <Query query={GET_RESEARCH_LABS_FREEBUSY} pollInterval={50000}>
         {({ loading, error, data }) => {
           if (loading) return <Spinner />;
           if (error) return <Error error={error} />;

@@ -51,18 +51,6 @@ const app = Express();
 app.use(Morgan('dev'));
 // security
 app.use(Helmet());
-// app.use(async (req, res, next) => {
-//   const token = req.headers.authorization;
-//   if (token !== null || token !== undefined) {
-//     try {
-//       const currentUser = await verify(token, process.env.SECRET);
-//       req.currentUser = currentUser;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-//   next();
-// });
 apollo.applyMiddleware({ app });
 
 const PORT = process.env.PORT || 4050;

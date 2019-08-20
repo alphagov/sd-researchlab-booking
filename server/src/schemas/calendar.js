@@ -9,6 +9,7 @@ export const typeDef = gql`
     resourceEmail: String
     resourceCategory: String
     capacity: Int
+    usage: Int
     buildingId: String
     building: ResourceBuilding
     floorName: String
@@ -36,7 +37,10 @@ export const typeDef = gql`
     eventStatus: String
     eventStart: String
     eventEnd: String
-    eventOwner: EventCreator
+    eventCreator: EventCreator
+    equipment: String
+    guests: String
+    calendarId: String
   }
 
   type BookedEventsUser {
@@ -54,6 +58,7 @@ export const typeDef = gql`
   type EventCreator {
     displayName: String
     email: String
+    additionalGuests: Int
   }
 
   type ResearchLabList {
@@ -108,6 +113,11 @@ export const typeDef = gql`
     buildings: [ResourceBuilding]
   }
 
+  type MutationSuccess {
+    success: Boolean
+    reason: String
+  }
+
   extend type Query {
     getResourceCalendarList: ResourceCalendarList
     getResourceBuildingList: ResourceBuildingList
@@ -126,11 +136,17 @@ export const typeDef = gql`
       calendarId: String!
       start: String!
       end: String!
-      attendees: Int
+      numAttendees: Int
       title: String!
       description: String
       creator: String!
       email: String!
+      equipment: [String]
+      guests: String
     ): ResearchLabEvent
+    deleteResearchLabEvent(
+      calendarId: String!
+      eventId: String!
+    ): MutationSuccess
   }
 `;

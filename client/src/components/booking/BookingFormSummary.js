@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import dateFns from 'date-fns';
 import { Link, navigate } from '@reach/router';
-import { withApollo } from 'react-apollo';
-import { useMutation } from 'react-apollo-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 
 import { BookingContext } from '../../contexts/BookingContext';
+import { UserContext } from '../../contexts/UserContext';
 import Spinner from '../shared/Spinner';
 import Error from '../../containers/Error';
 
@@ -18,15 +18,19 @@ const initialErrorState = {
   error: ''
 };
 
-const BookinFormSummary = ({ client }) => {
+const BookinFormSummary = () => {
   const [bookingValues, setBookingValues] = useContext(BookingContext);
+  // eslint-disable-next-line no-unused-vars
+  const [userValues, setUserValues] = useContext(UserContext);
   const [bookingState, setBookingState] = useState({
-    loading: false,
     booked: false,
     event: {}
   });
   const [errorState, setErrorState] = useState(initialErrorState);
-  const [addBooking] = useMutation(BOOK_LAB_SLOT);
+  const [addBooking, { loading }] = useMutation(BOOK_LAB_SLOT);
+  const { data } = useQuery(GET_RESEARCH_LABS_FREEBUSY, {
+    fetchPolicy: 'network-only'
+  });
 
   const {
     bookedDate,
@@ -40,44 +44,26 @@ const BookinFormSummary = ({ client }) => {
     bookedEquipment
   } = bookingValues;
 
-  const bookLab = async () => {
-    let researchLabs = [];
-
-    setBookingState({
-      ...bookingState,
-      loading: true
-    });
-
-    try {
-      const { data, error } = await client.query({
-        query: GET_RESEARCH_LABS_FREEBUSY,
-        fetchPolicy: 'network-only'
-      });
-
-      if (error) {
-        return setErrorState({ status: true, error });
-      }
-      researchLabs = data.getResourceResearchLab.labs;
-    } catch (error) {
-      console.log(error);
-      setErrorState({ status: true, error });
-      setBookingState({
-        ...bookingState,
-        loading: false
-      });
-
-      return;
+  if (data && data.getResourceResearchLab) {
+    if (!data.getResourceResearchLab.success) {
+      setUserValues({ isLoggedIn: false });
     }
+  }
+
+  const bookLab = async () => {
+    const { labs } = data.getResourceResearchLab;
+
+    // console.log(labs);
 
     // this is really a duplicate of what we should be looking at in booking dates
     //  but we should check again just in case someone else has booked
-    const bookedLabs = await checkClashDates(researchLabs, bookingValues);
+    const bookedLabs = await checkClashDates(labs, bookingValues);
 
     const checkBooking = {
       bookedAM,
       bookedPM,
       bookedDate,
-      researchLabs,
+      labs,
       bookedLabs
     };
 
@@ -91,8 +77,7 @@ const BookinFormSummary = ({ client }) => {
       console.log(error);
       setErrorState({ status: true, error });
       setBookingState({
-        ...bookingState,
-        loading: false
+        ...bookingState
       });
       return;
     }
@@ -114,41 +99,43 @@ const BookinFormSummary = ({ client }) => {
     // book the lab
     let bookingResult;
 
+    // console.log('bookedAttend', bookedAttend);
+
     try {
       bookingResult = await addBooking({
         variables: {
           calendarId: availability.resourceEmail,
           start: slots.start,
           end: slots.end,
-          attendees: parseInt(bookedAttend),
+          numAttendees: parseInt(bookedAttend),
           title: `Research Lab Booking for ${bookedFirstName} ${bookedLastName}`,
-          description: `${bookedDetail} equipment required ${bookedEquipment}`,
+          description: bookedDetail,
           creator: `${bookedFirstName} ${bookedLastName}`,
-          email: bookedEmail
+          email: bookedEmail,
+          equipment: bookedEquipment,
+          guests: bookedAttend
         }
       });
     } catch (error) {
       console.log(error);
       setErrorState({ status: true, error });
       setBookingState({
-        ...bookingState,
-        loading: false
+        ...bookingState
       });
     }
 
-    const { data } = bookingResult;
+    const { success, event } = bookingResult.data.addResearchLabEvent;
 
-    if (data.addResearchLabEvent.success) {
-      console.log(data);
+    if (success) {
+      // console.log(event);
       // add to the booking context setBookingValues
       setBookingValues({
         ...bookingValues,
-        bookedEvent: data.addResearchLabEvent.event
+        bookedEvent: event
       });
       setBookingState({
         booked: true,
-        loading: false,
-        event: data.addResearchLabEvent.event
+        event: event
       });
       // then navigate to user area
       setTimeout(() => {
@@ -264,7 +251,7 @@ const BookinFormSummary = ({ client }) => {
               </div>
             </div>
           )}
-          {bookingState.loading ? (
+          {loading ? (
             <Spinner />
           ) : (
             <button
@@ -282,4 +269,4 @@ const BookinFormSummary = ({ client }) => {
   );
 };
 
-export default withApollo(BookinFormSummary);
+export default BookinFormSummary;

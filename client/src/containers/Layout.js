@@ -64,7 +64,7 @@ const PublicRoutes = () => {
       <SignIn2FAForm path="/sign-in/2fa" />
       <SignIn2FAResend path="/sign-in/resend-code" />
       <Labs path="/gds-research-labs" />
-      <Landing default />
+      <SignInEmailPassword default />
     </Router>
   );
 };
@@ -89,13 +89,14 @@ const PrivateRoutes = () => {
         <BookingFormEquipment path="/booking-equipment" />
         <BookingFormSummary path="/booking-summary" />
       </LabBookingForm>
-      <Landing default />
+      <SignInEmailPassword default />
     </Router>
   );
 };
 
 const Layout = () => {
   const [userValues] = useContext(UserContext);
+
   initAll();
   return (
     <div className="govuk-template__body govuk-rlab_body">

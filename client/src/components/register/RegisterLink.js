@@ -1,5 +1,5 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 import queryString from 'query-string';
 import { navigate } from '@reach/router';
 import Spinner from '../shared/Spinner';

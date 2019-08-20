@@ -14,6 +14,7 @@ const HeaderNav = () => {
       lastName: ''
     });
     localStorage.removeItem('labtoken');
+    // need to clear the apollo cache here
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, navigate } from '@reach/router';
-import { useMutation } from 'react-apollo-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 
 import { useForm } from '../../hooks/useForm';
 
@@ -8,6 +8,8 @@ import Error from '../../containers/Error';
 import Spinner from '../shared/Spinner';
 
 import { USER_SIGN_IN } from '../../queries';
+
+import styles from '../../css/Auth.module.css';
 
 const initialState = {
   email: { value: '', valid: true, reason: '' },
@@ -21,64 +23,67 @@ const initialErrorState = {
 
 const SignInEmailPassword = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
-  const [userSignIn, { loading, error }] = useMutation(USER_SIGN_IN);
   const [errorState, setErrorState] = useState(initialErrorState);
+  const client = useApolloClient();
+
+  const { email, password } = values;
+
+  let loading = false;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     // get the values
-    const { email, password } = values;
 
-    let newSignIn;
+    loading = true;
 
     try {
-      newSignIn = await userSignIn({
-        variables: { email: email.value, password: password.value }
+      const { data } = await client.query({
+        query: USER_SIGN_IN,
+        variables: { email: email.value, password: password.value },
+        fetchPolicy: 'network-only'
       });
 
-      if (error) {
-        setErrorState({ status: true, error });
+      const { signInUser } = data;
+      // if for some reason it failed
+      if (!signInUser.success) {
+        setErrorState({
+          status: true,
+          error: { message: 'Unable to sign in - Incorrect credentials' }
+        });
         return;
       }
+
+      // if the user is not valid (not completed registration)
+      // navigate them back to the resend link
+      if (!signInUser.user.isVerified) {
+        setErrorState({
+          status: true,
+          error: {
+            message:
+              'You have not confirmed you registration. Unable to sign in'
+          }
+        });
+
+        setTimeout(() => {
+          navigate(`/register/confirm/${signInUser.user.id}`);
+        }, 10000);
+      }
+
+      // if all is good set token and then navigate to 2fa
+      await localStorage.setItem('labtoken', signInUser.token);
+      navigate('/sign-in/2fa');
     } catch (error) {
+      loading = false;
       console.log(error);
-      setErrorState({ status: true, error });
-      return;
-    }
-
-    const { signInUser } = newSignIn.data;
-
-    // if for some reason it failed
-    if (!signInUser.success) {
       setErrorState({
         status: true,
-        error: { message: 'Unable to sign in - Incorrect credentials' }
+        error
       });
-      return;
     }
-
-    // if the user is not valid (not completed registration)
-    // navigate them back to the resend link
-    if (!signInUser.user.isVerified) {
-      setErrorState({
-        status: true,
-        error: {
-          message: 'You have not confirmed you registration. Unable to sign in'
-        }
-      });
-
-      setTimeout(() => {
-        navigate(`/register/confirm/${signInUser.user.id}`);
-      }, 10000);
-    }
-
-    // if all is good set token and then navigate to 2fa
-    await localStorage.setItem('labtoken', signInUser.token);
-    navigate('/sign-in/2fa');
   };
 
   return (
-    <div className="govuk-grid-row">
+    <div className={`govuk-grid-row ${styles.fullHeight}`}>
       <div className="govuk-grid-column-two-thirds">
         <fieldset className="govuk-fieldset">
           <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -147,7 +152,7 @@ const SignInEmailPassword = () => {
             {loading ? (
               <Spinner />
             ) : (
-              <button type="submit" className="govuk-button">
+              <button className="govuk-button" type="submit">
                 Continue
               </button>
             )}

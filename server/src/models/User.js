@@ -31,9 +31,10 @@ const UserSchema = new Schema({
   },
 
   mfaCode: {
-    type: Number,
-    default: 0
+    type: Schema.Types.ObjectId,
+    ref: 'TwoFactor'
   },
+
   isVerified: {
     type: Boolean,
     default: false
