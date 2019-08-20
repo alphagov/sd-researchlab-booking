@@ -8,7 +8,7 @@ A user will need to register to use the service and only government or local gov
 
 ### Registration
 
-Once a user registers (First name, last name, email, mobile phone & password) they will be sent a link to their email address which they will need to click on to verify their address. Once verifified they will be directed through the normal sign in process.
+Once a user registers (First name, last name, email, mobile phone & password) they will be sent a link to their email address which they will need to click on to verify their address. Once verified they will be directed through the normal sign in process.
 
 ### Sign in
 
