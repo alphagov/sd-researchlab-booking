@@ -1,13 +1,14 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
-
 import dateFns from 'date-fns';
 import { navigate } from '@reach/router';
-import { withApollo } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 
 import { yearBuilder } from '../../utils/dateUtils';
 import { checkClashDates, checkBookingSlots } from '../../utils/bookingUtils';
 import { useForm } from '../../hooks/useForm';
 import { BookingContext } from '../../contexts/BookingContext';
+import { UserContext } from '../../contexts/UserContext';
 import { GET_RESEARCH_LABS_FREEBUSY } from '../../queries';
 
 let initDate = dateFns.addDays(new Date(), 2);
@@ -34,34 +35,30 @@ const initialState = {
   bookAMPM: { value: false, valid: true, reason: '' }
 };
 
-const BookingFormDate = ({ client }) => {
+const BookingFormDate = () => {
   const [values, validateInputs, handleChange] = useForm(initialState);
   const [bookingValues, setBookingValues] = useContext(BookingContext);
+  const [userValues, setUserValues] = useContext(UserContext);
+  const { data } = useQuery(GET_RESEARCH_LABS_FREEBUSY, {
+    fetchPolicy: 'cache-and-network'
+  });
+
+  if (data && data.getResourceResearchLab) {
+    if (!data.getResourceResearchLab.success) {
+      setUserValues({ isLoggedIn: false });
+    }
+  }
 
   const checkAvail = async (details) => {
-    let researchLabs = [];
+    const { labs } = data.getResourceResearchLab;
 
-    try {
-      // get the free busy dates from cache
-      // potentially risky but the polling should take care of things?
-      // may switch to getting from db.......
-      const { getResourceResearchLab } = await client.readQuery({
-        query: GET_RESEARCH_LABS_FREEBUSY,
-        fetchPolicy: 'cache-and-network'
-      });
-      researchLabs = getResourceResearchLab.labs;
-    } catch (error) {
-      console.log(error);
-      return;
-    }
-
-    const bookedLabs = await checkClashDates(researchLabs, details);
+    const bookedLabs = await checkClashDates(labs, details);
 
     // send it off to validate inputs
 
     const checkBooking = {
       ...details,
-      researchLabs,
+      labs,
       bookedLabs
     };
 
@@ -345,4 +342,4 @@ const BookingFormDate = ({ client }) => {
   );
 };
 
-export default withApollo(BookingFormDate);
+export default BookingFormDate;

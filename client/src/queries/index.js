@@ -9,6 +9,7 @@ export const GET_RESEARCH_LABS = gql`
         resourceName
         resourceEmail
         capacity
+        usage
         floorName
         building {
           buildingName
@@ -50,6 +51,40 @@ export const GET_CALENDAR_FREE_BUSY = gql`
   }
 `;
 
+export const GET_BOOKED_EVENTS_BY_USER = gql`
+  query {
+    getBookedEventsUser {
+      success
+      reason
+      events {
+        eventId
+        eventTitle
+        eventDescription
+        eventStatus
+        eventStart
+        eventEnd
+        equipment
+        guests
+        eventCreator {
+          displayName
+          email
+          additionalGuests
+        }
+        calendarId
+      }
+    }
+  }
+`;
+
+export const DELETE_BOOKED_EVENTS_BY_USER = gql`
+  mutation($calendarId: String!, $eventId: String!) {
+    deleteResearchLabEvent(calendarId: $calendarId, eventId: $eventId) {
+      success
+      reason
+    }
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   query {
     getCurrentUser {
@@ -61,51 +96,69 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export const CHECK_REG_TOKEN = gql`
-  query($regToken: String!) {
-    checkRegToken(regToken: $regToken) {
-      _id
-      ok
-      error
+  query($token: String!) {
+    registerTokenCheck(token: $token) {
+      success
+      token
+      user {
+        id
+        firstName
+        lastName
+      }
     }
   }
 `;
 
 export const CHECK_USER_VERIFIED = gql`
-  query($_id: ID!) {
-    checkUserVerified(_id: $_id) {
-      _id
-      ok
-      error
-    }
-  }
-`;
-
-export const RESEND_REG_LINK = gql`
-  mutation($_id: ID!) {
-    resendRegLink(_id: $_id) {
-      _id
-      ok
-      error
-    }
-  }
-`;
-
-export const SEND_2FA_CODE = gql`
-  mutation($_id: ID!) {
-    send2FACode(_id: $_id) {
-      _id
-      ok
-      error
+  query {
+    checkUserVerified {
+      success
     }
   }
 `;
 
 export const ENTER_2FA_CODE = gql`
-  mutation($_id: ID!, $mfaCode: String!) {
-    enter2FACode(_id: $_id, mfaCode: $mfaCode) {
-      _id
-      ok
-      error
+  query($mfaCode: Int!) {
+    enter2FACode(mfaCode: $mfaCode) {
+      success
+      reason
+      user {
+        id
+        isVerified
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
+export const RESEND_2FA_CODE = gql`
+  query {
+    resend2FACode {
+      success
+      reason
+    }
+  }
+`;
+
+export const USER_SIGN_IN = gql`
+  query($email: String!, $password: String) {
+    signInUser(email: $email, password: $password) {
+      success
+      token
+      user {
+        id
+        isVerified
+      }
+    }
+  }
+`;
+
+export const RESEND_REG_LINK = gql`
+  query($id: ID!) {
+    registerLinkResend(id: $id) {
+      success
+      token
     }
   }
 `;
@@ -118,16 +171,18 @@ export const REGISTER_USER = gql`
     $mobilePhone: String!
     $password: String!
   ) {
-    registerUser(
+    registerNewUser(
       firstName: $firstName
       lastName: $lastName
       email: $email
       phone: $mobilePhone
       password: $password
     ) {
-      _id
-      ok
-      error
+      success
+      user {
+        id
+      }
+      token
     }
   }
 `;
@@ -137,23 +192,28 @@ export const BOOK_LAB_SLOT = gql`
     $calendarId: String!
     $start: String!
     $end: String!
-    $attendees: Int
+    $numAttendees: Int
     $title: String!
     $description: String!
     $creator: String!
     $email: String!
+    $equipment: [String]
+    $guests: String
   ) {
     addResearchLabEvent(
       calendarId: $calendarId
       start: $start
       end: $end
-      attendees: $attendees
+      numAttendees: $numAttendees
       title: $title
       description: $description
       creator: $creator
       email: $email
+      equipment: $equipment
+      guests: $guests
     ) {
       success
+      reason
       event {
         eventId
         eventTitle
@@ -161,9 +221,12 @@ export const BOOK_LAB_SLOT = gql`
         eventStatus
         eventStart
         eventEnd
-        eventOwner {
+        equipment
+        guests
+        eventCreator {
           displayName
           email
+          additionalGuests
         }
       }
     }

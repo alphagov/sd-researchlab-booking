@@ -6,6 +6,7 @@ services:
     volumes:
       - ./docker/data/db:/data/db
     container_name: booking_db
+    restart: unless-stopped
 
   booking_server:
     build:
@@ -20,4 +21,6 @@ services:
     depends_on:
       - booking_db
     container_name: booking_server
-    command: ['npm', 'start']
+    restart: unless-stopped
+    environment:
+      WAIT_HOSTS: booking_db:27017
