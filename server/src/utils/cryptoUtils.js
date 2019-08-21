@@ -49,11 +49,11 @@ export const hashCompare = async (plain, hash) => {
 export const createUserToken = async ({ id, email }, expiresIn) => {
   const payload = { id };
   const signOptions = {
-    issuer: TOKEN_ISSUER,
+    issuer: TOKEN_ISSUER || 'test',
     subject: email,
-    audience: TOKEN_AUDIENCE,
+    audience: TOKEN_AUDIENCE || 'test',
     expiresIn: expiresIn,
-    algorithm: TOKEN_ALGORITHM
+    algorithm: TOKEN_ALGORITHM || 'RS256'
   };
 
   try {
@@ -74,10 +74,10 @@ export const createUserToken = async ({ id, email }, expiresIn) => {
 
 export const verifyUserToken = async (token, expiresIn) => {
   const verifyOptions = {
-    issuer: TOKEN_ISSUER,
-    audience: TOKEN_AUDIENCE,
+    issuer: TOKEN_ISSUER || 'test',
+    audience: TOKEN_AUDIENCE || 'test',
     expiresIn: expiresIn,
-    algorithm: [TOKEN_ALGORITHM]
+    algorithm: [TOKEN_ALGORITHM || 'RS256']
   };
   try {
     const legitToken = await verify(token, publicKey, verifyOptions);

@@ -1,5 +1,5 @@
 import DBTests from './dbTests';
-import { cryptoTests, securityCodeTests } from './utilTests';
+import { cryptoTests, securityCodeTests, webTokenTests } from './utilTests';
 
 describe('Database tests', () => {
   DBTests();
@@ -8,4 +8,5 @@ describe('Database tests', () => {
 describe('Utility tests', () => {
   cryptoTests();
   securityCodeTests();
+  webTokenTests();
 });
