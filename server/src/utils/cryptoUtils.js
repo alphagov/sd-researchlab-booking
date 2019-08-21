@@ -25,7 +25,7 @@ export const MFACreator = async () => {
     );
   }
   console.log(tempMFA);
-  return tempMFA;
+  return parseInt(tempMFA);
 };
 
 export const hashCreator = async (term) => {

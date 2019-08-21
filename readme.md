@@ -55,5 +55,8 @@ USER_TOKEN_EXPIRES=
 
 ## Tests
 
-For the client in the `src` folder there is a `test` folder. Client tests can be run using the `yarn test` command.
-For the server the tests are located in in the root server folder and the tests can be run using `yarn test`.
+The tests are quite rudimentary at this stage.
+
+The client tests are in the `src` folder. There is a `test` folder. Client tests can be run using the `yarn test` command.
+
+The server tests are located in the root server folder and the tests can be run using `yarn test`.
