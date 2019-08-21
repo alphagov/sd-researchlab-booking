@@ -11,5 +11,5 @@ export const calcBusyPercent = async (start, end, busy) => {
     }
   }
 
-  return Math.ceil((busy / workDayCounter) * 100);
+  return parseInt(Math.ceil((busy / workDayCounter) * 100));
 };

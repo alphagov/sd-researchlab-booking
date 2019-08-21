@@ -59,6 +59,7 @@ export const webTokenTests = () => {
       clearToken.should.be.an('object');
       clearToken.id.should.equal(testTkn.id);
       clearToken.sub.should.equal(testTkn.email);
+      testShould.not.exist(veriToken.error);
     });
   });
 };
