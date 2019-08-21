@@ -52,3 +52,8 @@ TOKEN_ALGORITHM=
 REG_TOKEN_EXPIRES=
 USER_TOKEN_EXPIRES=
 ```
+
+## Tests
+
+For the client in the `src` folder there is a `test` folder. Client tests can be run using the `yarn test` command.
+For the server the tests are located in in the root server folder and the tests can be run using `yarn test`.
