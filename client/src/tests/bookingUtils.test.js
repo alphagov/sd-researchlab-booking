@@ -1,7 +1,7 @@
 // create some dummy info
 import { setHours, addDays } from 'date-fns';
 
-import { checkClashDates } from '../utils/bookingUtils';
+import { checkClashDates, checkBookingSlots } from '../utils/bookingUtils';
 
 const mainStartAM = setHours(Date.now(), 8);
 const mainEndAM = setHours(mainStartAM, 12);
@@ -47,8 +47,41 @@ const bookingDetails = {
 describe('Booking Utils Test', () => {
   describe('Check If the date clashes', () => {
     it('Returns an array with a length of 2', async () => {
+      const bookingDetails = {
+        bookedDate: Date.now()
+      };
       const clashDate = await checkClashDates([lab1, lab2], bookingDetails);
       expect(clashDate.length).toEqual(2);
+    });
+    it('Returns false for a whole day booking', async () => {
+      const bookingDetails = {
+        bookedDate: addDays(Date.now(), 3)
+      };
+      const clashDate = await checkClashDates([lab1, lab2], bookingDetails);
+      const checkBooking = {
+        bookedAM: true,
+        bookedPM: true,
+        bookedDate: bookingDetails.bookedDate,
+        labs: [lab1, lab2],
+        bookedLabs: clashDate
+      };
+      const avail = await checkBookingSlots(checkBooking);
+      expect(avail.available).toEqual(false);
+    });
+    it('Returns true for a AM  booking', async () => {
+      const bookingDetails = {
+        bookedDate: addDays(Date.now(), 2)
+      };
+      const clashDate = await checkClashDates([lab1, lab2], bookingDetails);
+      const checkBooking = {
+        bookedAM: true,
+        bookedPM: false,
+        bookedDate: bookingDetails.bookedDate,
+        labs: [lab1, lab2],
+        bookedLabs: clashDate
+      };
+      const avail = await checkBookingSlots(checkBooking);
+      expect(avail.available).toEqual(true);
     });
   });
 });
