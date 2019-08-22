@@ -6,7 +6,10 @@ const TwoFactorSchema = new Schema({
     default: Date.now(),
     expires: 120000
   },
-  token: Number
+  token: {
+    type: Number,
+    required: true
+  }
 });
 
 export default model('TwoFactor', TwoFactorSchema);
