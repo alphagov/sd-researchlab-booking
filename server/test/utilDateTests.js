@@ -10,7 +10,7 @@ const endDate = addDays(startDate, 27);
 
 export const utilDateTests = () => {
   describe('Calendar Busy percentage calculations', () => {
-    it('Should return a percentage of busy days as a number', async () => {
+    it('Should return the correct percentage of busy days as a number', async () => {
       const newPerc = await calcBusyPercent(startDate, endDate, 10);
       newPerc.should.be.a('number');
       newPerc.should.equal(50);
