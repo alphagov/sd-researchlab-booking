@@ -27,7 +27,7 @@
     "apollo-datasource": "^0.2.1",
     "apollo-datasource-rest": "^0.2.1",
     "apollo-server": "^2.2.6",
-    "apollo-server-express": "^2.2.6",
+    "apollo-server-express": "^2.14.2",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
